@@ -1,3 +1,6 @@
+"use client";
+
+import { useLocale } from "@/components/experience/LocaleProvider";
 import { Caption, Heading, SectionHead } from "@/components/ui/Heading";
 import { Reveal } from "@/components/ui/Reveal";
 import { SectionWrapper } from "@/components/ui/SectionWrapper";
@@ -11,17 +14,19 @@ import { dresscode } from "@/content/client";
  * theme của site.
  */
 export function Dresscode() {
+  const { t } = useLocale();
+
   return (
     <SectionWrapper section="dresscode" width="prose" labelledBy="dresscode-title">
       <SectionHead
-        eyebrow={dresscode.eyebrow}
-        title={dresscode.title}
+        eyebrow={t(dresscode.eyebrow)}
+        title={t(dresscode.title)}
         titleId="dresscode-title"
       />
 
       <Reveal className="flex flex-col items-center gap-stack text-center">
-        <Heading level="h3">{dresscode.headline}</Heading>
-        <Caption className="max-w-prose">{dresscode.note}</Caption>
+        <Heading level="h3">{t(dresscode.headline)}</Heading>
+        <Caption className="max-w-prose">{t(dresscode.note)}</Caption>
       </Reveal>
 
       {dresscode.swatches.length > 0 ? (
@@ -34,11 +39,11 @@ export function Dresscode() {
                   className="aspect-[3/4] w-full rounded-paper border border-tone-line"
                   style={{ backgroundColor: swatch.hex }}
                 />
-                <span className="text-small text-tone-muted">{swatch.name}</span>
+                <span className="text-small text-tone-muted">{t(swatch.name)}</span>
               </li>
             ))}
           </ul>
-          {dresscode.avoid ? <Caption className="text-center">{dresscode.avoid}</Caption> : null}
+          {dresscode.avoid ? <Caption className="text-center">{t(dresscode.avoid)}</Caption> : null}
         </Reveal>
       ) : null}
     </SectionWrapper>

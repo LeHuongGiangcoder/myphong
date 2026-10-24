@@ -1,6 +1,7 @@
 "use client";
 
 import { useExperience } from "@/components/experience/ExperienceProvider";
+import { useLocale } from "@/components/experience/LocaleProvider";
 import { music } from "@/content/client";
 
 /**
@@ -9,6 +10,7 @@ import { music } from "@/content/client";
  */
 export function MusicToggle() {
   const { opened, hasAudio, musicOn, toggleMusic } = useExperience();
+  const { t } = useLocale();
 
   if (!opened || !hasAudio) return null;
 
@@ -17,7 +19,7 @@ export function MusicToggle() {
       type="button"
       onClick={toggleMusic}
       aria-pressed={musicOn}
-      aria-label={musicOn ? `Tắt nhạc: ${music.title}` : `Bật nhạc: ${music.title}`}
+      aria-label={`${musicOn ? t(music.off) : t(music.on)}: ${music.title}`}
       className="fixed z-50 flex size-tap items-center justify-center rounded-btn border border-line bg-surface/85 text-ink shadow-paper backdrop-blur-sm"
       style={{
         right: "max(var(--t-space-gutter), env(safe-area-inset-right))",

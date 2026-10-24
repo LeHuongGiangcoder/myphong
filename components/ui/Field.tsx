@@ -44,12 +44,18 @@ export function Choice({
   value,
   checked,
   onChange,
+  /**
+   * Bắt buộc phải chọn một trong nhóm. Đặt trên MỌI lựa chọn cùng `name`:
+   * trình duyệt coi cả nhóm là bắt buộc và tự nhắc ở lựa chọn đầu tiên.
+   */
+  required = false,
   children,
 }: {
   name: string;
   value: string;
   checked: boolean;
   onChange: () => void;
+  required?: boolean;
   children: ReactNode;
 }) {
   return (
@@ -60,6 +66,7 @@ export function Choice({
         value={value}
         checked={checked}
         onChange={onChange}
+        required={required}
         className="size-4 shrink-0 accent-tone-accent"
       />
       <span>{children}</span>

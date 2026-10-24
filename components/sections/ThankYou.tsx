@@ -1,3 +1,6 @@
+"use client";
+
+import { useLocale } from "@/components/experience/LocaleProvider";
 import { Divider } from "@/components/ui/Divider";
 import { Eyebrow, Heading, Lead, Script } from "@/components/ui/Heading";
 import { ImageFrame } from "@/components/ui/ImageFrame";
@@ -7,17 +10,19 @@ import { couple, thankYou } from "@/content/client";
 
 /** Màn cuối: lời cảm ơn, ảnh hai người và hashtag. */
 export function ThankYou() {
+  const { t } = useLocale();
+
   return (
     <SectionWrapper section="thankYou" width="prose" labelledBy="thank-you-title">
       <Reveal className="flex flex-col items-center gap-stack text-center">
-        <Eyebrow>{thankYou.eyebrow}</Eyebrow>
+        <Eyebrow>{t(thankYou.eyebrow)}</Eyebrow>
         <Heading level="h2" id="thank-you-title">
-          {thankYou.title}
+          {t(thankYou.title)}
         </Heading>
         <Divider diamond />
         <div className="flex flex-col gap-tight">
-          {thankYou.lines.map((line) => (
-            <Lead key={line}>{line}</Lead>
+          {thankYou.lines.map((line, i) => (
+            <Lead key={i}>{t(line)}</Lead>
           ))}
         </div>
       </Reveal>
@@ -27,7 +32,7 @@ export function ThankYou() {
           <div className="w-full max-w-[20rem]">
             <ImageFrame
               src={thankYou.image}
-              alt={thankYou.imageAlt}
+              alt={t(thankYou.imageAlt)}
               ratio="4 / 5"
               sizes="(max-width: 48rem) 80vw, 20rem"
             />

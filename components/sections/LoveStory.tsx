@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 
+import { useLocale } from "@/components/experience/LocaleProvider";
 import { Divider } from "@/components/ui/Divider";
 import { Caption, Eyebrow, Heading, Lead, SectionHead } from "@/components/ui/Heading";
 import { ImageFrame } from "@/components/ui/ImageFrame";
@@ -17,6 +18,7 @@ import { loveStory } from "@/content/client";
  * cũng không có listener nào chạy khi khách không chạm tới.
  */
 export function LoveStory() {
+  const { t } = useLocale();
   const trackRef = useRef<HTMLUListElement>(null);
   const [index, setIndex] = useState(0);
   const [hintDone, setHintDone] = useState(false);
@@ -61,10 +63,10 @@ export function LoveStory() {
   return (
     <SectionWrapper section="loveStory" labelledBy="love-story-title">
       <SectionHead
-        eyebrow={loveStory.eyebrow}
-        title={loveStory.title}
+        eyebrow={t(loveStory.eyebrow)}
+        title={t(loveStory.title)}
         titleId="love-story-title"
-        intro={loveStory.intro}
+        intro={t(loveStory.intro)}
       />
 
       <Reveal className="relative">
@@ -74,29 +76,29 @@ export function LoveStory() {
             className="pointer-events-none absolute right-0 top-1/3 z-10 flex items-center gap-tight rounded-btn border border-tone-line bg-tone-bg/90 px-stack py-tight text-eyebrow uppercase text-tone-fg shadow-paper"
           >
             {/* Nhắc nhẹ, công cụ thật là mũi tên và hàng chấm bên dưới */}
-            Vuốt
+            {t(loveStory.swipe)}
             <span className="animate-nudge">→</span>
           </p>
         ) : null}
 
         <ul className="reel" ref={trackRef} onPointerDown={() => setHintDone(true)}>
           {chapters.map((chapter, i) => (
-            <li key={chapter.title} className="w-[78%] sm:w-[22rem]">
+            <li key={`${chapter.year}-${i}`} className="w-[78%] sm:w-[22rem]">
               <article
                 className="flex flex-col gap-stack"
                 style={{ transform: `rotate(${i % 2 === 0 ? -1.2 : 1.2}deg)` }}
-                aria-label={`${chapter.year} — ${chapter.title}`}
+                aria-label={`${chapter.year} — ${t(chapter.title)}`}
               >
                 <ImageFrame
                   src={chapter.photo}
-                  alt={chapter.alt}
+                  alt={t(chapter.alt)}
                   ratio="3 / 4"
                   sizes="(max-width: 48rem) 78vw, 22rem"
                 />
                 <div className="flex flex-col gap-tight text-center">
                   <Eyebrow>{chapter.year}</Eyebrow>
-                  <Heading level="h4">{chapter.title}</Heading>
-                  <Caption>{chapter.body}</Caption>
+                  <Heading level="h4">{t(chapter.title)}</Heading>
+                  <Caption>{t(chapter.body)}</Caption>
                 </div>
               </article>
             </li>
@@ -109,7 +111,7 @@ export function LoveStory() {
           type="button"
           onClick={() => goTo(index - 1)}
           disabled={index <= 0}
-          aria-label="Chương trước"
+          aria-label={t(loveStory.prev)}
           className="flex size-tap items-center justify-center rounded-btn border border-tone-line text-tone-fg disabled:opacity-35"
         >
           <span aria-hidden>←</span>
@@ -118,11 +120,11 @@ export function LoveStory() {
         <div className="flex items-center gap-tight">
           {chapters.map((chapter, i) => (
             <button
-              key={chapter.title}
+              key={`${chapter.year}-${i}`}
               type="button"
               onClick={() => goTo(i)}
               aria-current={i === index}
-              aria-label={`Xem ${chapter.year}`}
+              aria-label={`${chapter.year} — ${t(chapter.title)}`}
               className="size-2 rounded-btn bg-tone-fg transition-opacity duration-200 aria-[current=true]:opacity-100 opacity-30"
             />
           ))}
@@ -132,7 +134,7 @@ export function LoveStory() {
           type="button"
           onClick={() => goTo(index + 1)}
           disabled={index >= chapters.length - 1}
-          aria-label="Chương sau"
+          aria-label={t(loveStory.next)}
           className="flex size-tap items-center justify-center rounded-btn border border-tone-line text-tone-fg disabled:opacity-35"
         >
           <span aria-hidden>→</span>
@@ -142,9 +144,9 @@ export function LoveStory() {
       {finale ? (
         <Reveal delay={90} className="mt-block flex flex-col items-center gap-tight text-center">
           <Divider diamond />
-          <Eyebrow>{finale.year}</Eyebrow>
-          <Heading level="h3">{finale.title}</Heading>
-          <Lead>{finale.body}</Lead>
+          <Eyebrow>{t(finale.year)}</Eyebrow>
+          <Heading level="h3">{t(finale.title)}</Heading>
+          <Lead>{t(finale.body)}</Lead>
         </Reveal>
       ) : null}
     </SectionWrapper>

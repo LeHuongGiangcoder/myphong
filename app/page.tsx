@@ -1,5 +1,6 @@
 import { ExperienceProvider } from "@/components/experience/ExperienceProvider";
 import { GuestProvider } from "@/components/experience/GuestProvider";
+import { LocaleProvider } from "@/components/experience/LocaleProvider";
 import { Agenda } from "@/components/sections/Agenda";
 import { Dresscode } from "@/components/sections/Dresscode";
 import { Gallery } from "@/components/sections/Gallery";
@@ -9,6 +10,7 @@ import { LoveStory } from "@/components/sections/LoveStory";
 import { Rsvp } from "@/components/sections/Rsvp";
 import { ThankYou } from "@/components/sections/ThankYou";
 import { WeddingInfo } from "@/components/sections/WeddingInfo";
+import { LocaleToggle } from "@/components/ui/LocaleToggle";
 import { Motion } from "@/components/ui/Motion";
 import { MusicToggle } from "@/components/ui/MusicToggle";
 import { sections, type SectionId } from "@/content/client";
@@ -38,26 +40,30 @@ export default function Page() {
   const flow = sections.filter((id) => !OVERLAYS.includes(id));
 
   return (
-    <GuestProvider>
-      <ExperienceProvider gated={gated}>
-        {/* Toàn bộ chuyển động của trang nằm ở đây, section không tự gọi GSAP */}
-        <Motion />
+    <LocaleProvider>
+      <GuestProvider>
+        <ExperienceProvider gated={gated}>
+          {/* Toàn bộ chuyển động của trang nằm ở đây, section không tự gọi GSAP */}
+          <Motion />
 
-        {overlays.map((id) => {
-          const Section = SECTIONS[id];
-          return <Section key={id} />;
-        })}
-
-        <main>
-          {/* Thứ tự render đúng theo mảng `sections` trong content/client.ts */}
-          {flow.map((id) => {
+          {overlays.map((id) => {
             const Section = SECTIONS[id];
             return <Section key={id} />;
           })}
-        </main>
 
-        <MusicToggle />
-      </ExperienceProvider>
-    </GuestProvider>
+          <main>
+            {/* Thứ tự render đúng theo mảng `sections` trong content/client.ts */}
+            {flow.map((id) => {
+              const Section = SECTIONS[id];
+              return <Section key={id} />;
+            })}
+          </main>
+
+          {/* Nút VI / EN hiện ngay từ màn mở thiệp, trên cả lớp Intro */}
+          <LocaleToggle />
+          <MusicToggle />
+        </ExperienceProvider>
+      </GuestProvider>
+    </LocaleProvider>
   );
 }

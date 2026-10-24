@@ -3,6 +3,7 @@
 import Image from "next/image";
 
 import { useExperience } from "@/components/experience/ExperienceProvider";
+import { useLocale } from "@/components/experience/LocaleProvider";
 import { Button } from "@/components/ui/Button";
 import { Divider } from "@/components/ui/Divider";
 import { Eyebrow, Heading } from "@/components/ui/Heading";
@@ -17,6 +18,7 @@ import { background as resolveBackground } from "@/lib/assets";
  */
 export function Intro() {
   const { opened, open } = useExperience();
+  const { t } = useLocale();
 
   if (opened) return null;
 
@@ -30,7 +32,7 @@ export function Intro() {
       data-tone={spec.tone}
       role="dialog"
       aria-modal="true"
-      aria-label={intro.eyebrow}
+      aria-label={t(intro.eyebrow)}
       className="fixed inset-0 z-40 flex items-center justify-center bg-tone-bg text-tone-fg"
     >
       {background ? (
@@ -45,7 +47,7 @@ export function Intro() {
       ) : null}
 
       <div className="container-prose relative flex flex-col items-center gap-stack text-center">
-        <Eyebrow>{intro.eyebrow}</Eyebrow>
+        <Eyebrow>{t(intro.eyebrow)}</Eyebrow>
 
         <Heading level="h1" className="flex flex-col items-center short:text-h2">
           <span>{couple.groom}</span>
@@ -55,10 +57,10 @@ export function Intro() {
 
         <Divider diamond />
 
-        <p className="font-script text-h3">{intro.note}</p>
+        <p className="font-script text-h3">{t(intro.note)}</p>
 
         <Button onClick={open} className="mt-stack">
-          {intro.cta}
+          {t(intro.cta)}
         </Button>
       </div>
     </div>

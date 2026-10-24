@@ -3,6 +3,7 @@
 import { useState, type FormEvent } from "react";
 
 import { useGuest } from "@/components/experience/GuestProvider";
+import { useLocale } from "@/components/experience/LocaleProvider";
 import { Button } from "@/components/ui/Button";
 import { Caption, Heading, Script, SectionHead } from "@/components/ui/Heading";
 import { Choice, Field, FieldLabel } from "@/components/ui/Field";
@@ -13,7 +14,14 @@ import { rsvp } from "@/content/client";
 type Status = "idle" | "sending" | "sent" | "error";
 
 /**
- * Form RSVP.
+ * Form RSVP — chế độ `general`: một form mở, ai có link site cũng trả lời được.
+ *
+ * Bảy câu hỏi, hỏi dần theo câu trả lời:
+ *
+ *   họ tên · số điện thoại · khách nhà trai hay nhà gái · có đến không
+ *     ↳ có đến  → đi mấy người
+ *         ↳ nhiều hơn một → tên những người đi cùng
+ *   lời chúc
  *
  * Dữ liệu đi thẳng tới Glow RSVP Hub theo đúng hợp đồng trong skill glow-rsvp:
  *
@@ -23,32 +31,42 @@ type Status = "idle" | "sending" | "sent" | "error";
  *   • Không gửi key rỗng và không gửi state của giao diện (status, step…).
  *   • Hub tự đổi "yes"/"no" thành Có/Không, nên gửi nguyên chuỗi đó.
  *
+ * Giá trị gửi lên luôn là tiếng Việt, kể cả khi khách đang đọc bản tiếng Anh
+ * — cột trong Sheet phải nhất quán để gia đình đọc được.
+ *
  * Thêm hay đổi tên field ở đây thì phải chạy lại:
  *   ~/glow-tools/glow-rsvp.sh fields <client> --fields "key=Nhãn;…"
  *
- * `rsvp.endpoint` còn trống (khung nền chưa nối Sheet) thì form vẫn chạy đủ
- * và báo thành công, chỉ không gửi đi đâu cả.
+ * `rsvp.endpoint` còn trống (chưa nối Sheet) thì form vẫn chạy đủ và báo
+ * thành công, chỉ không gửi đi đâu cả.
  */
 export function Rsvp() {
   const { guest } = useGuest();
+  const { t } = useLocale();
   const [status, setStatus] = useState<Status>("idle");
   const [attending, setAttending] = useState<"yes" | "no">("yes");
-  const [guests, setGuests] = useState(0);
+  const [side, setSide] = useState("");
+  const [partySize, setPartySize] = useState(1);
 
   const personalized = rsvp.mode === "personalized";
   const fields = rsvp.fields;
 
+  const going = attending === "yes";
+  /* Chỉ hỏi tên người đi cùng khi có người đi cùng để mà kể tên. */
+  const withGuests = going && partySize > 1;
+
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    const going = attending === "yes";
 
     // Thứ tự các key ở đây chính là thứ tự cột trong Sheet của khách.
     const values: Record<string, string | number> = {
       name: guest?.name ?? String(data.get("name") ?? "").trim(),
+      phone: String(data.get("phone") ?? "").trim(),
+      side,
       attending,
-      guests: going ? guests : 0,
-      side: String(data.get("side") ?? ""),
+      partySize: going ? partySize : 0,
+      companions: withGuests ? String(data.get("companions") ?? "").trim() : "",
       message: String(data.get("message") ?? "").trim(),
     };
 
@@ -85,49 +103,79 @@ export function Rsvp() {
   return (
     <SectionWrapper section="rsvp" width="prose" labelledBy="rsvp-title">
       <SectionHead
-        eyebrow={rsvp.eyebrow}
+        eyebrow={t(rsvp.eyebrow)}
         title={
-          personalized && guest ? `${rsvp.greeting} ${guest.name}` : rsvp.title
+          personalized && guest ? `${t(rsvp.greeting)} ${guest.name}` : t(rsvp.title)
         }
         titleId="rsvp-title"
-        intro={rsvp.note}
+        intro={t(rsvp.note)}
       />
 
       <Reveal>
         {status === "sent" ? (
           <div role="status" className="flex flex-col items-center gap-stack text-center">
-            <Heading level="h3">{rsvp.successTitle}</Heading>
-            <Script>{rsvp.successNote}</Script>
+            <Heading level="h3">{t(rsvp.successTitle)}</Heading>
+            <Script>{t(rsvp.successNote)}</Script>
             <Button variant="outline" onClick={() => setStatus("idle")}>
-              Sửa lại câu trả lời
+              {t(rsvp.editAnswer)}
             </Button>
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="flex flex-col gap-block">
             {/* Khách đã có tên trong Sheet thì khỏi hỏi lại */}
             {personalized && guest ? null : (
-              <Field label={fields.name.label} htmlFor="rsvp-name">
+              <Field label={t(fields.name.label)} htmlFor="rsvp-name">
                 <input
                   id="rsvp-name"
                   name="name"
                   required
                   autoComplete="name"
                   maxLength={80}
-                  placeholder={fields.name.placeholder}
+                  placeholder={t(fields.name.placeholder)}
                   className="field-input"
                 />
               </Field>
             )}
 
+            <Field label={t(fields.phone.label)} htmlFor="rsvp-phone">
+              <input
+                id="rsvp-phone"
+                name="phone"
+                type="tel"
+                required
+                inputMode="tel"
+                autoComplete="tel"
+                maxLength={20}
+                placeholder={t(fields.phone.placeholder)}
+                className="field-input"
+              />
+            </Field>
+
             <fieldset className="flex flex-col gap-tight">
-              <FieldLabel as="legend">{fields.attending.label}</FieldLabel>
+              <FieldLabel as="legend">{t(fields.side.label)}</FieldLabel>
+              {fields.side.options.map((option) => (
+                <Choice
+                  key={option.value}
+                  name="side"
+                  value={option.value}
+                  checked={side === option.value}
+                  onChange={() => setSide(option.value)}
+                  required
+                >
+                  {t(option.label)}
+                </Choice>
+              ))}
+            </fieldset>
+
+            <fieldset className="flex flex-col gap-tight">
+              <FieldLabel as="legend">{t(fields.attending.label)}</FieldLabel>
               <Choice
                 name="attending"
                 value="yes"
                 checked={attending === "yes"}
                 onChange={() => setAttending("yes")}
               >
-                {fields.attending.yes}
+                {t(fields.attending.yes)}
               </Choice>
               <Choice
                 name="attending"
@@ -135,64 +183,58 @@ export function Rsvp() {
                 checked={attending === "no"}
                 onChange={() => setAttending("no")}
               >
-                {fields.attending.no}
+                {t(fields.attending.no)}
               </Choice>
             </fieldset>
 
-            {attending === "yes" ? (
+            {going ? (
               <fieldset className="flex flex-col gap-tight">
-                <FieldLabel as="legend">{fields.guests.label}</FieldLabel>
-                <Choice
-                  name="guests"
-                  value="0"
-                  checked={guests === 0}
-                  onChange={() => setGuests(0)}
-                >
-                  {fields.guests.none}
-                </Choice>
-                {Array.from({ length: fields.guests.max }, (_, i) => i + 1).map((n) => (
+                <FieldLabel as="legend">{t(fields.partySize.label)}</FieldLabel>
+                {Array.from({ length: fields.partySize.max }, (_, i) => i + 1).map((n) => (
                   <Choice
                     key={n}
-                    name="guests"
+                    name="partySize"
                     value={String(n)}
-                    checked={guests === n}
-                    onChange={() => setGuests(n)}
+                    checked={partySize === n}
+                    onChange={() => setPartySize(n)}
                   >
-                    {n} người
+                    {n === 1 ? t(fields.partySize.one) : `${n} ${t(fields.partySize.unit)}`}
                   </Choice>
                 ))}
               </fieldset>
             ) : null}
 
-            <Field label={fields.side.label} htmlFor="rsvp-side">
-              <select id="rsvp-side" name="side" defaultValue="" className="field-input">
-                <option value="">—</option>
-                {fields.side.options.map((option) => (
-                  <option key={option} value={option}>
-                    {option}
-                  </option>
-                ))}
-              </select>
-            </Field>
+            {withGuests ? (
+              <Field label={t(fields.companions.label)} htmlFor="rsvp-companions">
+                <textarea
+                  id="rsvp-companions"
+                  name="companions"
+                  required
+                  maxLength={400}
+                  placeholder={t(fields.companions.placeholder)}
+                  className="field-input"
+                />
+              </Field>
+            ) : null}
 
-            <Field label={fields.message.label} htmlFor="rsvp-message">
+            <Field label={t(fields.message.label)} htmlFor="rsvp-message">
               <textarea
                 id="rsvp-message"
                 name="message"
                 maxLength={600}
-                placeholder={fields.message.placeholder}
+                placeholder={t(fields.message.placeholder)}
                 className="field-input"
               />
             </Field>
 
             <div className="flex flex-col items-center gap-stack">
               <Button type="submit" disabled={status === "sending"}>
-                {status === "sending" ? rsvp.sending : rsvp.submit}
+                {status === "sending" ? t(rsvp.sending) : t(rsvp.submit)}
               </Button>
-              <Caption>{rsvp.deadline}</Caption>
+              <Caption>{t(rsvp.deadline)}</Caption>
               {status === "error" ? (
                 <p role="alert" className="text-small text-tone-accent">
-                  {rsvp.errorNote}
+                  {t(rsvp.errorNote)}
                 </p>
               ) : null}
             </div>

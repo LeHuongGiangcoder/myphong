@@ -1,3 +1,6 @@
+"use client";
+
+import { useLocale } from "@/components/experience/LocaleProvider";
 import { Divider } from "@/components/ui/Divider";
 import { Caption, Eyebrow, Heading, Lead } from "@/components/ui/Heading";
 import { SectionWrapper } from "@/components/ui/SectionWrapper";
@@ -10,11 +13,13 @@ import { ceremony, couple, hero, venue } from "@/content/client";
  * cuộn — hero nằm ngay dưới màn mở thiệp nên sẽ không bao giờ "cuộn tới".
  */
 export function Hero() {
+  const { t } = useLocale();
+
   return (
     <SectionWrapper section="hero" flush width="bleed" labelledBy="hero-title">
       <div className="container-site flex min-h-[100svh] flex-col items-center justify-center gap-stack py-section text-center">
         <Eyebrow data-reveal data-hero>
-          {hero.eyebrow}
+          {t(hero.eyebrow)}
         </Eyebrow>
 
         <Heading
@@ -31,9 +36,9 @@ export function Hero() {
 
         <div data-reveal data-hero className="flex flex-col items-center gap-tight">
           <Divider diamond />
-          <Lead>{hero.headline}</Lead>
+          <Lead>{t(hero.headline)}</Lead>
           <p className="font-display text-h3">
-            {ceremony.weekday}, {ceremony.dateShort}
+            {t(ceremony.weekday)}, {ceremony.dateShort}
           </p>
           <Caption>
             {ceremony.timeLabel} · {venue.name}
@@ -41,7 +46,7 @@ export function Hero() {
         </div>
 
         <p data-reveal data-hero className="mt-block text-eyebrow uppercase text-tone-muted">
-          {hero.scrollHint} ↓
+          {t(hero.scrollHint)} ↓
         </p>
       </div>
     </SectionWrapper>

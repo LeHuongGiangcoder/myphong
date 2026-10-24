@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 
+import { useLocale } from "@/components/experience/LocaleProvider";
 import { Caption, SectionHead } from "@/components/ui/Heading";
 import { ImageFrame } from "@/components/ui/ImageFrame";
 import { Reveal } from "@/components/ui/Reveal";
@@ -21,6 +22,7 @@ const NUDGE = 56;
  * thì bỏ qua cú đẩy này, chỉ còn dòng gợi ý.
  */
 export function Gallery() {
+  const { t } = useLocale();
   const trackRef = useRef<HTMLDivElement>(null);
   const [moved, setMoved] = useState(false);
 
@@ -48,10 +50,10 @@ export function Gallery() {
     <SectionWrapper section="gallery" width="bleed" labelledBy="gallery-title">
       <div className="container-site py-section pb-0">
         <SectionHead
-          eyebrow={gallery.eyebrow}
-          title={gallery.title}
+          eyebrow={t(gallery.eyebrow)}
+          title={t(gallery.title)}
           titleId="gallery-title"
-          intro={gallery.note}
+          intro={t(gallery.note)}
         />
       </div>
 
@@ -61,14 +63,14 @@ export function Gallery() {
           className="reel px-gutter"
           tabIndex={0}
           role="group"
-          aria-label={gallery.title}
+          aria-label={t(gallery.title)}
           onScroll={(event) => setMoved(event.currentTarget.scrollLeft > SEEN)}
         >
           {gallery.shots.map((shot, i) => (
             <ImageFrame
               key={shot.src}
               src={shot.src}
-              alt={shot.alt}
+              alt={t(shot.alt)}
               ratio="2 / 3"
               tilt={i % 2 === 0 ? -1.5 : 1.5}
               sizes="(max-width: 48rem) 62vw, 18rem"
@@ -83,7 +85,7 @@ export function Gallery() {
           className="flex items-center justify-center gap-tight transition-opacity duration-500"
           style={{ opacity: moved ? 0 : 1 }}
         >
-          {gallery.hint}
+          {t(gallery.hint)}
           <span aria-hidden className="animate-nudge">
             →
           </span>

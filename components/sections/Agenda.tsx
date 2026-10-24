@@ -1,3 +1,6 @@
+"use client";
+
+import { useLocale } from "@/components/experience/LocaleProvider";
 import { Heading, SectionHead } from "@/components/ui/Heading";
 import { Reveal } from "@/components/ui/Reveal";
 import { SectionWrapper } from "@/components/ui/SectionWrapper";
@@ -9,20 +12,22 @@ import { agenda } from "@/content/client";
  * không cần đo chiều cao bằng JS.
  */
 export function Agenda() {
+  const { t } = useLocale();
+
   return (
     <SectionWrapper section="agenda" labelledBy="agenda-title">
       <SectionHead
-        eyebrow={agenda.eyebrow}
-        title={agenda.title}
+        eyebrow={t(agenda.eyebrow)}
+        title={t(agenda.title)}
         titleId="agenda-title"
-        intro={agenda.intro}
+        intro={t(agenda.intro)}
       />
 
       <ol className="mx-auto flex max-w-prose flex-col">
         {agenda.items.map((item, i) => (
           <Reveal
             as="li"
-            key={`${item.time}-${item.title}`}
+            key={`${item.time}-${i}`}
             delay={i * 80}
             className="grid grid-cols-[4.5rem_1.5rem_1fr] items-start gap-stack sm:grid-cols-[6rem_1.5rem_1fr]"
           >
@@ -42,8 +47,8 @@ export function Agenda() {
             </div>
 
             <div className="flex flex-col gap-tight pb-block last:pb-0">
-              <Heading level="h4">{item.title}</Heading>
-              {item.note ? <p className="text-small text-tone-muted">{item.note}</p> : null}
+              <Heading level="h4">{t(item.title)}</Heading>
+              {item.note ? <p className="text-small text-tone-muted">{t(item.note)}</p> : null}
             </div>
           </Reveal>
         ))}
