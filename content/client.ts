@@ -429,11 +429,21 @@ export const rsvp = {
       yes: { vi: "Có, tôi sẽ đến", en: "Yes, I will be there" },
       no: { vi: "Rất tiếc, tôi xin vắng", en: "Sorry, I cannot make it" },
     },
-    /** Tổng số người đến, tính cả người đang điền form. */
+    /**
+     * Tổng số người đến, tính cả người đang điền form. Khách chọn bằng hai
+     * nút − / + chứ không phải một dãy radio — xem `Stepper` trong
+     * components/ui/Field.tsx.
+     */
     partySize: {
       label: { vi: "Quý khách đi mấy người?", en: "How many of you are coming?" },
-      one: { vi: "Chỉ mình tôi", en: "Just me" },
-      unit: { vi: "người", en: "guests" },
+      /** Tiếng Anh đổi số ít / số nhiều, tiếng Việt thì không. */
+      unit: {
+        one: { vi: "người", en: "guest" },
+        many: { vi: "người", en: "guests" },
+      },
+      decrease: { vi: "Bớt một người", en: "One guest fewer" },
+      increase: { vi: "Thêm một người", en: "One more guest" },
+      min: 1,
       max: 6,
     },
     companions: {

@@ -6,7 +6,7 @@ import { useGuest } from "@/components/experience/GuestProvider";
 import { useLocale } from "@/components/experience/LocaleProvider";
 import { Button } from "@/components/ui/Button";
 import { Caption, Heading, Script, SectionHead } from "@/components/ui/Heading";
-import { Choice, Field, FieldLabel } from "@/components/ui/Field";
+import { Choice, Field, FieldLabel, Stepper } from "@/components/ui/Field";
 import { Reveal } from "@/components/ui/Reveal";
 import { SectionWrapper } from "@/components/ui/SectionWrapper";
 import { rsvp } from "@/content/client";
@@ -190,17 +190,16 @@ export function Rsvp() {
             {going ? (
               <fieldset className="flex flex-col gap-tight">
                 <FieldLabel as="legend">{t(fields.partySize.label)}</FieldLabel>
-                {Array.from({ length: fields.partySize.max }, (_, i) => i + 1).map((n) => (
-                  <Choice
-                    key={n}
-                    name="partySize"
-                    value={String(n)}
-                    checked={partySize === n}
-                    onChange={() => setPartySize(n)}
-                  >
-                    {n === 1 ? t(fields.partySize.one) : `${n} ${t(fields.partySize.unit)}`}
-                  </Choice>
-                ))}
+                <Stepper
+                  value={partySize}
+                  onChange={setPartySize}
+                  min={fields.partySize.min}
+                  max={fields.partySize.max}
+                  decreaseLabel={t(fields.partySize.decrease)}
+                  increaseLabel={t(fields.partySize.increase)}
+                >
+                  {partySize} {t(partySize === 1 ? fields.partySize.unit.one : fields.partySize.unit.many)}
+                </Stepper>
               </fieldset>
             ) : null}
 

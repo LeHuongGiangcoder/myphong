@@ -73,3 +73,58 @@ export function Choice({
     </label>
   );
 }
+
+/**
+ * Chọn một con số bằng hai nút − / +.
+ *
+ * Dùng thay cho một dãy radio khi lựa chọn chỉ là "mấy cái": dãy radio dài
+ * sáu dòng đẩy mọi thứ dưới nó ra khỏi màn hình điện thoại, còn cái này cao
+ * đúng một hàng. Hai nút là vùng chạm đủ lớn (`size-tap`), con số ở giữa
+ * được `aria-live` đọc lại mỗi lần đổi.
+ */
+export function Stepper({
+  value,
+  onChange,
+  min = 1,
+  max,
+  decreaseLabel,
+  increaseLabel,
+  children,
+}: {
+  value: number;
+  onChange: (next: number) => void;
+  min?: number;
+  max: number;
+  decreaseLabel: string;
+  increaseLabel: string;
+  /** Con số đã viết thành chữ, ví dụ "2 người". */
+  children: ReactNode;
+}) {
+  return (
+    <div className="flex items-center gap-stack">
+      <button
+        type="button"
+        onClick={() => onChange(Math.max(min, value - 1))}
+        disabled={value <= min}
+        aria-label={decreaseLabel}
+        className="flex size-tap shrink-0 items-center justify-center rounded-btn border border-tone-line text-tone-fg disabled:opacity-35"
+      >
+        <span aria-hidden>−</span>
+      </button>
+
+      <p aria-live="polite" className="min-w-[6.5rem] text-center font-display text-h4">
+        {children}
+      </p>
+
+      <button
+        type="button"
+        onClick={() => onChange(Math.min(max, value + 1))}
+        disabled={value >= max}
+        aria-label={increaseLabel}
+        className="flex size-tap shrink-0 items-center justify-center rounded-btn border border-tone-line text-tone-fg disabled:opacity-35"
+      >
+        <span aria-hidden>+</span>
+      </button>
+    </div>
+  );
+}
