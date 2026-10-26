@@ -229,23 +229,23 @@ export const families: {
   people: { role: L; name: string }[];
   home: string;
 }[] = [
-  {
-    side: { vi: "Nhà trai", en: "Groom's family" },
-    people: [
-      { role: { vi: "Ông", en: "Mr." }, name: "Họ Tên Bố Chú Rể" },
-      { role: { vi: "Bà", en: "Mrs." }, name: "Họ Tên Mẹ Chú Rể" },
-    ],
-    home: "Địa chỉ nhà trai",
-  },
-  {
-    side: { vi: "Nhà gái", en: "Bride's family" },
-    people: [
-      { role: { vi: "Ông", en: "Mr." }, name: "Họ Tên Bố Cô Dâu" },
-      { role: { vi: "Bà", en: "Mrs." }, name: "Họ Tên Mẹ Cô Dâu" },
-    ],
-    home: "Địa chỉ nhà gái",
-  },
-];
+    {
+      side: { vi: "Nhà trai", en: "Groom's family" },
+      people: [
+        { role: { vi: "Ông", en: "Mr." }, name: "Họ Tên Bố Chú Rể" },
+        { role: { vi: "Bà", en: "Mrs." }, name: "Họ Tên Mẹ Chú Rể" },
+      ],
+      home: "Địa chỉ nhà trai",
+    },
+    {
+      side: { vi: "Nhà gái", en: "Bride's family" },
+      people: [
+        { role: { vi: "Ông", en: "Mr." }, name: "Họ Tên Bố Cô Dâu" },
+        { role: { vi: "Bà", en: "Mrs." }, name: "Họ Tên Mẹ Cô Dâu" },
+      ],
+      home: "Địa chỉ nhà gái",
+    },
+  ];
 
 /* -------------------------------------------------------------- NGÀY & GIỜ */
 
@@ -586,11 +586,11 @@ export const thankYou = {
   title: { vi: "Cảm ơn quý khách", en: "Thank you" },
   lines: [
     {
-      vi: "Cảm ơn quý khách đã dành thời gian",
+      vi: "Sự đồng hành của quý khách",
       en: "Thank you for taking the time",
     },
     {
-      vi: "đồng hành cùng chúng mình trong ngày trọng đại.",
+      vi: "là niềm vinh dự của gia đình chúng tôi.",
       en: "to share our biggest day with us.",
     },
   ],

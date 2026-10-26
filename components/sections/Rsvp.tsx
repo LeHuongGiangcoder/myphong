@@ -133,8 +133,12 @@ export function Rsvp() {
         theo chiều dọc của dải đó là 1,3/255 nên lặp lại không thấy vệt ngang.
 
         Nội dung nằm trong `padding` tính theo % BỀ NGANG (padding % luôn ăn
-        theo bề ngang, kể cả trên/dưới) nên mép chữ bám đúng viền ở mọi khổ
-        máy: viền dọc ở 17,2% và 81,9%, mép trong trên ở 47,9%, dưới 32,5%.
+        theo bề ngang, kể cả trên/dưới) nên mép chữ giữ đúng khoảng cách tới
+        viền ở mọi khổ máy. Viền dọc ở 17,2% và 81,9%, mép trong trên ở 47,9%,
+        dưới 32,5% — nhưng `padding` rộng hơn thế, vì hai góc giấy có hoạ tiết
+        chữ triện vẽ sẵn: góc trên trái buông xuống tới 72% và góc dưới phải
+        dâng lên 19% trên mép dưới. Chữ bắt đầu SAU hai hoạ tiết đó, không đè
+        lên, và chừa hẳn một quãng giấy trống hai bên.
 
         Hai nhành hoa khách xuất riêng nằm ở lát giữa, bên NGOÀI viền — vào
         trong là đè lên câu hỏi.
@@ -198,7 +202,7 @@ export function Rsvp() {
           ) : null}
         </div>
 
-        <div className="relative flex flex-col gap-block px-[20%] pt-[47.9%] pb-[32.5%]">
+        <div className="relative flex flex-col gap-block px-[23%] pt-[72%] pb-[46%]">
           <SectionHead
             eyebrow={t(rsvp.eyebrow)}
             title={personalized && guest ? `${t(rsvp.greeting)} ${guest.name}` : t(rsvp.title)}
@@ -248,38 +252,44 @@ export function Rsvp() {
 
             <fieldset className="flex flex-col gap-tight">
               <FieldLabel as="legend">{t(fields.side.label)}</FieldLabel>
-              {fields.side.options.map((option) => (
-                <Choice
-                  key={option.value}
-                  name="side"
-                  value={option.value}
-                  checked={side === option.value}
-                  onChange={() => setSide(option.value)}
-                  required
-                >
-                  {t(option.label)}
-                </Choice>
-              ))}
+              {/* Các dòng chọn không cách nhau thêm: mỗi dòng đã cao đúng một
+                  vùng chạm, xếp liền nhau thì nhịp đều tăm tắp. */}
+              <div className="flex flex-col">
+                {fields.side.options.map((option) => (
+                  <Choice
+                    key={option.value}
+                    name="side"
+                    value={option.value}
+                    checked={side === option.value}
+                    onChange={() => setSide(option.value)}
+                    required
+                  >
+                    {t(option.label)}
+                  </Choice>
+                ))}
+              </div>
             </fieldset>
 
             <fieldset className="flex flex-col gap-tight">
               <FieldLabel as="legend">{t(fields.attending.label)}</FieldLabel>
-              <Choice
-                name="attending"
-                value="yes"
-                checked={attending === "yes"}
-                onChange={() => setAttending("yes")}
-              >
-                {t(fields.attending.yes)}
-              </Choice>
-              <Choice
-                name="attending"
-                value="no"
-                checked={attending === "no"}
-                onChange={() => setAttending("no")}
-              >
-                {t(fields.attending.no)}
-              </Choice>
+              <div className="flex flex-col">
+                <Choice
+                  name="attending"
+                  value="yes"
+                  checked={attending === "yes"}
+                  onChange={() => setAttending("yes")}
+                >
+                  {t(fields.attending.yes)}
+                </Choice>
+                <Choice
+                  name="attending"
+                  value="no"
+                  checked={attending === "no"}
+                  onChange={() => setAttending("no")}
+                >
+                  {t(fields.attending.no)}
+                </Choice>
+              </div>
             </fieldset>
 
             {going ? (
