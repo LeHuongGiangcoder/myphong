@@ -645,7 +645,7 @@ export const meta = {
   description:
     "Trân trọng kính mời quý khách đến chung vui cùng gia đình chúng tôi ngày 20.12.2026. — Join us as we celebrate our wedding on 20.12.2026.",
   /** Ảnh hiện khi dán link lên Zalo / Facebook. */
-  ogImage: "/images/hero.jpg",
+  ogImage: "/images/og.jpg",
   locale: "vi_VN",
   lang: "vi",
 };

@@ -260,22 +260,25 @@ h4 {
     dần về trong suốt ở hai mép, chỗ đó chỉ còn màu nền của tông nên hai
     section gặp nhau ở cùng một màu.
 
-    `--seam` là độ sâu của vùng tan, tính theo chiều cao lớp. Mặc định 7%;
-    lớp nào thấp quá thì đặt lại tại chỗ.
+    Độ sâu vùng tan tính theo chiều cao lớp, mặc định 7%. Đặt lại tại chỗ
+    bằng `--seam-top` / `--seam-bottom` khi một mép không được phép tan (ví
+    dụ chân trang, nơi dưới ảnh không còn gì để tan vào).
   */
   .seam-soft {
+    --seam-top: 7%;
+    --seam-bottom: 7%;
     -webkit-mask-image: linear-gradient(
       to bottom,
       transparent 0,
-      #000 var(--seam, 7%),
-      #000 calc(100% - var(--seam, 7%)),
+      #000 var(--seam-top),
+      #000 calc(100% - var(--seam-bottom)),
       transparent 100%
     );
     mask-image: linear-gradient(
       to bottom,
       transparent 0,
-      #000 var(--seam, 7%),
-      #000 calc(100% - var(--seam, 7%)),
+      #000 var(--seam-top),
+      #000 calc(100% - var(--seam-bottom)),
       transparent 100%
     );
   }

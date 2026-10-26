@@ -139,12 +139,12 @@ export function Rsvp() {
         lên, và chừa hẳn một quãng giấy trống hai bên.
       */}
       <div className="relative mx-auto w-full max-w-stage">
-        {/* --seam nhỏ hơn mặc định: tấm thiệp cao hơn 1300px, 7% sẽ nuốt
+        {/* Vùng tan nông hơn mặc định: tấm thiệp cao hơn 1300px, 7% sẽ nuốt
             mất cả dãy đèn lồng ở mép trên. */}
         <div
           aria-hidden
           className="seam-soft absolute inset-0 flex flex-col"
-          style={{ "--seam": "2.5%" } as CSSProperties}
+          style={{ "--seam-top": "2.5%", "--seam-bottom": "2.5%" } as CSSProperties}
         >
           {cardTop ? (
             <Image
