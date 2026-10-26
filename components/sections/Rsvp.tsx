@@ -150,6 +150,7 @@ export function Rsvp() {
               width={cardTop.width ?? 1080}
               height={cardTop.height ?? 1101}
               sizes={CARD_SIZES}
+              quality={95}
               className="w-full"
             />
           ) : null}
@@ -175,6 +176,7 @@ export function Rsvp() {
               width={cardBottom.width ?? 1080}
               height={cardBottom.height ?? 799}
               sizes={CARD_SIZES}
+              quality={95}
               className="w-full"
             />
           ) : null}

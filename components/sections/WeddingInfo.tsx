@@ -88,6 +88,7 @@ export function WeddingInfo() {
                 width={art.width ?? 1080}
                 height={art.height ?? 1920}
                 sizes="(max-width: 32rem) 130vw, 42rem"
+                quality={95}
                 className="absolute left-1/2 top-0 w-[130%] max-w-none -translate-x-1/2"
               />
             </div>
@@ -103,6 +104,7 @@ export function WeddingInfo() {
                 width={art.width ?? 1080}
                 height={art.height ?? 1920}
                 sizes="(max-width: 32rem) 130vw, 42rem"
+                quality={95}
                 className="absolute bottom-0 left-1/2 w-[130%] max-w-none -translate-x-1/2"
               />
             </div>

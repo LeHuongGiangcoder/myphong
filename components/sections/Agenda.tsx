@@ -58,6 +58,7 @@ export function Agenda() {
                 width={art.width ?? 1080}
                 height={art.height ?? 1920}
                 sizes="(max-width: 32rem) 100vw, 32rem"
+                quality={95}
                 className="flow-reveal w-full"
               />
             </div>
