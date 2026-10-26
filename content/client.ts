@@ -152,10 +152,11 @@ export const design: Record<SectionId, SectionDesign> = {
     decor: [
       {
         name: "timevenue",
-        /* Phóng 150% và neo TRÁI: cột chữ cần ~630px giấy trống mà ở khổ
-           gốc chỉ có 430px. Đổi lại dải ribbon dọc mép phải bị cắt. */
-        at: "left-0 top-0 w-[150%] max-w-none",
-        sizes: "(max-width: 32rem) 150vw, 48rem",
+        /* Đúng khổ gốc, không phóng không cắt: dải lụa hồng trên và dải xanh
+           dưới phải còn nguyên hình. Neo ĐÁY để khoảng giấy trống mà cột chữ
+           cần được nối dài lên trên bức tranh. */
+        at: "inset-x-0 bottom-0 mx-auto w-full max-w-stage",
+        sizes: "(max-width: 32rem) 100vw, 32rem",
       },
     ],
   },
@@ -265,14 +266,24 @@ export const ceremony = {
 
 export const venue = {
   name: "Fairmont Hanoi",
-  hall: { vi: "Tên sảnh — Tầng X", en: "Hall name — Floor X" },
-  address: "Số nhà, đường, phường, quận, thành phố",
+  hall: { vi: "Grand Ballroom — Tầng B1", en: "Grand Ballroom — Floor B1" },
+  address: "27–29 Lý Thái Tổ, Hoàn Kiếm, Hà Nội",
   /** Link Maps của khách. Nên dùng link chia sẻ ghim sẵn, đừng để ?query= tự tìm. */
   mapUrl: "https://www.google.com/maps",
   mapLabel: { vi: "Xem bản đồ", en: "Open in Maps" },
-  note: {
-    vi: "Kính mời quý khách tới sớm ít phút để kịp chụp hình cùng gia đình.",
-    en: "Please arrive a few minutes early so we can take photos together.",
+  /** Đường vào phòng tiệc — gia đình nhắn, đừng rút gọn thành một dòng. */
+  directions: {
+    label: { vi: "Đường vào phòng tiệc", en: "Finding the ballroom" },
+    steps: [
+      {
+        vi: "Quý khách đi cổng Sự kiện của khách sạn, số 27–29 Lý Thái Tổ, rồi theo thang cuốn đến Grand Ballroom, tầng B1.",
+        en: "Please use the hotel's Events entrance at 27–29 Lý Thái Tổ, then take the escalator down to the Grand Ballroom on floor B1.",
+      },
+      {
+        vi: "Quý khách đi ô tô gửi xe dưới hầm, đi thang máy lên tầng B1 rồi theo biển chỉ dẫn.",
+        en: "If you come by car, park in the basement, take the lift up to floor B1 and follow the signs.",
+      },
+    ],
   },
 };
 

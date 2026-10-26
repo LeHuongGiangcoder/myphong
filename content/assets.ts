@@ -25,6 +25,7 @@ export const assets = {
     "rsvp-card-mid": { src: "/brand/elements/rsvp-card-mid.webp", width: 1080, height: 20 },
     "rsvp-card-top": { src: "/brand/elements/rsvp-card-top.webp", width: 1080, height: 1101 },
     "rsvp": { src: "/brand/elements/rsvp.webp", width: 1080, height: 1920 },
+    "sun": { src: "/brand/elements/sun.webp", width: 174, height: 164 },
     "timevenue": { src: "/brand/elements/timevenue.webp", width: 1080, height: 1920 },
   },
 

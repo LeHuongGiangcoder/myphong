@@ -5,6 +5,7 @@ import { Caption, Heading, SectionHead } from "@/components/ui/Heading";
 import { Reveal } from "@/components/ui/Reveal";
 import { SectionWrapper } from "@/components/ui/SectionWrapper";
 import { dresscode } from "@/content/client";
+import { element } from "@/lib/assets";
 
 /**
  * Trang phục: một câu dẫn và bảng màu.
@@ -15,6 +16,11 @@ import { dresscode } from "@/content/client";
  */
 export function Dresscode() {
   const { t } = useLocale();
+
+  /* Vầng mặt trời cắt ra từ chính bức tranh của khách, giữ nguyên nét cọ và
+     rìa loang. File chỉ còn alpha nên dùng làm mask: đổ màu nào thì ra vầng
+     màu đó. Thiếu file thì rơi về ô màu vuông. */
+  const sun = element("sun");
 
   return (
     <SectionWrapper section="dresscode" flush width="bleed" labelledBy="dresscode-title">
@@ -41,11 +47,25 @@ export function Dresscode() {
         <Reveal delay={90} className="mt-block flex flex-col items-center gap-stack">
           <ul className="grid w-full max-w-[18rem] grid-cols-4 gap-stack">
             {dresscode.swatches.map((swatch) => (
-              <li key={swatch.hex} className="flex flex-col items-center gap-tight">
+              <li key={swatch.hex} className="flex flex-col items-center gap-tight text-center">
                 <span
                   aria-hidden
-                  className="aspect-[3/4] w-full rounded-paper border border-tone-line"
-                  style={{ backgroundColor: swatch.hex }}
+                  className="aspect-square w-full"
+                  style={
+                    sun
+                      ? {
+                          backgroundColor: swatch.hex,
+                          maskImage: `url(${sun.src})`,
+                          WebkitMaskImage: `url(${sun.src})`,
+                          maskRepeat: "no-repeat",
+                          WebkitMaskRepeat: "no-repeat",
+                          maskSize: "contain",
+                          WebkitMaskSize: "contain",
+                          maskPosition: "center",
+                          WebkitMaskPosition: "center",
+                        }
+                      : { backgroundColor: swatch.hex }
+                  }
                 />
                 <span className="text-small text-tone-muted">{t(swatch.name)}</span>
               </li>

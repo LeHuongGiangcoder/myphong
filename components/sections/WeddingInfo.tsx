@@ -3,7 +3,7 @@
 import { useLocale } from "@/components/experience/LocaleProvider";
 import { ButtonLink } from "@/components/ui/Button";
 import { Divider } from "@/components/ui/Divider";
-import { Caption, Eyebrow, Heading, Script, SectionHead } from "@/components/ui/Heading";
+import { Caption, Eyebrow, Heading, SectionHead } from "@/components/ui/Heading";
 import { Reveal } from "@/components/ui/Reveal";
 import { SectionWrapper } from "@/components/ui/SectionWrapper";
 import { ceremony, venue, weddingInfo } from "@/content/client";
@@ -12,51 +12,59 @@ import { googleCalendarUrl } from "@/lib/calendar";
 /**
  * Time & Venue — khi nào, và ở đâu.
  *
- * MỘT cột chữ duy nhất, nằm trong khoảng giấy trống bên TRÁI bức tranh. Đo
- * tương phản cho thấy cột trái sạch hoàn toàn (0% vướng mực) từ đỉnh xuống
- * tới 70% chiều cao tranh, rộng tới 64% bề ngang; dưới mốc đó là mái đình và
- * dải mực xanh nên chữ phải dừng lại.
+ * MỘT cột chữ duy nhất, bám mép trái. Bức tranh giữ ĐÚNG khổ gốc 9:16, không
+ * phóng và không cắt — dải lụa hồng trên, dải xanh và mái đình dưới đều phải
+ * còn nguyên hình. Chỗ ngồi của chữ không lấy bằng cách phóng tranh mà bằng
+ * cách để KHUNG cao hơn tranh rồi neo tranh xuống đáy: phần giấy thừa ở trên
+ * nối liền với khoảng trống sẵn có trong tranh, thành một cột giấy sạch chạy
+ * từ đỉnh section xuống tới ngang ngọn cây.
  *
- * Vì vậy bức tranh để rộng hơn khung một chút và neo bên trái: phần ribbon
- * chạy dọc mép phải bị cắt bớt, đổi lại cột chữ có đủ chiều cao mà mái đình
- * vẫn nguyên vẹn. Không tách khối nào xuống dưới tranh nữa.
+ * Ba khối thông tin dùng CHUNG một nhịp bốn bậc, nhờ đó mắt đọc được thứ tự:
+ *
+ *   nhãn nhỏ in hoa (eyebrow)  →  cái tên (h3)  →  dòng phụ (lead)  →  chữ
+ *   nhỏ nhạt (caption)
  */
 export function WeddingInfo() {
   const { lang, t } = useLocale();
 
   return (
     <SectionWrapper section="weddingInfo" labelledBy="wedding-info-title" flush width="bleed">
-      {/* Khung cao hơn khổ tranh vì tranh được phóng to 150% và neo trái —
-          xem ghi chú ở đầu file. 9/22.4 = 1 / (1.5 × 16/9). */}
-      <div className="relative mx-auto w-full max-w-stage" style={{ aspectRatio: "9 / 24" }}>
-        <Reveal className="absolute inset-y-0 left-0 flex w-[84%] flex-col justify-start gap-stack px-gutter pt-section text-left">
+      {/* Khung cao hơn khổ tranh 9:16 để chừa cột giấy ở trên — xem ghi chú
+          đầu file. Tranh tự neo xuống đáy bằng `at` trong client.ts. */}
+      <div className="relative mx-auto w-full max-w-stage" style={{ aspectRatio: "9 / 22" }}>
+        <Reveal className="absolute inset-x-0 top-0 flex w-[86%] flex-col items-start gap-block px-gutter pt-section text-left">
           <SectionHead
             eyebrow={t(weddingInfo.eyebrow)}
             title={t(weddingInfo.title)}
             titleId="wedding-info-title"
             align="left"
             flush
-          />
-
-          <Divider className="max-w-[3.5rem]" />
+          >
+            <Divider className="mt-stack max-w-[3.5rem]" />
+          </SectionHead>
 
           <div className="flex flex-col gap-tight">
             <Eyebrow>{t(weddingInfo.saveTheDateLabel)}</Eyebrow>
             <Heading level="h3">{ceremony.dateShort}</Heading>
-            <Caption>
+            <p className="text-lead">
               {t(ceremony.weekday)} · {ceremony.timeLabel}
-            </Caption>
+            </p>
             <Caption>{t(ceremony.lunar)}</Caption>
           </div>
 
           <div className="flex flex-col gap-tight">
             <Eyebrow>{t(weddingInfo.venueLabel)}</Eyebrow>
             <Heading level="h3">{venue.name}</Heading>
-            <p className="font-display text-h4">{t(venue.hall)}</p>
+            <p className="text-lead">{t(venue.hall)}</p>
             <Caption>{venue.address}</Caption>
           </div>
 
-          <Script>{t(venue.note)}</Script>
+          <div className="flex flex-col gap-tight">
+            <Eyebrow>{t(venue.directions.label)}</Eyebrow>
+            {venue.directions.steps.map((step) => (
+              <Caption key={step.vi}>{t(step)}</Caption>
+            ))}
+          </div>
 
           <div className="flex flex-col items-start gap-stack">
             <ButtonLink href={venue.mapUrl} target="_blank" rel="noreferrer noopener">

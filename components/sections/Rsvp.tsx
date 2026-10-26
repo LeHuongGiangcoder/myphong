@@ -6,7 +6,7 @@ import Image from "next/image";
 import { useGuest } from "@/components/experience/GuestProvider";
 import { useLocale } from "@/components/experience/LocaleProvider";
 import { Button } from "@/components/ui/Button";
-import { Caption, Heading, Script, SectionHead } from "@/components/ui/Heading";
+import { Heading, Script, SectionHead } from "@/components/ui/Heading";
 import { Choice, Field, FieldLabel, Stepper } from "@/components/ui/Field";
 import { Reveal } from "@/components/ui/Reveal";
 import { SectionWrapper } from "@/components/ui/SectionWrapper";
@@ -53,13 +53,11 @@ export function Rsvp() {
   const [side, setSide] = useState("");
   const [partySize, setPartySize] = useState(1);
 
-  /* Ba lát thiệp + hai nhành hoa. Thiếu file nào thì phần đó im lặng biến
-     mất, form vẫn chạy — xem lib/assets.ts. */
+  /* Ba lát thiệp. Thiếu file nào thì phần đó im lặng biến mất, form vẫn
+     chạy — xem lib/assets.ts. */
   const cardTop = element("rsvp-card-top");
   const cardMid = element("rsvp-card-mid");
   const cardBottom = element("rsvp-card-bottom");
-  const bloomLeft = element("rsvp-bloom-left");
-  const bloomRight = element("rsvp-bloom-right");
 
   const personalized = rsvp.mode === "personalized";
   const fields = rsvp.fields;
@@ -139,9 +137,6 @@ export function Rsvp() {
         chữ triện vẽ sẵn: góc trên trái buông xuống tới 72% và góc dưới phải
         dâng lên 19% trên mép dưới. Chữ bắt đầu SAU hai hoạ tiết đó, không đè
         lên, và chừa hẳn một quãng giấy trống hai bên.
-
-        Hai nhành hoa khách xuất riêng nằm ở lát giữa, bên NGOÀI viền — vào
-        trong là đè lên câu hỏi.
       */}
       <div className="relative mx-auto w-full max-w-stage">
         <div aria-hidden className="absolute inset-0 flex flex-col">
@@ -168,26 +163,6 @@ export function Rsvp() {
                 : undefined
             }
           >
-            {bloomRight ? (
-              <Image
-                src={bloomRight.src}
-                alt=""
-                width={bloomRight.width ?? 520}
-                height={bloomRight.height ?? 1128}
-                sizes="20vw"
-                className="absolute right-0 top-[12%] w-[18%]"
-              />
-            ) : null}
-            {bloomLeft ? (
-              <Image
-                src={bloomLeft.src}
-                alt=""
-                width={bloomLeft.width ?? 520}
-                height={bloomLeft.height ?? 829}
-                sizes="20vw"
-                className="absolute left-0 top-[56%] w-[17%]"
-              />
-            ) : null}
           </div>
 
           {cardBottom ? (
@@ -202,12 +177,11 @@ export function Rsvp() {
           ) : null}
         </div>
 
-        <div className="relative flex flex-col gap-block px-[23%] pt-[72%] pb-[46%]">
+        <div className="relative flex flex-col gap-block px-[23%] pt-[66%] pb-[46%]">
           <SectionHead
             eyebrow={t(rsvp.eyebrow)}
             title={personalized && guest ? `${t(rsvp.greeting)} ${guest.name}` : t(rsvp.title)}
             titleId="rsvp-title"
-            intro={t(rsvp.note)}
           />
 
           <Reveal>
@@ -335,7 +309,6 @@ export function Rsvp() {
               <Button type="submit" disabled={status === "sending"}>
                 {status === "sending" ? t(rsvp.sending) : t(rsvp.submit)}
               </Button>
-              <Caption>{t(rsvp.deadline)}</Caption>
               {status === "error" ? (
                 <p role="alert" className="text-small text-tone-accent">
                   {t(rsvp.errorNote)}
