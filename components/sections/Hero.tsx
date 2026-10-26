@@ -56,7 +56,7 @@ export function Hero() {
           <div
             data-reveal
             data-hero
-            className="absolute inset-x-0 -top-[9%] flex flex-col gap-tight px-gutter"
+            className="absolute inset-x-0 -top-[12%] flex flex-col gap-tight px-gutter"
           >
             <Eyebrow className="text-tone-fg">{t(hero.eyebrow)}</Eyebrow>
             <Heading level="poster" id="hero-title" className="uppercase short:text-display">
