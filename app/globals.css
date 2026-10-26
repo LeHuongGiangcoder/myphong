@@ -81,6 +81,7 @@
 
   --container-site: var(--t-size-container-site);
   --container-prose: var(--t-size-container-prose);
+  --container-stage: var(--t-size-stage);
 
   /* ---- hình khối, chuyển động ------------------------------ */
   --radius-paper: var(--t-radius-paper);

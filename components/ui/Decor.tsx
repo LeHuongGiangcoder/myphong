@@ -15,7 +15,16 @@ import { element } from "@/lib/assets";
  * Xem "Ba luật thiết kế" trong CLAUDE.md: hoạ tiết mờ chìm vào nền là lỗi
  * hay gặp nhất — muốn dịu hơn thì xuất file màu nhạt hơn, đừng hạ opacity.
  */
-export function Decor({ name, at, rotate = 0, opacity = 1, sway = false, parallax, hideOnMobile }: DecorPlacement) {
+export function Decor({
+  name,
+  at,
+  rotate = 0,
+  opacity = 1,
+  sway = false,
+  parallax,
+  hideOnMobile,
+  sizes = "(max-width: 48rem) 40vw, 20rem",
+}: DecorPlacement) {
   const art = element(name);
   if (!art) return null;
 
@@ -43,7 +52,7 @@ export function Decor({ name, at, rotate = 0, opacity = 1, sway = false, paralla
         alt=""
         width={art.width ?? 600}
         height={art.height ?? 600}
-        sizes="(max-width: 48rem) 40vw, 20rem"
+        sizes={sizes}
         className="h-auto w-full"
       />
     </span>

@@ -159,6 +159,12 @@ export const sizes = {
   btn: "14rem",
   containerSite: "72rem",
   containerProse: "40rem",
+  /**
+   * Bề ngang tối đa của một "khung tranh" — khối giữ đúng khổ 9:16 của tranh
+   * khách gửi. Phải chặn lại: khung cao gấp 1,78 lần bề ngang, nên để tràn
+   * hết màn 1280px thì nó cao hơn 2200px.
+   */
+  stage: "32rem",
 } as const;
 
 export const radius = {

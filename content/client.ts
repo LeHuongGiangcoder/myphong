@@ -74,6 +74,13 @@ export type DecorPlacement = {
   /** Trôi chậm hơn trang bao nhiêu % khi cuộn. */
   parallax?: number;
   hideOnMobile?: boolean;
+  /**
+   * Hoạ tiết này chiếm bao nhiêu bề ngang màn hình, cho trình duyệt chọn đúng
+   * cỡ file. Mặc định hợp với hoạ tiết nhỏ ở góc; hoạ tiết trải hết bề ngang
+   * (dải khung, băng mực) phải đặt `"100vw"`, nếu không trình duyệt tải bản
+   * 40vw rồi kéo giãn ra và hoạ tiết bị mờ.
+   */
+  sizes?: string;
 };
 
 export type SectionDesign = {
@@ -127,10 +134,86 @@ export const design: Record<SectionId, SectionDesign> = {
   hero: { anchor: "hero", tone: "dark", background: "/images/hero-plate.jpg", overlay: 0 },
   loveStory: { anchor: "love-story", tone: "paper" },
   gallery: { anchor: "gallery", tone: "light" },
-  weddingInfo: { anchor: "wedding-info", tone: "dark" },
-  agenda: { anchor: "agenda", tone: "paper" },
-  dresscode: { anchor: "dresscode", tone: "light" },
-  rsvp: { anchor: "rsvp", tone: "paper" },
+  /*
+    Tranh mực của khách dùng NGUYÊN BẢN — ghép sẵn element lên vân giấy thành
+    một ảnh 9:16, không tách mảnh: bố cục dải mực là một mạch liền.
+
+    Tranh neo ở mép trên và giữ đúng khổ 9:16, nên khoảng giấy trống của nó
+    luôn rơi vào cùng một chỗ ở mọi khổ máy. Chỉ chữ ĐẦU section nằm trong
+    khoảng đó; phần còn lại chảy xuống dưới bức tranh, trên nền giấy trơn —
+    vùng trống của tranh chỉ cao bằng một nửa bức tranh, không chứa nổi cả
+    section ở khổ điện thoại. Xem components/sections/WeddingInfo.tsx.
+  */
+  weddingInfo: {
+    anchor: "wedding-info",
+    tone: "light",
+    background: "paper-cream",
+    overlay: 0,
+    decor: [
+      {
+        name: "timevenue",
+        at: "inset-x-0 top-0 mx-auto w-full max-w-stage",
+        sizes: "(max-width: 32rem) 100vw, 32rem",
+      },
+    ],
+  },
+  /*
+    Dải sen của khách, dùng nguyên bản trong một khung 9:16. Chữ của section
+    nằm trong năm ô giấy trống so le hai bên dải sen — toạ độ đo bằng tương
+    phản, xem components/sections/Agenda.tsx.
+  */
+  agenda: {
+    anchor: "agenda",
+    tone: "light",
+    /* Cùng vân giấy đã ghép vào bức tranh, trải cho cả section — nếu không,
+       chỗ tranh kết thúc sẽ lộ một đường nối giữa giấy (#fdf8f1) và màu kem
+       của theme (#f7eedc). */
+    background: "paper-cream",
+    overlay: 0,
+    decor: [
+      {
+        name: "agenda",
+        at: "inset-x-0 top-0 mx-auto w-full max-w-stage",
+        sizes: "(max-width: 32rem) 100vw, 32rem",
+      },
+    ],
+  },
+  /* Tranh tre + núi của khách, nguyên bản trong khung 9:16. Chữ nằm ở phần
+     trên; dãy núi ở chân tranh để trống. Xem components/sections/Dresscode.tsx. */
+  dresscode: {
+    anchor: "dresscode",
+    tone: "light",
+    /* Cùng vân giấy đã ghép vào bức tranh, trải cho cả section — nếu không,
+       chỗ tranh kết thúc sẽ lộ một đường nối giữa giấy (#fdf8f1) và màu kem
+       của theme (#f7eedc). */
+    background: "paper-cream",
+    overlay: 0,
+    decor: [
+      {
+        name: "dresscode",
+        at: "inset-x-0 top-0 mx-auto w-full max-w-stage",
+        sizes: "(max-width: 32rem) 100vw, 32rem",
+      },
+    ],
+  },
+  /* Tấm thiệp có khung của khách, nguyên bản trong khung 9:16. Phần đầu
+     R.S.V.P nằm trong ô giấy giữa tranh, form ở dưới. Xem Rsvp.tsx. */
+  rsvp: {
+    anchor: "rsvp",
+    tone: "light",
+    /* Cùng vân giấy đã ghép vào bức tranh, trải cho cả section — nếu không,
+       chỗ tranh kết thúc sẽ lộ một đường nối giữa giấy (#fdf8f1) và màu kem
+       của theme (#f7eedc). */
+    background: "paper-cream",
+    overlay: 0,
+    decor: [
+      {
+        name: "rsvp",
+        at: "inset-x-0 top-0 mx-auto w-full max-w-stage",
+        sizes: "(max-width: 32rem) 100vw, 32rem",
+      },
+    ],
+  },
   thankYou: { anchor: "thank-you", tone: "dark" },
 };
 
@@ -345,29 +428,25 @@ export const agenda = {
   eyebrow: { vi: "Chương trình", en: "Agenda" },
   title: { vi: "Trình tự buổi lễ", en: "Order of the day" },
   intro: { vi: "Giờ dự kiến của buổi tiệc.", en: "The schedule we have planned." },
+  /* Mỗi mục chỉ còn giờ và tên: bốn mốc nằm trong các ô giấy trống dọc dải
+     sen, ô rộng khoảng 170px và cao 68px — thêm một dòng ghi chú nữa là tràn
+     ra lá sen. Xem components/sections/Agenda.tsx. */
   items: [
     {
       time: "17:30",
       title: { vi: "Đón khách", en: "Welcome" },
-      note: {
-        vi: "Quý khách nhận chỗ và chụp hình lưu niệm",
-        en: "Find your seat and take photos with us",
-      },
     },
     {
       time: "18:00",
       title: { vi: "Làm lễ", en: "Ceremony" },
-      note: { vi: "Nghi thức thành hôn", en: "The wedding rites" },
     },
     {
       time: "18:30",
       title: { vi: "Khai tiệc", en: "Dinner begins" },
-      note: { vi: "Mở tiệc cùng gia đình hai bên", en: "Dinner with both families" },
     },
     {
       time: "19:30",
       title: { vi: "Tiệc sau lễ", en: "Celebration" },
-      note: { vi: "Âm nhạc và chúc phúc", en: "Music, toasts and good wishes" },
     },
   ],
 };

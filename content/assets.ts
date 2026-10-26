@@ -11,10 +11,17 @@ export const assets = {
   textures: {},
 
   /** Ảnh nền full-bleed của một section */
-  backgrounds: {},
+  backgrounds: {
+    "paper-cream": { src: "/brand/backgrounds/paper-cream.webp", width: 1080, height: 1920 },
+  },
 
   /** Hoạ tiết rời (hoa, ruy băng, con dấu) — nền trong suốt */
-  elements: {},
+  elements: {
+    "agenda": { src: "/brand/elements/agenda.webp", width: 1080, height: 1920 },
+    "dresscode": { src: "/brand/elements/dresscode.webp", width: 1080, height: 1920 },
+    "rsvp": { src: "/brand/elements/rsvp.webp", width: 1080, height: 1920 },
+    "timevenue": { src: "/brand/elements/timevenue.webp", width: 1080, height: 1920 },
+  },
 
   /** Dải ngăn giữa hai section, lặp theo chiều ngang */
   dividers: {},

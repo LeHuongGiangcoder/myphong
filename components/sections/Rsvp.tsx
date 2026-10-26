@@ -101,17 +101,32 @@ export function Rsvp() {
   }
 
   return (
-    <SectionWrapper section="rsvp" width="prose" labelledBy="rsvp-title">
-      <SectionHead
-        eyebrow={t(rsvp.eyebrow)}
-        title={
-          personalized && guest ? `${t(rsvp.greeting)} ${guest.name}` : t(rsvp.title)
-        }
-        titleId="rsvp-title"
-        intro={t(rsvp.note)}
-      />
+    <SectionWrapper section="rsvp" flush width="bleed" labelledBy="rsvp-title">
+      {/*
+        Bức tranh của khách đã vẽ sẵn một tấm thiệp có khung: mái ngói, đèn
+        lồng, hoa, và một ô giấy trống ở giữa. Ô đó nằm ở x 17%–81%, y 26%–81%
+        của bức tranh (đo bằng cách dò mép khung từ tâm ra) — phần đầu của
+        R.S.V.P đặt vừa vào đấy.
 
-      <Reveal>
+        Form thì KHÔNG nhét vào ô này được: ô cao 366px ở khổ điện thoại, còn
+        bảy câu hỏi cao hơn 900px. Cắt form làm đôi qua mép khung vừa khó dùng
+        vừa xấu, nên form chảy xuống dưới bức tranh, trên giấy trơn.
+      */}
+      <div className="relative mx-auto aspect-[9/16] w-full max-w-stage">
+        {/* Căn giữa theo chiều dọc BÊN TRONG ô giấy (y 26%–81%) bằng
+            justify-center, chứ không đặt mốc top cứng — chữ dài ngắn thế nào
+            thì khối vẫn nằm cân giữa khung. */}
+        <div className="absolute inset-x-[19%] top-[26%] flex h-[55%] flex-col items-center justify-center gap-stack text-center">
+          <SectionHead
+            eyebrow={t(rsvp.eyebrow)}
+            title={personalized && guest ? `${t(rsvp.greeting)} ${guest.name}` : t(rsvp.title)}
+            titleId="rsvp-title"
+            intro={t(rsvp.note)}
+          />
+        </div>
+      </div>
+
+      <Reveal className="container-prose py-section">
         {status === "sent" ? (
           <div role="status" className="flex flex-col items-center gap-stack text-center">
             <Heading level="h3">{t(rsvp.successTitle)}</Heading>

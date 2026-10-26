@@ -17,7 +17,15 @@ export function Dresscode() {
   const { t } = useLocale();
 
   return (
-    <SectionWrapper section="dresscode" width="prose" labelledBy="dresscode-title">
+    <SectionWrapper section="dresscode" flush width="bleed" labelledBy="dresscode-title">
+      {/*
+        Bức tranh của khách: vài nhành tre rất nhạt ở góc trên, dãy núi mực
+        nâu và vầng mặt trời hồng ở chân tranh. Quét tương phản cho thấy chỉ
+        đoạn 77%–90% (dãy núi) là vướng — toàn bộ phần trên đọc được ở mọi bề
+        ngang, nên chữ cứ căn giữa như bình thường, chỉ cần dừng trước núi.
+      */}
+      <div className="relative mx-auto aspect-[9/16] w-full max-w-stage">
+        <div className="container-prose absolute inset-x-0 top-[6%] flex flex-col items-center">
       <SectionHead
         eyebrow={t(dresscode.eyebrow)}
         title={t(dresscode.title)}
@@ -46,6 +54,8 @@ export function Dresscode() {
           {dresscode.avoid ? <Caption className="text-center">{t(dresscode.avoid)}</Caption> : null}
         </Reveal>
       ) : null}
+        </div>
+      </div>
     </SectionWrapper>
   );
 }
