@@ -5,10 +5,10 @@ import Image from "next/image";
 
 import { useLocale } from "@/components/experience/LocaleProvider";
 import { Divider } from "@/components/ui/Divider";
-import { Eyebrow, Lead, Script, SectionHead } from "@/components/ui/Heading";
+import { Lead, Script, SectionHead } from "@/components/ui/Heading";
 import { Reveal } from "@/components/ui/Reveal";
 import { SectionWrapper } from "@/components/ui/SectionWrapper";
-import { couple, thankYou } from "@/content/client";
+import { thankYou } from "@/content/client";
 
 /**
  * Màn cuối: ảnh cưới phủ kín màn hình, bốn góc tan vào giấy, chữ nằm trên ảnh.
@@ -97,7 +97,6 @@ export function ThankYou() {
 
           <Reveal delay={120} className="flex flex-col items-center gap-tight">
             <Script>{thankYou.signature}</Script>
-            <Eyebrow>{couple.hashtag}</Eyebrow>
           </Reveal>
         </div>
       </div>
