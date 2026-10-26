@@ -28,15 +28,27 @@ export function WeddingInfo() {
 
   return (
     <SectionWrapper section="weddingInfo" labelledBy="wedding-info-title" flush width="bleed">
-      {/* Khung cao hơn khổ tranh 9:16 để chừa cột giấy ở trên — xem ghi chú
-          đầu file. Tranh tự neo xuống đáy bằng `at` trong client.ts.
+      {/*
+        Hai con số dưới đây đi cùng nhau, đổi một cái là phải đo lại cái kia.
 
-          Tranh phóng 130% nên cao hơn khung 30%, mái đình — thứ chắn đầu
-          tiên bên cột trái — dâng lên theo. Chọn tỉ lệ khung thì đo cột chữ
-          ở BẢN TIẾNG ANH (dài hơn tiếng Việt khoảng 45px) rồi cộng thêm
-          phần tranh nằm dưới mái đình. */}
-      <div className="relative mx-auto w-full max-w-stage" style={{ aspectRatio: "9 / 27" }}>
-        <Reveal className="absolute inset-x-0 top-0 flex w-[86%] flex-col items-start gap-block px-gutter pt-section text-left">
+        `9/32` là chiều cao khung. `top-[19%]` là chỗ dòng đầu tiên bắt đầu —
+        253px ở khổ 375px, tức cột chữ rời hẳn mép trên section và tụt xuống
+        gần đúng khoảng giấy trống của bức tranh (tranh bắt đầu ở 466px).
+
+        Vì sao cột chữ không nằm trọn trong tranh: ở khổ 375px cột chữ cao
+        824px (bản tiếng Anh, dài hơn tiếng Việt chừng 45px) trong khi khoảng
+        trống của tranh phóng 130% chỉ cao 589px — muốn nhét trọn thì phải
+        phóng tranh lên gần 190%, lúc đó mái đình to gấp đôi và hai dải lụa
+        mất gần hết. Nên cột chữ bắt đầu trên giấy kem rồi chảy vào tranh;
+        `.seam-soft` làm hai thứ giấy đó liền nhau nên mắt không thấy ranh.
+
+        Đo lại khi thêm chữ: cột chữ cao 715px (Việt) / 760px (Anh), còn mái
+        đình — thứ chắn đầu tiên bên cột trái — bắt đầu ở 68% chiều cao
+        tranh, tức 1056px tính từ đỉnh khung. Kéo `top` xuống quá 22% là chữ
+        chạm mái.
+      */}
+      <div className="relative mx-auto w-full max-w-stage" style={{ aspectRatio: "9 / 32" }}>
+        <Reveal className="absolute inset-x-0 top-[19%] flex w-[86%] flex-col items-start gap-block px-gutter text-left">
           <SectionHead
             eyebrow={t(weddingInfo.eyebrow)}
             title={t(weddingInfo.title)}
