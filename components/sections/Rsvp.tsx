@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
+import Image from "next/image";
 
 import { useGuest } from "@/components/experience/GuestProvider";
 import { useLocale } from "@/components/experience/LocaleProvider";
@@ -10,8 +11,12 @@ import { Choice, Field, FieldLabel, Stepper } from "@/components/ui/Field";
 import { Reveal } from "@/components/ui/Reveal";
 import { SectionWrapper } from "@/components/ui/SectionWrapper";
 import { rsvp } from "@/content/client";
+import { element } from "@/lib/assets";
 
 type Status = "idle" | "sending" | "sent" | "error";
+
+/** Ba lát thiệp luôn trải đúng bề ngang của thiệp, không phải của màn hình. */
+const CARD_SIZES = "(max-width: 32rem) 100vw, 32rem";
 
 /**
  * Form RSVP — chế độ `general`: một form mở, ai có link site cũng trả lời được.
@@ -47,6 +52,14 @@ export function Rsvp() {
   const [attending, setAttending] = useState<"yes" | "no">("yes");
   const [side, setSide] = useState("");
   const [partySize, setPartySize] = useState(1);
+
+  /* Ba lát thiệp + hai nhành hoa. Thiếu file nào thì phần đó im lặng biến
+     mất, form vẫn chạy — xem lib/assets.ts. */
+  const cardTop = element("rsvp-card-top");
+  const cardMid = element("rsvp-card-mid");
+  const cardBottom = element("rsvp-card-bottom");
+  const bloomLeft = element("rsvp-bloom-left");
+  const bloomRight = element("rsvp-bloom-right");
 
   const personalized = rsvp.mode === "personalized";
   const fields = rsvp.fields;
@@ -103,30 +116,97 @@ export function Rsvp() {
   return (
     <SectionWrapper section="rsvp" flush width="bleed" labelledBy="rsvp-title">
       {/*
-        Bức tranh của khách đã vẽ sẵn một tấm thiệp có khung: mái ngói, đèn
-        lồng, hoa, và một ô giấy trống ở giữa. Ô đó nằm ở x 17%–81%, y 26%–81%
-        của bức tranh (đo bằng cách dò mép khung từ tâm ra) — phần đầu của
-        R.S.V.P đặt vừa vào đấy.
+        TẤM THIỆP CO GIÃN.
 
-        Form thì KHÔNG nhét vào ô này được: ô cao 366px ở khổ điện thoại, còn
-        bảy câu hỏi cao hơn 900px. Cắt form làm đôi qua mép khung vừa khó dùng
-        vừa xấu, nên form chảy xuống dưới bức tranh, trên giấy trơn.
+        Bức tranh của khách vẽ sẵn một tấm thiệp: mái ngói, đèn lồng, mây, và
+        một ô giấy có viền ở giữa. Ô đó cao 366px ở khổ điện thoại, còn bảy
+        câu hỏi cao hơn 900px — nên tấm giấy phải kéo dài ra theo form.
+
+        Cách làm: cắt bức tranh làm ba lát theo chiều dọc và xếp lại bằng flex.
+
+          rsvp-card-top     mái + đèn lồng + mép trên ô giấy   (cao cố định)
+          rsvp-card-mid     20px "chỉ giấy + hai vạch viền"    (flex-1, lặp)
+          rsvp-card-bottom  mép dưới ô giấy + mây              (cao cố định)
+
+        Lát giữa cắt ở y 1101–1120 của bản 1080×1920 — đoạn duy nhất trong cả
+        bức mà ngoài khung lẫn trong khung đều chỉ còn giấy. Độ lệch chuẩn
+        theo chiều dọc của dải đó là 1,3/255 nên lặp lại không thấy vệt ngang.
+
+        Nội dung nằm trong `padding` tính theo % BỀ NGANG (padding % luôn ăn
+        theo bề ngang, kể cả trên/dưới) nên mép chữ bám đúng viền ở mọi khổ
+        máy: viền dọc ở 17,2% và 81,9%, mép trong trên ở 47,9%, dưới 32,5%.
+
+        Hai nhành hoa khách xuất riêng nằm ở lát giữa, bên NGOÀI viền — vào
+        trong là đè lên câu hỏi.
       */}
-      <div className="relative mx-auto aspect-[9/16] w-full max-w-stage">
-        {/* Căn giữa theo chiều dọc BÊN TRONG ô giấy (y 26%–81%) bằng
-            justify-center, chứ không đặt mốc top cứng — chữ dài ngắn thế nào
-            thì khối vẫn nằm cân giữa khung. */}
-        <div className="absolute inset-x-[19%] top-[26%] flex h-[55%] flex-col items-center justify-center gap-stack text-center">
+      <div className="relative mx-auto w-full max-w-stage">
+        <div aria-hidden className="absolute inset-0 flex flex-col">
+          {cardTop ? (
+            <Image
+              src={cardTop.src}
+              alt=""
+              width={cardTop.width ?? 1080}
+              height={cardTop.height ?? 1101}
+              sizes={CARD_SIZES}
+              className="w-full"
+            />
+          ) : null}
+
+          <div
+            className="relative flex-1"
+            style={
+              cardMid
+                ? {
+                    backgroundImage: `url(${cardMid.src})`,
+                    backgroundRepeat: "repeat-y",
+                    backgroundSize: "100% auto",
+                  }
+                : undefined
+            }
+          >
+            {bloomRight ? (
+              <Image
+                src={bloomRight.src}
+                alt=""
+                width={bloomRight.width ?? 520}
+                height={bloomRight.height ?? 1128}
+                sizes="20vw"
+                className="absolute right-0 top-[12%] w-[18%]"
+              />
+            ) : null}
+            {bloomLeft ? (
+              <Image
+                src={bloomLeft.src}
+                alt=""
+                width={bloomLeft.width ?? 520}
+                height={bloomLeft.height ?? 829}
+                sizes="20vw"
+                className="absolute left-0 top-[56%] w-[17%]"
+              />
+            ) : null}
+          </div>
+
+          {cardBottom ? (
+            <Image
+              src={cardBottom.src}
+              alt=""
+              width={cardBottom.width ?? 1080}
+              height={cardBottom.height ?? 799}
+              sizes={CARD_SIZES}
+              className="w-full"
+            />
+          ) : null}
+        </div>
+
+        <div className="relative flex flex-col gap-block px-[20%] pt-[47.9%] pb-[32.5%]">
           <SectionHead
             eyebrow={t(rsvp.eyebrow)}
             title={personalized && guest ? `${t(rsvp.greeting)} ${guest.name}` : t(rsvp.title)}
             titleId="rsvp-title"
             intro={t(rsvp.note)}
           />
-        </div>
-      </div>
 
-      <Reveal className="container-prose py-section">
+          <Reveal>
         {status === "sent" ? (
           <div role="status" className="flex flex-col items-center gap-stack text-center">
             <Heading level="h3">{t(rsvp.successTitle)}</Heading>
@@ -254,7 +334,9 @@ export function Rsvp() {
             </div>
           </form>
         )}
-      </Reveal>
+          </Reveal>
+        </div>
+      </div>
     </SectionWrapper>
   );
 }

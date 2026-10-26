@@ -94,21 +94,44 @@ export function Script({ className = "", children, ...rest }: TextProps) {
  * Đầu section: eyebrow + tiêu đề + câu dẫn, căn giữa, cách khối dưới một
  * `block`. Mọi section dùng chung khối này nên khoảng cách luôn khớp nhau.
  */
+/**
+ * Đầu mục của một section: dòng nhỏ in hoa, tiêu đề h2, câu dẫn.
+ *
+ * MỌI section phải dùng component này — đó là chỗ duy nhất quyết định nhịp
+ * giữa ba dòng đó, nên đổi ở đây là cả site đổi theo. Chỉ có hai kiểu căn:
+ * `center` cho section nằm trong khung tranh, `left` cho section có cột chữ
+ * bám mép trái bức tranh.
+ *
+ * `flush` bỏ khoảng cách dưới, cho khối nào tự quản nhịp bằng gap của nó.
+ */
 export function SectionHead({
   eyebrow,
   title,
   titleId,
   intro,
+  align = "center",
+  flush = false,
   children,
 }: {
   eyebrow?: string;
   title: string;
   titleId?: string;
   intro?: string;
+  align?: "center" | "left";
+  flush?: boolean;
   children?: ReactNode;
 }) {
+  const left = align === "left";
   return (
-    <Reveal className="mb-block flex flex-col items-center gap-tight text-center">
+    <Reveal
+      className={[
+        "flex flex-col gap-tight",
+        flush ? "" : "mb-block",
+        left ? "items-start text-left" : "items-center text-center",
+      ]
+        .filter(Boolean)
+        .join(" ")}
+    >
       {eyebrow ? <Eyebrow>{eyebrow}</Eyebrow> : null}
       <Heading level="h2" id={titleId}>
         {title}

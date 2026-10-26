@@ -10,80 +10,64 @@ import { ceremony, venue, weddingInfo } from "@/content/client";
 import { googleCalendarUrl } from "@/lib/calendar";
 
 /**
- * Time & Venue — chỉ hai điều: khi nào, và ở đâu.
+ * Time & Venue — khi nào, và ở đâu.
  *
- * Section này gồm hai tầng:
+ * MỘT cột chữ duy nhất, nằm trong khoảng giấy trống bên TRÁI bức tranh. Đo
+ * tương phản cho thấy cột trái sạch hoàn toàn (0% vướng mực) từ đỉnh xuống
+ * tới 70% chiều cao tranh, rộng tới 64% bề ngang; dưới mốc đó là mái đình và
+ * dải mực xanh nên chữ phải dừng lại.
  *
- *   1. Bức tranh mực của khách, dùng NGUYÊN BẢN (một ảnh, không tách mảnh),
- *      giữ đúng khổ 9:16. Tên section và ngày cưới nằm trong khoảng giấy
- *      trống của chính bức tranh.
- *   2. Giấy trơn phía dưới: địa điểm, lời nhắn, hai nút.
- *
- * Phải tách hai tầng vì khoảng trống của bức tranh chỉ cao bằng một nửa bức
- * tranh (12%–62%). Ở khổ điện thoại, nửa đó là ~330px — đủ cho tiêu đề và
- * ngày, không đủ cho cả section. Nhồi hết vào là chữ nằm đè lên mái đình và
- * dải mực xanh, tương phản tụt xuống 1:1.
- *
- * Cũng vì vậy section cố ý KHÔNG có danh sách gia đình hay ảnh cặp đôi.
+ * Vì vậy bức tranh để rộng hơn khung một chút và neo bên trái: phần ribbon
+ * chạy dọc mép phải bị cắt bớt, đổi lại cột chữ có đủ chiều cao mà mái đình
+ * vẫn nguyên vẹn. Không tách khối nào xuống dưới tranh nữa.
  */
 export function WeddingInfo() {
   const { lang, t } = useLocale();
 
   return (
     <SectionWrapper section="weddingInfo" labelledBy="wedding-info-title" flush width="bleed">
-      {/*
-        Khung tranh: luôn đúng khổ 9:16 của bức tranh, nên khoảng giấy trống
-        của nó rơi vào cùng một tỉ lệ ở mọi khổ máy. Bức tranh chính là hoạ
-        tiết `timevenue` do SectionWrapper đặt vào (xem `design` trong
-        content/client.ts); khối này chỉ giữ chỗ và neo chữ lên trên nó.
-
-        Khối chữ LỆCH TRÁI, không căn giữa: khoảng trống của bức tranh nằm
-        lệch về trái, còn mép phải có dải mực chạy dọc xuống quá nửa chiều
-        cao. Căn giữa thì dòng dài nhất (ngày âm lịch) đâm vào dải mực đó và
-        tương phản tụt còn 2:1. Giới hạn 2%–64% bề ngang là ranh của vùng
-        trống ở đoạn hẹp nhất (khoảng 52%–65% chiều cao tranh).
-      */}
-      <div className="relative mx-auto aspect-[9/16] w-full max-w-stage">
-        <div className="absolute left-[2%] top-[19%] flex w-[62%] max-w-prose flex-col items-center gap-stack text-center">
+      {/* Khung cao hơn khổ tranh vì tranh được phóng to 150% và neo trái —
+          xem ghi chú ở đầu file. 9/22.4 = 1 / (1.5 × 16/9). */}
+      <div className="relative mx-auto w-full max-w-stage" style={{ aspectRatio: "9 / 24" }}>
+        <Reveal className="absolute inset-y-0 left-0 flex w-[84%] flex-col justify-start gap-stack px-gutter pt-section text-left">
           <SectionHead
             eyebrow={t(weddingInfo.eyebrow)}
             title={t(weddingInfo.title)}
             titleId="wedding-info-title"
+            align="left"
+            flush
           />
 
-          <Reveal className="flex flex-col items-center gap-tight">
+          <Divider className="max-w-[3.5rem]" />
+
+          <div className="flex flex-col gap-tight">
             <Eyebrow>{t(weddingInfo.saveTheDateLabel)}</Eyebrow>
-            <Heading level="h2">{ceremony.dateShort}</Heading>
+            <Heading level="h3">{ceremony.dateShort}</Heading>
             <Caption>
               {t(ceremony.weekday)} · {ceremony.timeLabel}
             </Caption>
             <Caption>{t(ceremony.lunar)}</Caption>
-          </Reveal>
-        </div>
+          </div>
+
+          <div className="flex flex-col gap-tight">
+            <Eyebrow>{t(weddingInfo.venueLabel)}</Eyebrow>
+            <Heading level="h3">{venue.name}</Heading>
+            <p className="font-display text-h4">{t(venue.hall)}</p>
+            <Caption>{venue.address}</Caption>
+          </div>
+
+          <Script>{t(venue.note)}</Script>
+
+          <div className="flex flex-col items-start gap-stack">
+            <ButtonLink href={venue.mapUrl} target="_blank" rel="noreferrer noopener">
+              {t(venue.mapLabel)}
+            </ButtonLink>
+            <ButtonLink href={googleCalendarUrl(lang)} target="_blank" rel="noreferrer noopener">
+              {t(weddingInfo.calendarLabel)}
+            </ButtonLink>
+          </div>
+        </Reveal>
       </div>
-
-      {/* Dưới bức tranh là giấy trơn — chỗ cho phần chi tiết còn lại */}
-      <Reveal className="container-prose flex flex-col items-center gap-stack pb-section text-center">
-        <Divider diamond />
-
-        <div className="flex flex-col items-center gap-tight">
-          <Eyebrow>{t(weddingInfo.venueLabel)}</Eyebrow>
-          <Heading level="h3">{venue.name}</Heading>
-          <p className="font-display text-h4">{t(venue.hall)}</p>
-          <Caption>{venue.address}</Caption>
-        </div>
-
-        <Script>{t(venue.note)}</Script>
-
-        <div className="flex w-full flex-col items-center gap-stack sm:flex-row sm:justify-center">
-          <ButtonLink href={venue.mapUrl} target="_blank" rel="noreferrer noopener">
-            {t(venue.mapLabel)}
-          </ButtonLink>
-          <ButtonLink href={googleCalendarUrl(lang)} target="_blank" rel="noreferrer noopener">
-            {t(weddingInfo.calendarLabel)}
-          </ButtonLink>
-        </div>
-      </Reveal>
     </SectionWrapper>
   );
 }

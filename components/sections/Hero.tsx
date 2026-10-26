@@ -4,7 +4,7 @@ import Image from "next/image";
 
 import { useLocale } from "@/components/experience/LocaleProvider";
 import { Divider } from "@/components/ui/Divider";
-import { Eyebrow, Heading } from "@/components/ui/Heading";
+import { Eyebrow, Heading, Script } from "@/components/ui/Heading";
 import { SectionWrapper } from "@/components/ui/SectionWrapper";
 import { ceremony, couple, hero, venue } from "@/content/client";
 
@@ -34,6 +34,24 @@ export function Hero() {
   return (
     <SectionWrapper section="hero" flush width="bleed" labelledBy="hero-title">
       <div className="mx-auto flex min-h-[100svh] w-full max-w-[36rem] flex-col">
+        {/* Ngày và nơi tổ chức dời LÊN ĐỈNH: trước đây đỉnh trang bỏ trống còn
+            chân trang gánh cả câu mời lẫn ngày giờ.
+
+            Căn GIỮA và đẩy xuống dưới nút VI / EN: đo độ sáng của tấm nền cho
+            thấy dải giữa ở đỉnh ảnh là chỗ tối và đều nhất (chữ kem đạt
+            5,8:1), còn mép trái mép phải có cửa sổ sáng làm chữ chìm. */}
+        <div
+          data-reveal
+          data-hero
+          className="mt-tap flex flex-col items-center gap-tight px-gutter pt-section text-center"
+        >
+          <p className="font-body text-eyebrow font-medium uppercase text-tone-fg">
+            {ceremony.dateShort}
+          </p>
+          <p className="font-body text-eyebrow font-medium uppercase text-tone-fg">{venue.name}</p>
+          <Divider className="max-w-[3.5rem]" />
+        </div>
+
         <div className="relative mt-auto">
           <div
             data-reveal
@@ -64,22 +82,14 @@ export function Hero() {
           />
 
           {/* mb-tap: chừa chỗ cho nút nhạc cố định ở góc dưới phải */}
+          {/* Chỉ còn câu mời, và viết bằng font script như mọi lời mời khác
+              trong thiệp — cùng câu đó ở thân chữ thường trông thô và nặng. */}
           <div
             data-reveal
             data-hero
-            className="absolute inset-x-0 bottom-0 z-20 mb-tap flex flex-col gap-stack px-gutter pb-section sm:flex-row sm:items-end sm:justify-between sm:gap-block"
+            className="absolute inset-x-0 bottom-0 z-20 mb-tap px-gutter pb-section"
           >
-            <p className="max-w-prose text-small text-tone-fg">{t(hero.invitation)}</p>
-
-            <div className="flex flex-col items-end gap-tight self-end text-right sm:shrink-0">
-              <Divider className="max-w-[3.5rem]" />
-              <p className="font-body text-eyebrow font-medium uppercase text-tone-fg">
-                {ceremony.dateShort}
-              </p>
-              <p className="font-body text-eyebrow font-medium uppercase text-tone-fg">
-                {venue.name}
-              </p>
-            </div>
+            <Script className="max-w-[18rem] text-tone-fg">{t(hero.invitation)}</Script>
           </div>
         </div>
       </div>

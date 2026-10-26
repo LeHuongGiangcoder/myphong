@@ -19,6 +19,11 @@ export const assets = {
   elements: {
     "agenda": { src: "/brand/elements/agenda.webp", width: 1080, height: 1920 },
     "dresscode": { src: "/brand/elements/dresscode.webp", width: 1080, height: 1920 },
+    "rsvp-bloom-left": { src: "/brand/elements/rsvp-bloom-left.webp", width: 520, height: 829 },
+    "rsvp-bloom-right": { src: "/brand/elements/rsvp-bloom-right.webp", width: 520, height: 1128 },
+    "rsvp-card-bottom": { src: "/brand/elements/rsvp-card-bottom.webp", width: 1080, height: 799 },
+    "rsvp-card-mid": { src: "/brand/elements/rsvp-card-mid.webp", width: 1080, height: 20 },
+    "rsvp-card-top": { src: "/brand/elements/rsvp-card-top.webp", width: 1080, height: 1101 },
     "rsvp": { src: "/brand/elements/rsvp.webp", width: 1080, height: 1920 },
     "timevenue": { src: "/brand/elements/timevenue.webp", width: 1080, height: 1920 },
   },

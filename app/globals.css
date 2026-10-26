@@ -235,6 +235,22 @@ h4 {
   }
 
   /*
+    Ảnh tan dần ra bốn mép, mất nhiều nhất ở bốn góc — dùng khi muốn ảnh chìm
+    vào nền giấy thay vì bị cắt bằng một đường viền cứng.
+
+    Đây là MASK chứ không phải lớp phủ màu: ảnh trong suốt dần nên nền giấy
+    của section hiện qua, đổi màu nền là mép tự đổi theo.
+
+    Ellipse để RỘNG (95% × 90%) và đặc tới 66%: bốn góc xa tâm nhất nên tan
+    nhiều nhất, còn bốn cạnh gần như nguyên. Thu ellipse lại thì hai mép dọc
+    cũng nhạt thành giấy, và chữ kem đặt trên đó sẽ chìm.
+  */
+  .edge-feather {
+    -webkit-mask-image: radial-gradient(ellipse 95% 90% at 50% 50%, #000 66%, transparent 100%);
+    mask-image: radial-gradient(ellipse 95% 90% at 50% 50%, #000 66%, transparent 100%);
+  }
+
+  /*
     Quầng sáng toả ra từ MỘT ĐIỂM trong ảnh, không phải từ tâm khung hình —
     toạ độ điểm đó do JS đo rồi đặt vào --beam-x / --beam-y, vì nó phụ thuộc
     ảnh đang contain hay cover. Mép ngoài tắt hẳn để không thành viền sáng.

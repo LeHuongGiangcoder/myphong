@@ -152,8 +152,10 @@ export const design: Record<SectionId, SectionDesign> = {
     decor: [
       {
         name: "timevenue",
-        at: "inset-x-0 top-0 mx-auto w-full max-w-stage",
-        sizes: "(max-width: 32rem) 100vw, 32rem",
+        /* Phóng 150% và neo TRÁI: cột chữ cần ~630px giấy trống mà ở khổ
+           gốc chỉ có 430px. Đổi lại dải ribbon dọc mép phải bị cắt. */
+        at: "left-0 top-0 w-[150%] max-w-none",
+        sizes: "(max-width: 32rem) 150vw, 48rem",
       },
     ],
   },
@@ -170,13 +172,8 @@ export const design: Record<SectionId, SectionDesign> = {
        của theme (#f7eedc). */
     background: "paper-cream",
     overlay: 0,
-    decor: [
-      {
-        name: "agenda",
-        at: "inset-x-0 top-0 mx-auto w-full max-w-stage",
-        sizes: "(max-width: 32rem) 100vw, 32rem",
-      },
-    ],
+    /* Dải sen đặt thẳng trong components/sections/Agenda.tsx: nó phải bám
+       mép phải của KHUNG rộng tối đa 32rem, không phải mép phải màn hình. */
   },
   /* Tranh tre + núi của khách, nguyên bản trong khung 9:16. Chữ nằm ở phần
      trên; dãy núi ở chân tranh để trống. Xem components/sections/Dresscode.tsx. */
@@ -196,25 +193,21 @@ export const design: Record<SectionId, SectionDesign> = {
       },
     ],
   },
-  /* Tấm thiệp có khung của khách, nguyên bản trong khung 9:16. Phần đầu
-     R.S.V.P nằm trong ô giấy giữa tranh, form ở dưới. Xem Rsvp.tsx. */
+  /* Tấm thiệp được DỰNG trong components/sections/Rsvp.tsx từ ba lát cắt,
+     vì nó phải kéo dài theo form — không gắn làm `decor` ở đây được. */
   rsvp: {
     anchor: "rsvp",
     tone: "light",
-    /* Cùng vân giấy đã ghép vào bức tranh, trải cho cả section — nếu không,
-       chỗ tranh kết thúc sẽ lộ một đường nối giữa giấy (#fdf8f1) và màu kem
-       của theme (#f7eedc). */
     background: "paper-cream",
     overlay: 0,
-    decor: [
-      {
-        name: "rsvp",
-        at: "inset-x-0 top-0 mx-auto w-full max-w-stage",
-        sizes: "(max-width: 32rem) 100vw, 32rem",
-      },
-    ],
   },
-  thankYou: { anchor: "thank-you", tone: "dark" },
+  /* Ảnh cưới hoà vào giấy — xem components/sections/ThankYou.tsx. */
+  thankYou: {
+    anchor: "thank-you",
+    tone: "light",
+    background: "paper-cream",
+    overlay: 0,
+  },
 };
 
 /* ------------------------------------------------------------------ COUPLE */
@@ -602,7 +595,7 @@ export const thankYou = {
     },
   ],
   signature: "Phong & My",
-  image: "/images/couple-06.jpg",
+  image: "/images/thankyou.webp",
   imageAlt: { vi: "Cô dâu và chú rể", en: "The bride and groom" },
 };
 
