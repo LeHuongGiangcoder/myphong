@@ -53,6 +53,7 @@ export function Decor({
         width={art.width ?? 600}
         height={art.height ?? 600}
         sizes={sizes}
+        quality={95}
         className="h-auto w-full"
       />
     </span>

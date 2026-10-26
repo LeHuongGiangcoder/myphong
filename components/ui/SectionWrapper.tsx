@@ -66,7 +66,7 @@ export function SectionWrapper({
     >
       {background ? (
         <div aria-hidden className="absolute inset-0 -z-20">
-          <Image src={background.src} alt="" fill sizes="100vw" className="object-cover" />
+          <Image src={background.src} alt="" fill sizes="100vw" quality={95} className="object-cover" />
           {/* Lớp phủ bằng chính màu nền của tông, để chữ đọc được dù ảnh sáng hay tối */}
           <div className="absolute inset-0 bg-tone-bg" style={{ opacity: spec.overlay ?? 0.7 }} />
         </div>
