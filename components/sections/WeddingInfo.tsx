@@ -113,12 +113,21 @@ export function WeddingInfo() {
 
         {/*
           `pt` / `pb` tính theo % BỀ NGANG khung (padding % luôn ăn theo bề
-          ngang) nên chữ giữ đúng khoảng cách tới hai lát tranh ở mọi khổ
-          máy. Mỗi con số là chiều cao lát trừ đi phần giấy trống của lát đó:
-          chữ tụt vào vùng giấy ấy một quãng, nhờ vậy không có hai khoảng
-          trắng thừa trên dưới.
+          ngang) nên chữ giữ đúng khoảng cách tới hai lát tranh ở mọi khổ máy.
+
+          `pb` KHÔNG phải là chiều cao lát dưới. Chữ được phép tụt sâu vào lát
+          đó, vì nét vẽ trong lát bắt đầu so le hai bên — quét mực theo hàng
+          cho thấy, tính trên chiều cao cả bức tranh:
+
+            54 → 70%   chỉ có lụa xanh và hàng cây, đều nằm bên PHẢI mép 66%
+            70% trở xuống   mái đình tràn sang trái tới mép 19%
+
+          Nút "Xem bản đồ" rộng chừng 50% khung và bám mép trái, nên nó ngồi
+          lọt vào quãng 54–70% — hàng cây chạy bên phải nó. Chỉ mái đình mới
+          là thứ chặn thật. `pb` 88% đặt đáy nút cao hơn đỉnh mái chừng 70px;
+          lớn hơn nữa là hở ra một mảng giấy trắng to giữa nút và bức tranh.
         */}
-        <Reveal className="relative flex w-full flex-col items-start gap-block px-gutter pt-[52%] pb-[124%] text-left">
+        <Reveal className="relative flex w-full flex-col items-start gap-block px-gutter pt-[52%] pb-[88%] text-left">
           <SectionHead
             eyebrow={t(weddingInfo.eyebrow)}
             title={t(weddingInfo.title)}
