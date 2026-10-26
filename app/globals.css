@@ -24,6 +24,13 @@
   --color-gold-soft: var(--t-color-gold-soft);
   --color-surface: var(--t-color-surface);
   --color-line: var(--t-color-line);
+  /* Ba màu phụ của bộ nhận diện — hoạ tiết, chip màu, điểm nhấn nhỏ */
+  --color-rose: var(--t-color-rose);
+  --color-lilac: var(--t-color-lilac);
+  --color-olive: var(--t-color-olive);
+  /* Hai màu của cảnh cổng ở màn mở thiệp */
+  --color-night: var(--t-color-night);
+  --color-lantern: var(--t-color-lantern);
 
   /* Màu theo tông của section — SectionWrapper đặt data-tone, con tự đổi màu */
   --color-tone-bg: var(--t-section-bg);
@@ -38,6 +45,9 @@
   --font-body: var(--t-font-body);
   --font-script: var(--t-font-script);
 
+  --text-poster: var(--t-text-poster);
+  --text-poster--line-height: var(--t-leading-poster);
+  --text-poster--letter-spacing: var(--t-tracking-poster);
   --text-display: var(--t-text-display);
   --text-display--line-height: var(--t-leading-display);
   --text-display--letter-spacing: var(--t-tracking-display);
@@ -221,6 +231,20 @@ h4 {
   .reel > * {
     scroll-snap-align: center;
     flex: none;
+  }
+
+  /*
+    Quầng sáng toả ra từ MỘT ĐIỂM trong ảnh, không phải từ tâm khung hình —
+    toạ độ điểm đó do JS đo rồi đặt vào --beam-x / --beam-y, vì nó phụ thuộc
+    ảnh đang contain hay cover. Mép ngoài tắt hẳn để không thành viền sáng.
+  */
+  .beam {
+    background: radial-gradient(
+      circle at var(--beam-x, 50%) var(--beam-y, 50%),
+      var(--t-color-lantern) 0%,
+      color-mix(in srgb, var(--t-color-lantern) 58%, transparent) 24%,
+      transparent 66%
+    );
   }
 
   /* Ô nhập của form RSVP. Giữ font-size >= 16px, nếu nhỏ hơn iOS Safari

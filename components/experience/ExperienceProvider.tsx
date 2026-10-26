@@ -15,12 +15,15 @@ import { OPEN_EVENT } from "@/components/ui/Motion";
 import { music } from "@/content/client";
 
 type ExperienceValue = {
-  /** Thiệp đã mở chưa — màn Intro ẩn đi và trang mở khoá cuộn khi true. */
+  /** Thiệp đã mở chưa — trang mở khoá cuộn và hero hiện ra khi true. */
   opened: boolean;
   /** Có file nhạc và phát được không. False thì nút nhạc tự ẩn. */
   hasAudio: boolean;
   musicOn: boolean;
+  /** Gọi NGAY trong cú chạm mở thiệp: bật nhạc. Chưa mở khoá trang. */
   open: () => void;
+  /** Gọi khi màn mở thiệp đã nhường chỗ: hero hiện ra, trang mở khoá cuộn. */
+  reveal: () => void;
   toggleMusic: () => void;
 };
 
@@ -37,7 +40,12 @@ export function useExperience() {
  *
  * Nhạc BẮT BUỘC phải được gọi play() ngay trong cú chạm mở thiệp — trình
  * duyệt trên điện thoại chặn mọi lần phát nhạc không sinh từ thao tác của
- * người dùng. Vì vậy `open()` vừa mở thiệp vừa bật nhạc, chứ không tách ra.
+ * người dùng. Vì vậy `open()` bật nhạc ngay tại cú chạm.
+ *
+ * Cú chạm và lúc hero hiện ra là HAI thời điểm khác nhau: màn mở thiệp của
+ * site này còn chạy một cảnh mở cổng vài giây ở giữa. Nên `open()` chỉ lo
+ * nhạc, còn `reveal()` mới mở khoá trang — màn mở thiệp tự quyết khi nào gọi.
+ * Site không có cảnh động thì gọi liền hai cái trong cùng một handler.
  *
  * `gated` = false (không có section "intro") thì trang mở sẵn, chỉ còn nút
  * nhạc và khách phải tự bấm để bật.
@@ -90,9 +98,12 @@ export function ExperienceProvider({
     return audioRef.current;
   }, []);
 
-  const open = useCallback(() => {
+  const reveal = useCallback(() => {
     setOpened(true);
     window.dispatchEvent(new Event(OPEN_EVENT));
+  }, []);
+
+  const open = useCallback(() => {
     if (!enabled) return;
     getAudio()
       .play()
@@ -123,8 +134,8 @@ export function ExperienceProvider({
   useEffect(() => () => audioRef.current?.pause(), []);
 
   const value = useMemo(
-    () => ({ opened, hasAudio: enabled && hasAudio, musicOn, open, toggleMusic }),
-    [opened, enabled, hasAudio, musicOn, open, toggleMusic],
+    () => ({ opened, hasAudio: enabled && hasAudio, musicOn, open, reveal, toggleMusic }),
+    [opened, enabled, hasAudio, musicOn, open, reveal, toggleMusic],
   );
 
   return <ExperienceContext.Provider value={value}>{children}</ExperienceContext.Provider>;

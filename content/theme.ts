@@ -19,22 +19,40 @@
 /* ---------------------------------------------------------------- PALETTE */
 
 export const palette = {
-  /** Nền chính của trang và của các section sáng */
-  cream: "#fbf7f0",
-  creamDeep: "#f1e7d6",
-  /** Nền của các section tối */
-  forest: "#1d3a2b",
-  forestDeep: "#132619",
-  forestSoft: "#3c6049",
-  /** Chữ trên nền sáng */
-  ink: "#33302a",
-  inkSoft: "#6b6559",
-  /** Nhấn: dùng cho eyebrow, gạch chân, viền nút */
-  gold: "#b99a5b",
-  goldSoft: "#e2d2ae",
+  /** Nền chính của trang và của các section sáng — bản nhạt của kem trong palette */
+  cream: "#f7eedc",
+  /** Kem của khách — nền tông "paper" */
+  creamDeep: "#edd9a3",
+  /** Nền của các section tối: nâu ô-liu của khách */
+  forest: "#5c4a20",
+  forestDeep: "#3c2f13",
+  /** Xanh lá của khách */
+  forestSoft: "#6d8c4c",
+  /** Chữ trên nền sáng: đỏ mận đậm — chính màu chữ trong bản palette */
+  ink: "#7a1a24",
+  /** Chữ phụ: nâu của khách */
+  inkSoft: "#7a5327",
+  /** Nhấn trên nền sáng: nâu mận (Accent) — đủ tương phản cho chữ eyebrow */
+  gold: "#8e4a56",
+  /**
+   * Nhấn trên nền tối. Là bản nhạt của tím lilac: lilac nguyên bản chỉ đạt
+   * 3.7:1 trên nền nâu ô-liu, chưa đủ cho chữ nhỏ.
+   */
+  goldSoft: "#d8bce0",
   /** Nền thẻ, khung ảnh */
-  surface: "#ffffff",
-  line: "#d9cfbd",
+  surface: "#fffdf8",
+  line: "#d9c79b",
+  /* Ba màu còn lại của bộ nhận diện — dành cho hoạ tiết, chip màu, điểm nhấn */
+  rose: "#c96e99",
+  lilac: "#c49dcf",
+  olive: "#6d8c4c",
+  /**
+   * Hai màu của riêng cảnh cổng Huế ở màn mở thiệp — lấy ngay từ bức tranh.
+   * `night` là nền viền khi màn hình không phải 9:16, `lantern` là ánh sáng
+   * trào ra từ ô cửa lúc chuyển sang hero. Không dùng ở section nào khác.
+   */
+  night: "#0c1d31",
+  lantern: "#f2d49b",
 } as const;
 
 /**
@@ -89,6 +107,12 @@ export const fonts = {
 
 /** Thang chữ. Không được dùng size nào ngoài danh sách này. */
 export const typeScale = {
+  /**
+   * Chỉ dành cho tên hai người ở trang bìa: chữ phải ăn gần hết bề ngang màn
+   * hình thì bố cục mới ra chất bìa tạp chí. 21vw là con số giữ đúng tỉ lệ đó
+   * ở mọi khổ máy, hai đầu clamp chỉ để chặn trên máy quá nhỏ hoặc quá to.
+   */
+  poster: { size: "clamp(3.75rem, 21vw, 7rem)", line: "0.84", tracking: "-0.03em" },
   display: { size: "clamp(3rem, 12vw, 7rem)", line: "0.92", tracking: "-0.015em" },
   h1: { size: "clamp(2.5rem, 8vw, 4.75rem)", line: "0.98", tracking: "-0.01em" },
   h2: { size: "clamp(1.875rem, 5.2vw, 3rem)", line: "1.08", tracking: "-0.005em" },

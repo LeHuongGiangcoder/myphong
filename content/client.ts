@@ -95,6 +95,14 @@ export type SectionDesign = {
   /** Dải ngăn cưỡi lên đường nối với section phía trên. */
   divider?: DividerName | null;
   decor?: DecorPlacement[];
+  /**
+   * CHỈ cho section `intro`. Bật cảnh cổng Huế động thay cho nền tĩnh: khách
+   * bấm mở thiệp thì cửa tách ra, ánh sáng và mây tràn ra, rồi cảnh đẩy qua
+   * cửa sang hero. Nhịp và toạ độ nằm ở content/gateway.ts.
+   *
+   * Tắt (hoặc thiếu layer) thì màn mở thiệp quay về ảnh `background` ở dưới.
+   */
+  gateway?: boolean;
 };
 
 /**
@@ -108,14 +116,21 @@ export type SectionDesign = {
  * tới khi khách gửi design system.
  */
 export const design: Record<SectionId, SectionDesign> = {
-  intro: { anchor: "intro", tone: "dark", background: "/images/intro.jpg", overlay: 0.55 },
-  hero: { anchor: "hero", tone: "light", background: "/images/hero.jpg", overlay: 0.7 },
+  /* `background` ở đây là bản dự phòng: chỉ hiện nếu cảnh cổng tải lỗi. */
+  intro: {
+    anchor: "intro",
+    tone: "dark",
+    gateway: true,
+    background: "/images/intro.jpg",
+    overlay: 0.55,
+  },
+  hero: { anchor: "hero", tone: "dark", background: "/images/hero-plate.jpg", overlay: 0 },
   loveStory: { anchor: "love-story", tone: "paper" },
   gallery: { anchor: "gallery", tone: "light" },
   weddingInfo: { anchor: "wedding-info", tone: "dark" },
-  agenda: { anchor: "agenda", tone: "light" },
-  dresscode: { anchor: "dresscode", tone: "paper" },
-  rsvp: { anchor: "rsvp", tone: "light" },
+  agenda: { anchor: "agenda", tone: "paper" },
+  dresscode: { anchor: "dresscode", tone: "light" },
+  rsvp: { anchor: "rsvp", tone: "paper" },
   thankYou: { anchor: "thank-you", tone: "dark" },
 };
 
@@ -124,12 +139,12 @@ export const design: Record<SectionId, SectionDesign> = {
 /** Tên người không dịch — cùng một chuỗi ở cả hai thứ tiếng. */
 export const couple = {
   /** Tên hiển thị lớn ở hero và màn mở thiệp */
-  groom: "Tên Chú Rể",
-  bride: "Tên Cô Dâu",
+  groom: "Phong",
+  bride: "My",
   /** Tên đầy đủ, dùng trong phần thông tin lễ cưới */
-  groomFull: "Họ Tên Đầy Đủ Chú Rể",
-  brideFull: "Họ Tên Đầy Đủ Cô Dâu",
-  hashtag: "#TenChuReCuoiTenCoDau",
+  groomFull: "Hoa Quốc Phong",
+  brideFull: "Bùi Huyền My",
+  hashtag: "#PhongCuoiMy",
 };
 
 /** Bố mẹ hai bên — hiện ở section Time & Venue */
@@ -160,11 +175,11 @@ export const families: {
 
 export const ceremony = {
   /** Giờ khai tiệc. Lịch, đồng hồ đếm ngược và link Google Calendar đều tính từ đây. */
-  startISO: "2026-12-20T17:30:00+07:00",
+  startISO: "2027-12-11T17:30:00+07:00",
   /** Giờ tan tiệc — chỉ dùng cho link thêm vào lịch. */
-  endISO: "2026-12-20T21:30:00+07:00",
-  weekday: { vi: "Chủ Nhật", en: "Sunday" },
-  dateShort: "20 . 12 . 2026",
+  endISO: "2027-12-11T21:30:00+07:00",
+  weekday: { vi: "Thứ Bảy", en: "Saturday" },
+  dateShort: "11 . 12 . 2027",
   timeLabel: "17:30",
   /** Ngày âm — gia đình tự đọc, không tính tự động. */
   lunar: {
@@ -174,7 +189,7 @@ export const ceremony = {
 };
 
 export const venue = {
-  name: "Tên Nhà Hàng / Trung Tâm Tiệc Cưới",
+  name: "Fairmont Hanoi",
   hall: { vi: "Tên sảnh — Tầng X", en: "Hall name — Floor X" },
   address: "Số nhà, đường, phường, quận, thành phố",
   /** Link Maps của khách. Nên dùng link chia sẻ ghim sẵn, đừng để ?query= tự tìm. */
@@ -193,17 +208,31 @@ export const intro = {
   /** Nút mở thiệp. Chính cú chạm này bật nhạc — xem ExperienceProvider. */
   cta: { vi: "Mở thiệp", en: "Open invitation" },
   note: { vi: "Trân trọng kính mời", en: "You are warmly invited" },
+  /**
+   * Chỉ trình đọc màn hình nghe thấy: báo trước rằng bấm nút sẽ chạy một cảnh
+   * mở cổng vài giây chứ không vào thiệp ngay. Dùng khi `design.intro.gateway`.
+   */
+  hint: {
+    vi: "Cổng sẽ mở ra trong vài giây trước khi vào thiệp.",
+    en: "The gate opens for a few seconds before the invitation begins.",
+  },
 };
 
 /* ------------------------------------------------------------------- HERO */
 
 export const hero = {
-  eyebrow: { vi: "Trân trọng kính mời", en: "Together with our families" },
-  headline: {
-    vi: "đến chung vui cùng gia đình chúng tôi",
-    en: "we invite you to celebrate our wedding day",
+  /** Dòng nhỏ in hoa trên tên hai người */
+  eyebrow: { vi: "Hôn lễ của", en: "The wedding celebration of" },
+  /** Lời chào mở đầu, đứng trên tên — đây là câu mời chính của thiệp */
+  invitation: {
+    vi: "Thân gửi quý khách, trân trọng kính mời tới dự hôn lễ của chúng tôi.",
+    en: "Dear guests, we warmly invite you to the celebration of our wedding.",
   },
-  scrollHint: { vi: "Cuộn xuống", en: "Scroll down" },
+  /** Ảnh tách nền của cặp đôi, đứng trước tên hai người */
+  portrait: {
+    src: "/images/hero-couple.webp",
+    alt: { vi: "Chú rể và cô dâu", en: "The groom and the bride" },
+  },
 };
 
 /* -------------------------------------------------------------- LOVE STORY */
@@ -355,10 +384,10 @@ export const dresscode = {
   },
   /** Để mảng rỗng thì phần bảng màu tự ẩn. Mã màu không dịch. */
   swatches: [
-    { name: { vi: "Xanh rêu", en: "Olive" }, hex: "#1d3a2b" },
-    { name: { vi: "Kem", en: "Cream" }, hex: "#f1e7d6" },
-    { name: { vi: "Vàng đồng", en: "Antique gold" }, hex: "#b99a5b" },
-    { name: { vi: "Trắng", en: "White" }, hex: "#ffffff" },
+    { name: { vi: "Hồng phấn", en: "Dusty rose" }, hex: "#c96e99" },
+    { name: { vi: "Tím lilac", en: "Lilac" }, hex: "#c49dcf" },
+    { name: { vi: "Kem", en: "Cream" }, hex: "#edd9a3" },
+    { name: { vi: "Xanh ô-liu", en: "Olive" }, hex: "#6d8c4c" },
   ],
   avoid: {
     vi: "Xin hạn chế trang phục màu trắng tinh của cô dâu.",
@@ -493,7 +522,7 @@ export const thankYou = {
       en: "to share our biggest day with us.",
     },
   ],
-  signature: "Tên Chú Rể & Tên Cô Dâu",
+  signature: "Phong & My",
   image: "/images/couple-06.jpg",
   imageAlt: { vi: "Cô dâu và chú rể", en: "The bride and groom" },
 };
@@ -526,7 +555,7 @@ export const music = {
 export const meta = {
   /** Domain thật của site — dùng để dựng link ảnh OG tuyệt đối. */
   siteUrl: "https://myphong.gloweb.site",
-  title: "Tên Chú Rể & Tên Cô Dâu — Thiệp cưới",
+  title: "Hoa Quốc Phong & Bùi Huyền My — Thiệp cưới",
   description:
     "Trân trọng kính mời quý khách đến chung vui cùng gia đình chúng tôi ngày 20.12.2026. — Join us as we celebrate our wedding on 20.12.2026.",
   /** Ảnh hiện khi dán link lên Zalo / Facebook. */

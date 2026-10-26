@@ -1,0 +1,143 @@
+{
+  "canvas": {
+    "width": 1080,
+    "height": 1920,
+    "sourceSize": [
+      941,
+      1672
+    ],
+    "note": "All registered PNG layers have full-canvas dimensions. Crop helpers are exceptions. Normalization does not add native detail."
+  },
+  "aperture": {
+    "x": 457,
+    "y": 343,
+    "width": 167,
+    "height": 974,
+    "seamX": 540
+  },
+  "doorCrops": {
+    "left": {
+      "x": 457,
+      "y": 343,
+      "width": 83,
+      "height": 974
+    },
+    "right": {
+      "x": 540,
+      "y": 343,
+      "width": 84,
+      "height": 974
+    }
+  },
+  "durationSeconds": 4.8,
+  "layers": [
+    {
+      "file": "00-base-closed.png",
+      "blend": "normal",
+      "zIndex": 0,
+      "description": "Static registered closed scene; includes all fixed scenery."
+    },
+    {
+      "file": "10-portal-interior.png",
+      "blend": "normal",
+      "zIndex": 10,
+      "description": "Open scene inside aperture only; always behind animated leaves."
+    },
+    {
+      "file": "20-door-left.png",
+      "blend": "normal",
+      "zIndex": 20,
+      "description": "Left narrow leaf; translate left inside aperture clipping box."
+    },
+    {
+      "file": "21-door-right.png",
+      "blend": "normal",
+      "zIndex": 21,
+      "description": "Right narrow leaf; translate right inside aperture clipping box."
+    },
+    {
+      "file": "30-portal-frame-open.png",
+      "blend": "normal",
+      "zIndex": 30,
+      "description": "Open-state portal frame. Fade in to change the ceiling and inner jamb lighting."
+    },
+    {
+      "file": "31-portal-light.png",
+      "blend": "screen",
+      "zIndex": 31,
+      "description": "Alternative optical frame lighting; use instead of 30, not both."
+    },
+    {
+      "file": "40-river-light.png",
+      "blend": "screen",
+      "zIndex": 40,
+      "description": "Extracted positive warm difference. Reveal top to bottom with soft advancing mask."
+    },
+    {
+      "file": "41-threshold-spill.png",
+      "blend": "screen",
+      "zIndex": 41,
+      "description": "Light pooling below the door, local feathered optical effect."
+    },
+    {
+      "file": "50-mountain-bounce-optional.png",
+      "blend": "screen",
+      "zIndex": 50,
+      "description": "Optional additional warm reflection approximation, deliberately subtle."
+    },
+    {
+      "file": "60-fog-bank.png",
+      "blend": "normal",
+      "zIndex": 60,
+      "description": "New transparent fog asset reconstructed with imagegen; not exact original fog."
+    },
+    {
+      "file": "61-fog-left.png",
+      "blend": "normal",
+      "zIndex": 61,
+      "description": "Left portion of generated fog for independent outward drift."
+    },
+    {
+      "file": "61-fog-right.png",
+      "blend": "normal",
+      "zIndex": 62,
+      "description": "Right portion of generated fog for independent outward drift."
+    },
+    {
+      "file": "99-reference-open.png",
+      "blend": "normal",
+      "zIndex": 99,
+      "description": "Exact supplied end frame, normalized; final settle/reference only."
+    }
+  ],
+  "timings": {
+    "doors": [
+      0.25,
+      2.75
+    ],
+    "portalLight": [
+      0.28,
+      2.55
+    ],
+    "fog": [
+      0.7,
+      3.45
+    ],
+    "thresholdSpill": [
+      0.5,
+      2.25
+    ],
+    "riverPropagation": [
+      1.05,
+      4.15
+    ],
+    "mountainBounce": [
+      1.15,
+      3.2
+    ],
+    "referenceSettle": [
+      4.15,
+      4.8
+    ]
+  }
+}

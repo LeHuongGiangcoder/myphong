@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="vi"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Huế • Gateway motion study</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#080f19;color:#e7e1d4;font:14px system-ui,sans-serif}main{display:grid;grid-template-columns:minmax(280px,420px) 340px;gap:48px;justify-content:center;align-items:center;min-height:100svh;padding:30px} .stage{position:relative;aspect-ratio:9/16;width:100%;overflow:hidden;background:#0c2033;box-shadow:0 18px 80px #0008}canvas{display:block;width:100%;height:100%}.action{position:absolute;left:50%;bottom:8%;transform:translateX(-50%);border:1px solid #d6b76c99;background:#101d2bd9;color:#efdfb4;letter-spacing:.24em;font:12px Georgia,serif;padding:15px 36px;cursor:pointer;transition:opacity .25s}button:focus-visible{outline:2px solid #eacb83;outline-offset:5px}.action:disabled{cursor:default}.eyebrow{font-size:10px;letter-spacing:.26em;color:#a99366}h1{font:42px/1.15 Georgia,serif;font-weight:400;margin:15px 0 20px}p{color:#a8b4c1;line-height:1.7} .controls{display:flex;gap:8px;margin:28px 0 20px}.controls button{background:#152334;color:#dac79d;border:1px solid #4e504b;padding:10px 16px;cursor:pointer}.slider{width:100%;accent-color:#cfac63}label{display:block;color:#b6bfc9;font-size:12px;margin-bottom:10px}.time{color:#d5b979;font-variant-numeric:tabular-nums}small{display:block;margin-top:20px;color:#77879b;line-height:1.7}details{margin-top:24px;color:#9aa8b9}summary{cursor:pointer} .error{color:#ffac99}
+@media(max-width:760px){main{display:flex;flex-direction:column;padding:0;gap:24px}.stage{width:min(100%,460px)}aside{padding:0 24px 32px;width:min(100%,460px)}h1{font-size:30px}.eyebrow{margin-top:0}}
+</style></head><body><main><div class="stage"><canvas id="art" width="1080" height="1920" aria-label="Cổng mở, mây lan và ánh sáng chảy ra sông"></canvas><button class="action" id="open" disabled>LOADING</button></div><aside><div class="eyebrow">HUẾ / MOTION STUDY 01</div><h1>A quiet door.<br>A world unfolding.</h1><p>Cửa mở trước. Ánh sáng hé ra, mây trôi từ chân cổng, rồi dòng sáng lan dần tới tiền cảnh.</p><div class="controls"><button id="replay">Replay</button><button id="reset">Reset</button></div><label for="progress">Timeline <span class="time" id="time">0.00 / 4.80s</span></label><input class="slider" id="progress" type="range" min="0" max="4.8" step=".01" value="0"><small id="status">Đang tải layer…</small><details><summary>Ghi chú dựng cảnh</summary><p>Demo 2.5D dùng texture từ artwork. Cửa trượt vào sau hai trụ để giữ khớp end frame. Ánh sáng phản lên núi được bổ sung nhẹ. Đoạn cuối hòa vào end frame để khóa đúng hình.</p></details></aside></main>
+<script>
+const W=1080,H=1920,DURATION=4.8,AP={x:457,y:343,w:167,h:974};
+const c=document.querySelector('#art'),ctx=c.getContext('2d',{alpha:false});
+const off=document.createElement('canvas');off.width=W;off.height=H;const fx=off.getContext('2d');
+const names={base:'00-base-closed.webp',end:'99-reference-open.webp',interior:'10-portal-interior.png',left:'20-door-left-crop.png',right:'21-door-right-crop.png',frame:'30-portal-frame-open.png',river:'40-river-light.png',spill:'41-threshold-spill.png',bounce:'50-mountain-bounce-optional.png',fogL:'61-fog-left.png',fogR:'61-fog-right.png'};
+const imgs={},button=document.querySelector('#open'),slider=document.querySelector('#progress'),status=document.querySelector('#status');
+let ready=false,playing=false,elapsed=0,startTime=0,raf=0;
+const clamp=x=>Math.max(0,Math.min(1,x));
+const smooth=(t,a,b)=>{let p=clamp((t-a)/(b-a));return p*p*(3-2*p)};
+const ease=p=>p<.5?4*p*p*p:1-Math.pow(-2*p+2,3)/2;
+function paint(im,alpha=1,blend='source-over',x=0,y=0,w=W,h=H){if(alpha<=0)return;ctx.save();ctx.globalAlpha=alpha;ctx.globalCompositeOperation=blend;ctx.drawImage(im,x,y,w,h);ctx.restore()}
+function draw(t){if(!ready)return;ctx.clearRect(0,0,W,H);paint(imgs.base);
+ if(t>0){
+  const door=ease(clamp((t-.25)/2.5));
+  // Opening is clipped. Sliding leaves vanish behind fixed jambs, never across mountains.
+  ctx.save();ctx.beginPath();ctx.rect(AP.x,AP.y,AP.w,AP.h);ctx.clip();
+  ctx.drawImage(imgs.interior,0,0,W,H);
+  ctx.drawImage(imgs.left,AP.x-83*door,AP.y,83,AP.h);
+  ctx.drawImage(imgs.right,540+84*door,AP.y,84,AP.h);ctx.restore();
+  paint(imgs.frame,smooth(t,.28,2.55));
+  // Spill and bounce follow exposed opening area; no light before the door moves.
+  paint(imgs.spill,.35*smooth(t,.50,2.25)*door,'screen');
+  paint(imgs.bounce,.65*smooth(t,1.15,3.20)*door,'screen');
+  // Preserve the actual painted river. Animate a soft mask, not a replacement neon stroke.
+  const river=smooth(t,1.05,4.15),front=1260+river*800;
+  if(river>0){fx.clearRect(0,0,W,H);fx.globalCompositeOperation='source-over';fx.drawImage(imgs.river,0,0,W,H);fx.globalCompositeOperation='destination-in';const g=fx.createLinearGradient(0,front-110,0,front+90);g.addColorStop(0,'white');g.addColorStop(1,'transparent');fx.fillStyle=g;fx.fillRect(0,0,W,H);fx.globalCompositeOperation='source-over';paint(off,smooth(t,1.05,1.45),'screen')}
+  // Clouds emerge at threshold, expand gently, then drift apart. No smoke cannon.
+  const fp=smooth(t,.70,3.45),fogOpacity=.72*smooth(t,.70,1.75);
+  if(fp>0){ctx.save();ctx.translate(540,1316);ctx.scale(.76+.24*fp,.82+.18*fp);ctx.translate(-540,-1316);paint(imgs.fogL,fogOpacity,'source-over',-64*fp,-20*fp);paint(imgs.fogR,fogOpacity,'source-over',64*fp,-26*fp);ctx.restore()}
+  // The two flattened sources have slight texture drift. A final optical settle
+  // resolves it after movement, rather than crossfading architecture mid-opening.
+  paint(imgs.end,smooth(t,4.15,4.80));
+ }
+ slider.value=t;document.querySelector('#time').textContent=t.toFixed(2)+' / 4.80s';button.style.opacity=t>.05?'0':'1';button.style.pointerEvents=t>.05?'none':'auto';
+}
+function stop(){playing=false;cancelAnimationFrame(raf)}
+function tick(now){if(!playing)return;elapsed=Math.min(DURATION,(now-startTime)/1000);draw(elapsed);if(elapsed<DURATION)raf=requestAnimationFrame(tick);else playing=false}
+function play(){if(!ready)return;stop();elapsed=0;if(matchMedia('(prefers-reduced-motion: reduce)').matches){elapsed=DURATION;draw(elapsed);return}playing=true;startTime=performance.now();raf=requestAnimationFrame(tick)}
+button.onclick=play;document.querySelector('#replay').onclick=play;document.querySelector('#reset').onclick=()=>{stop();elapsed=0;draw(0)};slider.oninput=()=>{stop();elapsed=Number(slider.value);draw(elapsed)};
+window.gateway={seek(t){stop();elapsed=clamp(t/DURATION)*DURATION;draw(elapsed)},play,get ready(){return ready}};
+Promise.all(Object.entries(names).map(([key,file])=>new Promise((resolve,reject)=>{let im=new Image();im.onload=()=>{imgs[key]=im;resolve()};im.onerror=()=>reject(new Error(file));im.src='assets/'+file}))).then(()=>{ready=true;button.disabled=false;button.textContent='OPEN';status.textContent='Sẵn sàng. Có thể kéo timeline để kiểm tra từng lớp.';draw(0)}).catch(e=>{status.textContent='Không tải được '+e.message+'. Chạy thư mục bằng HTTP server theo README.';status.className='error'});
+</script></body></html>

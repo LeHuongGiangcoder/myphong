@@ -1,0 +1,23 @@
+Build a responsive interactive opening hero using the supplied Hue Gateway animation kit.
+
+Read ANIMATION-GUIDE-VI.md and manifest.json first. Keep the supplied artwork, palette, Hue buildings, perspective and composition. Use actual provided layers, not recreated CSS scenery, replacement neon strokes, or stock smoke.
+
+Deliver this as an integration into the existing project. The included demo.html is a working timing/compositing reference. Adapt its logic to the current stack; do not replace the rest of the website. Prefer no new runtime dependencies, or use GSAP only if the project already has it.
+
+Behavior:
+- Start exactly at 00-base-closed.webp. Open button enabled only after required images load.
+- Click triggers one 4.8-second sequence. Hide/disable button. No autoplay.
+- Two narrow leaves separate horizontally behind fixed jambs, clipped to x457,y343,w167,h974 on a 1080x1920 coordinate system. Left crop moves -83px, right crop +84px. The large dark side masses and ceiling remain fixed.
+- Put 10-portal-interior.png underneath the moving leaves; reveal through the opening naturally.
+- 0.25-2.75s doors open using ease-in-out cubic. 0.28-2.55s blend in the illuminated portal frame. Use layer 30 OR screen layer 31, not both.
+- 0.50-2.25s local threshold spill; 0.70-3.45s softly emerging fog drifts outward from the threshold. Use two fog layers, not both these plus the full fog bank.
+- 1.05-4.15s reveal the supplied river-light texture using a soft mask advancing from portal toward bottom foreground. Do not fade all river lines at once. Demo uses a vertical depth reveal; an optional SVG branch-following mask needs further tracing, since the supplied SVG is a rough main-path guide only.
+- 1.15-3.20s add optional subtle warm bounce on near mountains, not a whole-scene yellow filter. Tie light strength to exposed door opening.
+- 4.15-4.80s settle into 99-reference-open.webp to resolve small source-image texture differences. Do not crossfade the whole scene during the door movement.
+- Stop animation at the end. Replay/reset are optional debug controls, not required in the final wedding website.
+
+All registered PNG layers have a common 1080x1920 canvas. Cropped door helper files are exceptions with exact manifest coordinates. Preserve alpha. Use screen only on layers marked screen. Render the full scene with one shared responsive transform; never object-fit each layer independently. Prefer contain if seeing the whole gate ceiling is critical on differing viewport ratios.
+
+Use requestAnimationFrame or a single GSAP timeline, preload images, handle loading failure, clean up timers, support keyboard button and prefers-reduced-motion. Avoid unrequested sound, camera shake, rapid flashes, huge bloom, particle showers and unlimited loops. Keep the scene soft, dimensional and restrained.
+
+After implementation verify start/end matching, no light before the door opens, correct fog origin, outward river reveal, no ghosted architecture, no seam artifacts, and mobile framing.

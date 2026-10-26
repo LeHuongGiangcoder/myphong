@@ -2,9 +2,11 @@ import type { ElementType, HTMLAttributes, ReactNode } from "react";
 
 import { Reveal } from "./Reveal";
 
-type Level = "display" | "h1" | "h2" | "h3" | "h4";
+type Level = "poster" | "display" | "h1" | "h2" | "h3" | "h4";
 
 const LEVEL_CLASS: Record<Level, string> = {
+  /** Chỉ dùng cho tên hai người ở trang bìa */
+  poster: "font-display text-poster",
   display: "font-display text-display",
   h1: "font-display text-h1",
   h2: "font-display text-h2",
@@ -13,6 +15,7 @@ const LEVEL_CLASS: Record<Level, string> = {
 };
 
 const LEVEL_TAG: Record<Level, ElementType> = {
+  poster: "h1",
   display: "h1",
   h1: "h1",
   h2: "h2",
