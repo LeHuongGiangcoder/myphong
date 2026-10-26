@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
+import { useState, type CSSProperties, type FormEvent } from "react";
 import Image from "next/image";
 
 import { useGuest } from "@/components/experience/GuestProvider";
@@ -139,7 +139,13 @@ export function Rsvp() {
         lên, và chừa hẳn một quãng giấy trống hai bên.
       */}
       <div className="relative mx-auto w-full max-w-stage">
-        <div aria-hidden className="absolute inset-0 flex flex-col">
+        {/* --seam nhỏ hơn mặc định: tấm thiệp cao hơn 1300px, 7% sẽ nuốt
+            mất cả dãy đèn lồng ở mép trên. */}
+        <div
+          aria-hidden
+          className="seam-soft absolute inset-0 flex flex-col"
+          style={{ "--seam": "2.5%" } as CSSProperties}
+        >
           {cardTop ? (
             <Image
               src={cardTop.src}
@@ -226,9 +232,9 @@ export function Rsvp() {
 
             <fieldset className="flex flex-col gap-tight">
               <FieldLabel as="legend">{t(fields.side.label)}</FieldLabel>
-              {/* Các dòng chọn không cách nhau thêm: mỗi dòng đã cao đúng một
-                  vùng chạm, xếp liền nhau thì nhịp đều tăm tắp. */}
-              <div className="flex flex-col">
+              {/* Hai lựa chọn đứng cạnh nhau: một hàng thay vì hai dòng cao
+                  44px, và nhãn ngắn nên vẫn đọc thoải mái. */}
+              <div className="grid grid-cols-2 gap-x-stack">
                 {fields.side.options.map((option) => (
                   <Choice
                     key={option.value}
@@ -246,7 +252,7 @@ export function Rsvp() {
 
             <fieldset className="flex flex-col gap-tight">
               <FieldLabel as="legend">{t(fields.attending.label)}</FieldLabel>
-              <div className="flex flex-col">
+              <div className="grid grid-cols-2 gap-x-stack">
                 <Choice
                   name="attending"
                   value="yes"

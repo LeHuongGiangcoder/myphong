@@ -7,7 +7,6 @@ import { Caption, Eyebrow, Heading, SectionHead } from "@/components/ui/Heading"
 import { Reveal } from "@/components/ui/Reveal";
 import { SectionWrapper } from "@/components/ui/SectionWrapper";
 import { ceremony, venue, weddingInfo } from "@/content/client";
-import { googleCalendarUrl } from "@/lib/calendar";
 
 /**
  * Time & Venue — khi nào, và ở đâu.
@@ -25,13 +24,18 @@ import { googleCalendarUrl } from "@/lib/calendar";
  *   nhỏ nhạt (caption)
  */
 export function WeddingInfo() {
-  const { lang, t } = useLocale();
+  const { t } = useLocale();
 
   return (
     <SectionWrapper section="weddingInfo" labelledBy="wedding-info-title" flush width="bleed">
       {/* Khung cao hơn khổ tranh 9:16 để chừa cột giấy ở trên — xem ghi chú
-          đầu file. Tranh tự neo xuống đáy bằng `at` trong client.ts. */}
-      <div className="relative mx-auto w-full max-w-stage" style={{ aspectRatio: "9 / 22" }}>
+          đầu file. Tranh tự neo xuống đáy bằng `at` trong client.ts.
+
+          Tranh phóng 130% nên cao hơn khung 30%, mái đình — thứ chắn đầu
+          tiên bên cột trái — dâng lên theo. Chọn tỉ lệ khung thì đo cột chữ
+          ở BẢN TIẾNG ANH (dài hơn tiếng Việt khoảng 45px) rồi cộng thêm
+          phần tranh nằm dưới mái đình. */}
+      <div className="relative mx-auto w-full max-w-stage" style={{ aspectRatio: "9 / 27" }}>
         <Reveal className="absolute inset-x-0 top-0 flex w-[86%] flex-col items-start gap-block px-gutter pt-section text-left">
           <SectionHead
             eyebrow={t(weddingInfo.eyebrow)}
@@ -66,14 +70,9 @@ export function WeddingInfo() {
             ))}
           </div>
 
-          <div className="flex flex-col items-start gap-stack">
-            <ButtonLink href={venue.mapUrl} target="_blank" rel="noreferrer noopener">
-              {t(venue.mapLabel)}
-            </ButtonLink>
-            <ButtonLink href={googleCalendarUrl(lang)} target="_blank" rel="noreferrer noopener">
-              {t(weddingInfo.calendarLabel)}
-            </ButtonLink>
-          </div>
+          <ButtonLink href={venue.mapUrl} target="_blank" rel="noreferrer noopener">
+            {t(venue.mapLabel)}
+          </ButtonLink>
         </Reveal>
       </div>
     </SectionWrapper>

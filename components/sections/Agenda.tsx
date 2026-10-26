@@ -10,51 +10,69 @@ import { agenda } from "@/content/client";
 import { element } from "@/lib/assets";
 
 /**
- * Trình tự buổi lễ: các mốc giờ là chính, dải sen đứng làm nền bên cạnh.
+ * Trình tự buổi lễ: dải sen chảy giữa trang, bốn mốc giờ đậu hai bên bờ.
  *
- * Trước đây bốn mốc giờ rải vào các ô trống dọc dải sen. Cách đó bắt chữ
- * phải nhỏ và ngắn cho vừa ô — giờ đổi lại: dải sen thu còn 44% bề ngang và
- * lùi sang mép phải, còn các mốc giờ xếp thành một cột bên trái, giờ in cỡ
- * h3 màu nhấn nên đọc lướt là thấy ngay.
+ * Dải sen trải trọn bề ngang khung (trước đây chỉ 44% và nép mép phải) nên
+ * đọc ra một dòng sông chứ không phải một vệt trang trí. Dòng sông uốn chữ
+ * S, chừa sẵn bốn ô giấy trống so le — quét mực theo lưới 24×10 cho thấy:
  *
- * Dải sen đặt thẳng trong component (không qua `decor` của SectionWrapper)
- * vì nó phải bám mép phải của KHUNG rộng tối đa 32rem, chứ không phải mép
- * phải của màn hình.
+ *   trái  y 13–22%   phải y 29–38%   trái y 46–57%   phải y 66–78%
+ *
+ * MARKS bên dưới bám đúng bốn ô đó. Đổi ảnh dải sen hay thêm mốc thứ năm
+ * thì phải quét lại và sửa mảng này, không đoán.
  */
+const MARKS = [
+  { at: "left-0 top-[13%]", align: "text-left" },
+  { at: "right-0 top-[29%]", align: "text-right" },
+  { at: "left-0 top-[46%]", align: "text-left" },
+  { at: "right-0 top-[66%]", align: "text-right" },
+] as const;
+
 export function Agenda() {
   const { t } = useLocale();
   const art = element("agenda");
 
   return (
     <SectionWrapper section="agenda" labelledBy="agenda-title" flush width="bleed">
-      <div className="relative mx-auto w-full max-w-stage py-section">
-        {art ? (
-          <Image
-            aria-hidden
-            alt=""
-            src={art.src}
-            width={art.width ?? 1080}
-            height={art.height ?? 1920}
-            sizes="(max-width: 32rem) 44vw, 14rem"
-            className="pointer-events-none absolute right-0 top-1/2 -z-10 w-[44%] -translate-y-1/2"
-          />
-        ) : null}
-
-        <div className="flex w-[56%] flex-col px-gutter">
+      <div className="mx-auto flex w-full max-w-stage flex-col pt-section">
+        <div className="px-gutter">
           <SectionHead
             eyebrow={t(agenda.eyebrow)}
             title={t(agenda.title)}
             titleId="agenda-title"
             align="left"
+            flush
           />
+        </div>
 
-          <ol className="flex flex-col gap-block">
-            {agenda.items.map((item, i) => (
-              <Reveal as="li" key={`${item.time}-${i}`} delay={i * 80} className="flex flex-col">
-                <p className="font-display text-h3 text-tone-accent">{item.time}</p>
-                <Heading level="h4">{t(item.title)}</Heading>
-              </Reveal>
-            ))}
+        <div className="relative aspect-[1080/1920] w-full">
+          {art ? (
+            <Image
+              aria-hidden
+              alt=""
+              src={art.src}
+              width={art.width ?? 1080}
+              height={art.height ?? 1920}
+              sizes="(max-width: 32rem) 100vw, 32rem"
+              className="seam-soft pointer-events-none absolute inset-0 -z-10 w-full"
+            />
+          ) : null}
+
+          <ol>
+            {agenda.items.map((item, i) => {
+              const mark = MARKS[i % MARKS.length];
+              return (
+                <Reveal
+                  as="li"
+                  key={`${item.time}-${i}`}
+                  delay={i * 80}
+                  className={`absolute flex w-[46%] flex-col px-gutter ${mark.at} ${mark.align}`}
+                >
+                  <p className="font-display text-h3 text-tone-accent">{item.time}</p>
+                  <Heading level="h4">{t(item.title)}</Heading>
+                </Reveal>
+              );
+            })}
           </ol>
         </div>
       </div>

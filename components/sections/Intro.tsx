@@ -61,7 +61,7 @@ export function Intro() {
     <>
       <Eyebrow>{t(intro.eyebrow)}</Eyebrow>
 
-      <Heading level="h1" className="flex flex-col items-center short:text-h2">
+      <Heading level="h1" className="flex items-baseline justify-center gap-[0.35em] short:text-h2">
         <span>{couple.groom}</span>
         <span className="font-script text-h2 text-tone-accent">&amp;</span>
         <span>{couple.bride}</span>
@@ -99,13 +99,13 @@ export function Intro() {
           onReveal={reveal}
           onFinished={onFinished}
         >
-          {/* Chữ nằm ở phần dưới, trên mặt nước — chừa trọn ô cửa cho ánh sáng.
-              Dải tối chân màn chỉ để chữ đọc được, không phải để làm mờ cảnh. */}
+          {/* Chữ nằm trong ô cửa cổng — tận dụng khoảng trống giữa hai cánh.
+              Dải tối đặt ngay sau lưng text block để chữ đọc được trên nền cảnh. */}
           <div
             aria-hidden
-            className="pointer-events-none absolute inset-x-0 bottom-0 h-3/5 bg-linear-to-t from-night via-night/70 to-transparent"
+            className="pointer-events-none absolute inset-x-0 top-[30%] bottom-0 bg-linear-to-t from-night/80 via-night/50 to-transparent"
           />
-          <div className="absolute inset-0 flex flex-col justify-end pb-section">
+          <div className="absolute inset-0 flex flex-col items-center justify-center" style={{ top: '10%' }}>
             <div className="container-prose flex flex-col items-center gap-stack text-center">
               {invitation}
               <p id="intro-hint" className="sr-only">

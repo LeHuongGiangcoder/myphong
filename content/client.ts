@@ -152,11 +152,12 @@ export const design: Record<SectionId, SectionDesign> = {
     decor: [
       {
         name: "timevenue",
-        /* Đúng khổ gốc, không phóng không cắt: dải lụa hồng trên và dải xanh
-           dưới phải còn nguyên hình. Neo ĐÁY để khoảng giấy trống mà cột chữ
-           cần được nối dài lên trên bức tranh. */
-        at: "inset-x-0 bottom-0 mx-auto w-full max-w-stage",
-        sizes: "(max-width: 32rem) 100vw, 32rem",
+        /* Phóng 130% và tràn đều hai bên: bức tranh giữ nguyên hình, chỉ to
+           hơn khung, nên khoảng giấy trống trong tranh cũng rộng ra theo và
+           cột chữ ngồi gọn trong đó. Neo ĐÁY, canh giữa — tràn đều hai bên
+           thì cả dải lụa hồng lẫn dải xanh đều chỉ hụt một ít ở rìa. */
+        at: "seam-soft bottom-0 left-1/2 w-[130%] max-w-none -translate-x-1/2",
+        sizes: "(max-width: 32rem) 130vw, 42rem",
       },
     ],
   },
@@ -189,7 +190,7 @@ export const design: Record<SectionId, SectionDesign> = {
     decor: [
       {
         name: "dresscode",
-        at: "inset-x-0 top-0 mx-auto w-full max-w-stage",
+        at: "seam-soft inset-x-0 top-0 mx-auto w-full max-w-stage",
         sizes: "(max-width: 32rem) 100vw, 32rem",
       },
     ],
@@ -531,14 +532,17 @@ export const rsvp = {
     side: {
       label: { vi: "Quý khách là khách của", en: "You are a guest of" },
       options: [
-        { value: "Nhà trai", label: { vi: "Nhà trai", en: "The groom's family" } },
-        { value: "Nhà gái", label: { vi: "Nhà gái", en: "The bride's family" } },
+        { value: "Nhà trai", label: { vi: "Nhà trai", en: "Groom" } },
+        { value: "Nhà gái", label: { vi: "Nhà gái", en: "Bride" } },
       ],
     },
     attending: {
       label: { vi: "Quý khách có tham dự?", en: "Will you be there?" },
-      yes: { vi: "Có, tôi sẽ đến", en: "Yes, I will be there" },
-      no: { vi: "Rất tiếc, tôi xin vắng", en: "Sorry, I cannot make it" },
+      /* Hai lựa chọn đứng cạnh nhau trên một hàng, nên nhãn phải ngắn —
+         cột chữ trong tấm thiệp chỉ rộng hơn 200px. Chuỗi gửi lên Sheet là
+         "yes"/"no", không phải nhãn này. */
+      yes: { vi: "Sẽ đến", en: "Yes" },
+      no: { vi: "Xin vắng", en: "No" },
     },
     /**
      * Tổng số người đến, tính cả người đang điền form. Khách chọn bằng hai

@@ -30,7 +30,7 @@ export function Dresscode() {
         đoạn 77%–90% (dãy núi) là vướng — toàn bộ phần trên đọc được ở mọi bề
         ngang, nên chữ cứ căn giữa như bình thường, chỉ cần dừng trước núi.
       */}
-      <div className="relative mx-auto aspect-[9/16] w-full max-w-stage">
+      <div className="relative mx-auto aspect-[1080/1690] w-full max-w-stage">
         <div className="container-prose absolute inset-x-0 top-[6%] flex flex-col items-center">
       <SectionHead
         eyebrow={t(dresscode.eyebrow)}

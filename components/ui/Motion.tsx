@@ -79,15 +79,16 @@ export function Motion() {
       hero bật lên trong hơn một giây là hẫng. Ba con số làm việc đó:
 
         duration 1.9   đủ dài để mắt thấy chuyển động chứ không thấy cú nhảy
-        stagger  0.3   ngày giờ → tên hai người → ảnh → câu mời, lần lượt
+        stagger  0.3   ngày giờ → tên hai người → câu mời, lần lượt
         power2.out     giảm tốc đều, không giật ở đầu như power3
 
       Tổng cộng khối cuối cùng ổn định ở khoảng giây thứ 3,3 — trùng với lúc
       nhạc đã vào và lớp cổng tan hẳn.
     */
     const onOpen = () => {
+      // Các khối chữ: nhích lên một quãng ngắn rồi hiện.
       gsap.fromTo(
-        "[data-hero]",
+        "[data-hero]:not([data-hero-soft])",
         { opacity: 0, y: 18, scale: 1.012 },
         {
           opacity: 1,
@@ -97,6 +98,25 @@ export function Motion() {
           ease: "power2.out",
           stagger: 0.3,
           delay: 0.25,
+          overwrite: "auto",
+        },
+      );
+
+      /*
+        Ảnh cặp đôi thì KHÔNG trượt. Ảnh đã tách nền nên khi nó dịch lên,
+        mắt thấy một người bị cắt rời đang trôi trên nền đứng yên — hỏng
+        ngay cái ảo giác "người đứng trong khung cảnh". Thay bằng một cú
+        rõ nét dần: ảnh đứng im tại chỗ, chỉ tan sương ra.
+      */
+      gsap.fromTo(
+        "[data-hero-soft]",
+        { opacity: 0, filter: "blur(18px)" },
+        {
+          opacity: 1,
+          filter: "blur(0px)",
+          duration: 2.2,
+          ease: "power2.out",
+          delay: 0.55,
           overwrite: "auto",
         },
       );

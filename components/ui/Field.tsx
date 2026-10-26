@@ -38,7 +38,13 @@ export function Field({
   );
 }
 
-/** Một lựa chọn radio — cả dòng là vùng chạm, cao tối thiểu 2.75rem. */
+/**
+ * Một lựa chọn radio — cả dòng là vùng chạm, cao tối thiểu 2.75rem.
+ *
+ * Nút và nhãn chỉ cách nhau `gap-tight`: hai lựa chọn đứng cạnh nhau trên
+ * một hàng trong form RSVP, mỗi ô chưa đầy 100px, nên 20px ở đây là đủ đẩy
+ * nhãn xuống dòng thứ hai.
+ */
 export function Choice({
   name,
   value,
@@ -59,7 +65,7 @@ export function Choice({
   children: ReactNode;
 }) {
   return (
-    <label className="flex min-h-tap cursor-pointer items-center gap-stack text-small">
+    <label className="flex min-h-tap cursor-pointer items-center gap-tight text-small">
       <input
         type="radio"
         name={name}

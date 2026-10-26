@@ -4,7 +4,7 @@ import Image from "next/image";
 
 import { useLocale } from "@/components/experience/LocaleProvider";
 import { Divider } from "@/components/ui/Divider";
-import { Eyebrow, Heading, Script } from "@/components/ui/Heading";
+import { Eyebrow, Heading } from "@/components/ui/Heading";
 import { SectionWrapper } from "@/components/ui/SectionWrapper";
 import { ceremony, couple, hero, venue } from "@/content/client";
 
@@ -72,6 +72,7 @@ export function Hero() {
           <Image
             data-reveal
             data-hero
+            data-hero-soft
             src={hero.portrait.src}
             alt={t(hero.portrait.alt)}
             width={1400}
@@ -82,14 +83,18 @@ export function Hero() {
           />
 
           {/* mb-tap: chừa chỗ cho nút nhạc cố định ở góc dưới phải */}
-          {/* Chỉ còn câu mời, và viết bằng font script như mọi lời mời khác
-              trong thiệp — cùng câu đó ở thân chữ thường trông thô và nặng. */}
+          {/* Câu mời viết bằng font thân, KHÔNG phải font script: chữ script
+              nét mảnh đặt lên ảnh chụp nhiều chi tiết thì nét chìm vào nền,
+              dấu tiếng Việt mất trước tiên. Script để dành cho chỗ nền trơn
+              (lời ký cuối thiệp). */}
           <div
             data-reveal
             data-hero
             className="absolute inset-x-0 bottom-0 z-20 mb-tap px-gutter pb-section"
           >
-            <Script className="max-w-[18rem] text-tone-fg">{t(hero.invitation)}</Script>
+            <p className="max-w-[20rem] font-body text-base text-tone-fg">
+              {t(hero.invitation)}
+            </p>
           </div>
         </div>
       </div>

@@ -251,6 +251,61 @@ h4 {
   }
 
   /*
+    Mép TRÊN và mép DƯỚI của một lớp tràn viền tan dần, để chỗ nối hai
+    section không thành một vạch ngang.
+
+    Hai section cạnh nhau cùng trải một tấm vân giấy nhưng mỗi section lại
+    `object-cover` một đoạn khác nhau của nó, nên hai bên đường nối lệch nhau
+    một chút về sắc độ — mắt đọc ra thành đường kẻ. Mask này cho lớp ảnh nhạt
+    dần về trong suốt ở hai mép, chỗ đó chỉ còn màu nền của tông nên hai
+    section gặp nhau ở cùng một màu.
+
+    `--seam` là độ sâu của vùng tan, tính theo chiều cao lớp. Mặc định 7%;
+    lớp nào thấp quá thì đặt lại tại chỗ.
+  */
+  .seam-soft {
+    -webkit-mask-image: linear-gradient(
+      to bottom,
+      transparent 0,
+      #000 var(--seam, 7%),
+      #000 calc(100% - var(--seam, 7%)),
+      transparent 100%
+    );
+    mask-image: linear-gradient(
+      to bottom,
+      transparent 0,
+      #000 var(--seam, 7%),
+      #000 calc(100% - var(--seam, 7%)),
+      transparent 100%
+    );
+  }
+
+  /*
+    Mặt kính mờ cho nút bấm: nền trong, hậu cảnh nhoè sau lưng, viền một nét
+    mảnh bắt sáng. Cả hai lớp đều trộn từ MÀU CỦA TÔNG section đang bọc nó,
+    nên cùng một class dùng được trên giấy kem lẫn trên ảnh tối.
+
+    `backdrop-filter` chỉ nhoè những gì nằm SAU nút, nên nút đặt trên tranh
+    thì thấy tranh nhoè, đặt trên giấy trơn thì chỉ còn lớp nền trong — vẫn
+    đúng tinh thần, không phải thêm ảnh giả.
+  */
+  .glass {
+    background-color: color-mix(in srgb, var(--t-section-bg) 52%, transparent);
+    backdrop-filter: blur(14px) saturate(135%);
+    -webkit-backdrop-filter: blur(14px) saturate(135%);
+    border: 1px solid color-mix(in srgb, var(--t-section-fg) 20%, transparent);
+  }
+
+  /* Bản đậm, cho nút chính: vẫn là mặt kính nhưng ăn màu chữ, để chữ ngược
+     màu trên nó giữ đủ tương phản trên mọi nền. */
+  .glass-strong {
+    background-color: color-mix(in srgb, var(--t-section-fg) 88%, transparent);
+    backdrop-filter: blur(14px) saturate(135%);
+    -webkit-backdrop-filter: blur(14px) saturate(135%);
+    border: 1px solid color-mix(in srgb, var(--t-section-bg) 28%, transparent);
+  }
+
+  /*
     Quầng sáng toả ra từ MỘT ĐIỂM trong ảnh, không phải từ tâm khung hình —
     toạ độ điểm đó do JS đo rồi đặt vào --beam-x / --beam-y, vì nó phụ thuộc
     ảnh đang contain hay cover. Mép ngoài tắt hẳn để không thành viền sáng.
