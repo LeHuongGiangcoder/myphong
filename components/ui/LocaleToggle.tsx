@@ -16,7 +16,7 @@ export function LocaleToggle() {
 
   return (
     <div
-      className="glass fixed z-50 flex items-center overflow-hidden rounded-btn text-ink"
+      className="fixed z-50 flex items-center p-1 rounded-full backdrop-blur-md bg-forest-deep/60 border border-cream/20 shadow-sm"
       style={{
         right: "max(var(--t-space-gutter), env(safe-area-inset-right))",
         top: "calc(var(--t-space-stack) + env(safe-area-inset-top))",
@@ -31,8 +31,10 @@ export function LocaleToggle() {
             onClick={() => setLang(code)}
             aria-pressed={active}
             aria-label={pick(LANG_NAME[code], lang)}
-            className={`flex min-h-tap items-center px-stack font-body text-eyebrow font-medium uppercase ${
-              active ? "bg-forest text-cream" : "text-ink-soft"
+            className={`flex items-center justify-center min-w-[2.25rem] px-2.5 py-1 rounded-full font-body text-eyebrow font-medium uppercase transition-all duration-200 ${
+              active
+                ? "bg-forest text-cream shadow-xs"
+                : "text-cream/70 hover:text-cream"
             }`}
           >
             {LANG_LABEL[code]}
