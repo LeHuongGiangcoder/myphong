@@ -28,6 +28,7 @@ export function Motion() {
     // Ai tắt hiệu ứng thì hiện hết ngay, không dựng trigger nào.
     if (reduce) {
       gsap.set("[data-reveal]", { opacity: 1 });
+      gsap.set("[data-flow]", { "--flow": "100%" });
       return;
     }
 
@@ -53,6 +54,34 @@ export function Motion() {
           }
         },
       });
+
+      /*
+        Lớp chảy ra theo cú cuộn: `--flow` đi từ 0% lên 100% trong lúc khối
+        đi qua màn hình, và `.flow-reveal` trong globals.css biến con số đó
+        thành mép dưới của vùng đã hiện. Dùng cho dải sen ở Agenda — dòng
+        sông phải chảy xuống theo tay khách, không bật lên nguyên tấm.
+
+        `scrub: 0.6` cho nét vẽ bám tay nhưng vẫn trôi mượt khi thả. Kết thúc
+        ở "bottom 75%" chứ không phải "bottom top": dải sen phải hiện xong
+        trước khi mốc giờ cuối cùng rời màn, nếu không khách thấy chữ đứng
+        trên khoảng giấy trống.
+      */
+      for (const node of gsap.utils.toArray<HTMLElement>("[data-flow]")) {
+        gsap.fromTo(
+          node,
+          { "--flow": "0%" },
+          {
+            "--flow": "100%",
+            ease: "none",
+            scrollTrigger: {
+              trigger: node,
+              start: "top 85%",
+              end: "bottom 75%",
+              scrub: 0.6,
+            },
+          },
+        );
+      }
 
       for (const node of gsap.utils.toArray<HTMLElement>("[data-parallax]")) {
         gsap.to(node, {

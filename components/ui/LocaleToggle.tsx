@@ -16,7 +16,7 @@ export function LocaleToggle() {
 
   return (
     <div
-      className="fixed z-50 flex items-center overflow-hidden rounded-btn border border-line bg-surface/85 text-ink shadow-paper backdrop-blur-sm"
+      className="glass fixed z-50 flex items-center overflow-hidden rounded-btn text-ink"
       style={{
         right: "max(var(--t-space-gutter), env(safe-area-inset-right))",
         top: "calc(var(--t-space-stack) + env(safe-area-inset-top))",

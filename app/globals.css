@@ -260,27 +260,34 @@ h4 {
     dần về trong suốt ở hai mép, chỗ đó chỉ còn màu nền của tông nên hai
     section gặp nhau ở cùng một màu.
 
-    Độ sâu vùng tan tính theo chiều cao lớp, mặc định 7%. Đặt lại tại chỗ
+    Độ sâu vùng tan tính theo chiều cao lớp, mặc định 9%. Đặt lại tại chỗ
     bằng `--seam-top` / `--seam-bottom` khi một mép không được phép tan (ví
     dụ chân trang, nơi dưới ảnh không còn gì để tan vào).
+
+    Dốc tan KHÔNG thẳng mà uốn chữ S (bốn chặng mô phỏng smoothstep). Dốc
+    thẳng đổi độ dốc đột ngột ngay tại điểm tan hết, và vì vân giấy (#fdf8f1)
+    nhạt hơn màu kem của tông (#f7eedc) nên chỗ gãy đó hiện ra thành đúng cái
+    vạch ngang mà mask này sinh ra để xoá. Uốn hai đầu dốc cho mềm thì chỗ
+    nối chỉ còn là một vùng sáng dần, mắt không bắt được ranh.
   */
   .seam-soft {
-    --seam-top: 7%;
-    --seam-bottom: 7%;
-    -webkit-mask-image: linear-gradient(
+    --seam-top: 9%;
+    --seam-bottom: 9%;
+    --seam-ramp: linear-gradient(
       to bottom,
-      transparent 0,
+      rgb(0 0 0 / 0) 0,
+      rgb(0 0 0 / 0.08) calc(var(--seam-top) * 0.3),
+      rgb(0 0 0 / 0.5) calc(var(--seam-top) * 0.6),
+      rgb(0 0 0 / 0.92) calc(var(--seam-top) * 0.85),
       #000 var(--seam-top),
       #000 calc(100% - var(--seam-bottom)),
-      transparent 100%
+      rgb(0 0 0 / 0.92) calc(100% - var(--seam-bottom) * 0.85),
+      rgb(0 0 0 / 0.5) calc(100% - var(--seam-bottom) * 0.6),
+      rgb(0 0 0 / 0.08) calc(100% - var(--seam-bottom) * 0.3),
+      rgb(0 0 0 / 0) 100%
     );
-    mask-image: linear-gradient(
-      to bottom,
-      transparent 0,
-      #000 var(--seam-top),
-      #000 calc(100% - var(--seam-bottom)),
-      transparent 100%
-    );
+    -webkit-mask-image: var(--seam-ramp);
+    mask-image: var(--seam-ramp);
   }
 
   /*
@@ -291,21 +298,64 @@ h4 {
     `backdrop-filter` chỉ nhoè những gì nằm SAU nút, nên nút đặt trên tranh
     thì thấy tranh nhoè, đặt trên giấy trơn thì chỉ còn lớp nền trong — vẫn
     đúng tinh thần, không phải thêm ảnh giả.
+
+    Kính KHÔNG có bóng đổ ra ngoài. Một viên thuốc phẳng cộng bóng quanh viền
+    đọc ra là cái nút của bảng điều khiển, không phải mặt kính. Thứ làm mắt
+    tin đó là kính nằm ở chính mặt nút: nền trong hơn, và một vệt sáng chảy
+    từ mép trên xuống (`background-image`) giả ánh sáng bắt vào cạnh vát.
+    Vệt sáng đó là nền, không phải `box-shadow`, nên luật bóng mềm trong
+    CLAUDE.md vẫn nguyên.
   */
   .glass {
-    background-color: color-mix(in srgb, var(--t-section-bg) 52%, transparent);
-    backdrop-filter: blur(14px) saturate(135%);
-    -webkit-backdrop-filter: blur(14px) saturate(135%);
-    border: 1px solid color-mix(in srgb, var(--t-section-fg) 20%, transparent);
+    background-color: color-mix(in srgb, var(--t-section-bg) 34%, transparent);
+    background-image: linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--t-color-surface) 55%, transparent) 0,
+      color-mix(in srgb, var(--t-color-surface) 10%, transparent) 52%,
+      transparent 100%
+    );
+    backdrop-filter: blur(16px) saturate(150%);
+    -webkit-backdrop-filter: blur(16px) saturate(150%);
+    border: 1px solid color-mix(in srgb, var(--t-section-fg) 14%, transparent);
   }
 
   /* Bản đậm, cho nút chính: vẫn là mặt kính nhưng ăn màu chữ, để chữ ngược
      màu trên nó giữ đủ tương phản trên mọi nền. */
   .glass-strong {
-    background-color: color-mix(in srgb, var(--t-section-fg) 88%, transparent);
-    backdrop-filter: blur(14px) saturate(135%);
-    -webkit-backdrop-filter: blur(14px) saturate(135%);
-    border: 1px solid color-mix(in srgb, var(--t-section-bg) 28%, transparent);
+    background-color: color-mix(in srgb, var(--t-section-fg) 82%, transparent);
+    background-image: linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--t-section-bg) 26%, transparent) 0,
+      color-mix(in srgb, var(--t-section-bg) 5%, transparent) 52%,
+      transparent 100%
+    );
+    backdrop-filter: blur(16px) saturate(150%);
+    -webkit-backdrop-filter: blur(16px) saturate(150%);
+    border: 1px solid color-mix(in srgb, var(--t-section-bg) 24%, transparent);
+  }
+
+  /*
+    Lớp hiện dần TỪ TRÊN XUỐNG theo cú cuộn — dùng cho dải sen ở Agenda, để
+    dòng sông chảy ra chứ không bật lên một lúc.
+
+    Component chỉ gắn `data-flow`; Motion.tsx kéo `--flow` từ 0% lên 100%
+    bằng scrub. Mép dưới của vùng hiện tan trong 14% chiều cao nên không thấy
+    đường cắt ngang chạy xuống.
+  */
+  .flow-reveal {
+    --flow: 0%;
+    -webkit-mask-image: linear-gradient(
+      to bottom,
+      #000 0,
+      #000 var(--flow),
+      transparent calc(var(--flow) + 14%)
+    );
+    mask-image: linear-gradient(
+      to bottom,
+      #000 0,
+      #000 var(--flow),
+      transparent calc(var(--flow) + 14%)
+    );
   }
 
   /*

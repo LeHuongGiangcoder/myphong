@@ -47,15 +47,20 @@ export function Agenda() {
 
         <div className="relative aspect-[1080/1920] w-full">
           {art ? (
-            <Image
-              aria-hidden
-              alt=""
-              src={art.src}
-              width={art.width ?? 1080}
-              height={art.height ?? 1920}
-              sizes="(max-width: 32rem) 100vw, 32rem"
-              className="seam-soft pointer-events-none absolute inset-0 -z-10 w-full"
-            />
+            /* Hai lớp mask không chồng lên nhau được, nên `.seam-soft` (mép
+               trên/dưới tan vào section) nằm ở vỏ, còn `.flow-reveal` (chảy
+               ra theo cú cuộn) nằm ở chính bức ảnh. */
+            <div aria-hidden className="seam-soft pointer-events-none absolute inset-0 -z-10">
+              <Image
+                data-flow
+                alt=""
+                src={art.src}
+                width={art.width ?? 1080}
+                height={art.height ?? 1920}
+                sizes="(max-width: 32rem) 100vw, 32rem"
+                className="flow-reveal w-full"
+              />
+            </div>
           ) : null}
 
           <ol>
@@ -66,10 +71,13 @@ export function Agenda() {
                   as="li"
                   key={`${item.time}-${i}`}
                   delay={i * 80}
-                  className={`absolute flex w-[46%] flex-col px-gutter ${mark.at} ${mark.align}`}
+                  className={`absolute flex w-[52%] flex-col px-gutter ${mark.at} ${mark.align}`}
                 >
-                  <p className="font-display text-h3 text-tone-accent">{item.time}</p>
-                  <Heading level="h4">{t(item.title)}</Heading>
+                  {/* Giờ đọc trước tên mục, nên nó to hơn một bậc và ăn màu
+                      chữ của tông chứ không phải màu nhấn: mốc giờ nằm trên
+                      dải sen nhiều màu, màu nhấn mận nhạt bị lá sen nuốt. */}
+                  <p className="font-display text-h2 text-tone-fg">{item.time}</p>
+                  <Heading level="h3">{t(item.title)}</Heading>
                 </Reveal>
               );
             })}

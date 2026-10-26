@@ -15,12 +15,16 @@ const BASE =
 
   Mặt nút là kính mờ (`.glass` / `.glass-strong` trong globals.css) — màu lấy
   từ tông của section nên không phải khai báo lại ở đây.
+
+  KHÔNG có bóng đổ quanh nút. Bóng viền biến mặt kính thành một viên thuốc
+  phẳng dán lên giấy; chất kính nằm ở nền trong và vệt sáng mép trên của
+  `.glass`, không ở cái bóng.
 */
 const VARIANT: Record<Variant, string> = {
   primary:
-    "min-h-tap w-auto min-w-[11rem] max-w-full px-block py-stack glass-strong text-tone-bg shadow-paper hover:[@media(hover:hover)]:-translate-y-px",
+    "min-h-tap w-auto min-w-[11rem] max-w-full px-block py-stack glass-strong text-tone-bg hover:[@media(hover:hover)]:-translate-y-px",
   outline:
-    "min-h-tap w-auto min-w-[11rem] max-w-full px-block py-stack glass text-tone-fg shadow-paper hover:[@media(hover:hover)]:-translate-y-px",
+    "min-h-tap w-auto min-w-[11rem] max-w-full px-block py-stack glass text-tone-fg hover:[@media(hover:hover)]:-translate-y-px",
   icon: "size-tap min-w-tap glass text-tone-fg",
 };
 

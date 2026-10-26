@@ -67,7 +67,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <style>{themeCssVars()}</style>
         {/* JS tắt thì không ai làm chúng hiện — trả lại opacity ngay */}
         <noscript>
-          <style>{`[data-reveal]{opacity:1 !important}`}</style>
+          <style>{`[data-reveal]{opacity:1 !important}[data-flow]{--flow:100% !important}`}</style>
         </noscript>
       </head>
       <body>{children}</body>

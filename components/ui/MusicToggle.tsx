@@ -20,7 +20,7 @@ export function MusicToggle() {
       onClick={toggleMusic}
       aria-pressed={musicOn}
       aria-label={`${musicOn ? t(music.off) : t(music.on)}: ${music.title}`}
-      className="fixed z-50 flex size-tap items-center justify-center rounded-btn border border-line bg-surface/85 text-ink shadow-paper backdrop-blur-sm"
+      className="glass fixed z-50 flex size-tap items-center justify-center rounded-btn text-ink"
       style={{
         right: "max(var(--t-space-gutter), env(safe-area-inset-right))",
         bottom: "calc(var(--t-space-stack) + env(safe-area-inset-bottom))",
