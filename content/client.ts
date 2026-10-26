@@ -219,8 +219,7 @@ export const couple = {
   bride: "My",
   /** Tên đầy đủ, dùng trong phần thông tin lễ cưới */
   groomFull: "Hoa Quốc Phong",
-  brideFull: "Bùi Huyền My",
-  hashtag: "#PhongCuoiMy",
+  brideFull: "Bùi Huyền My"
 };
 
 /** Bố mẹ hai bên — hiện ở section Time & Venue */
