@@ -52,3 +52,29 @@ chậm cả trang trên 3G, và khách xem thiệp cưới gần như toàn bằ
 
 Viết vào [`direction.md`](direction.md) — đó là nơi mình đọc để biết đặt cái gì
 vào đâu. Chép từ `direction.example.md` rồi điền.
+
+## Một dòng pixel đen ở mép trên
+
+Bộ asset khách gửi (và mọi bản xuất lại từ `*-source/`) đều dính cùng một
+lỗi: **hàng pixel đầu tiên của ảnh bị tối**, khoảng 176/255 trong khi phần
+giấy còn lại là 253/255. Một dòng thôi, nhưng ảnh nền được `object-cover`
+trải kín section nên dòng đó rơi đúng vào mép trên section — và hiện ra
+thành một vạch ngang mảnh ở MỌI chỗ nối hai section.
+
+`npm run assets` chỉ chép file, không sửa ảnh. Nên sau mỗi lần khách gửi file
+mới, kiểm tra và vá trước khi chạy `npm run assets`:
+
+```bash
+python3 - <<'PY'
+from PIL import Image
+import glob
+for p in glob.glob('brand/{backgrounds,elements,textures,dividers}/*.webp'):
+    im = Image.open(p).convert('RGB'); W, H = im.size
+    px = im.load()
+    avg = lambda y: sum(sum(px[x, y]) for x in range(0, W, 8)) / (3 * len(range(0, W, 8)))
+    if abs(avg(0) - avg(1)) > 12:
+        im.paste(im.crop((0, 1, W, 2)), (0, 0))   # chép hàng thứ hai đè lên hàng đầu
+        im.save(p, 'WEBP', quality=92, method=6)
+        print('đã vá', p)
+PY
+```

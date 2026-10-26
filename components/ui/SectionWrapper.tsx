@@ -27,10 +27,13 @@ type SectionWrapperProps = {
  * giấy và hai nhành hoa ở góc là sửa nội dung, không phải sửa code.
  *
  * Thứ tự xếp lớp, từ dưới lên: ảnh nền → lớp phủ → vân giấy → hoạ tiết →
- * nội dung. Dải ngăn nằm trên cùng vì nó cưỡi lên đường nối hai section.
+ * dải nhoè mép → nội dung. Dải ngăn nằm trên cùng vì nó cưỡi lên đường nối
+ * hai section.
  *
- * Lớp ảnh nền đeo `.seam-soft`: hai mép trên dưới tan về trong suốt nên chỗ
- * nối hai section không lộ đường kẻ — xem ghi chú ở app/globals.css.
+ * Mép trên và mép dưới của section được NHOÈ thẳng (`.seam-blur`, xem ghi
+ * chú ở app/globals.css) nên chỗ nối hai section không lộ đường kẻ. Tắt bằng
+ * `seam: false` trong `design` — dành cho màn mở thiệp và hero, nơi ảnh phải
+ * ăn hết khung.
  */
 export function SectionWrapper({
   section,
@@ -62,7 +65,7 @@ export function SectionWrapper({
         .join(" ")}
     >
       {background ? (
-        <div aria-hidden className="seam-soft absolute inset-0 -z-20">
+        <div aria-hidden className="absolute inset-0 -z-20">
           <Image src={background.src} alt="" fill sizes="100vw" className="object-cover" />
           {/* Lớp phủ bằng chính màu nền của tông, để chữ đọc được dù ảnh sáng hay tối */}
           <div className="absolute inset-0 bg-tone-bg" style={{ opacity: spec.overlay ?? 0.7 }} />
@@ -83,6 +86,13 @@ export function SectionWrapper({
       ) : null}
 
       {spec.decor?.map((item, i) => <Decor key={`${item.name}-${i}`} {...item} />)}
+
+      {spec.seam === false ? null : (
+        <>
+          <span aria-hidden className="seam-blur seam-blur-top" />
+          <span aria-hidden className="seam-blur seam-blur-bottom" />
+        </>
+      )}
 
       {divider ? (
         <div

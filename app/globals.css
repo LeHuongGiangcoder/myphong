@@ -335,6 +335,42 @@ h4 {
   }
 
   /*
+    Chỗ nối hai section: NHOÈ THẲNG mép trên và mép dưới của section.
+
+    Không phải một dải màu phủ lên, cũng không phải mask làm ảnh tan về màu
+    nền — hai cách đó đều để lại một vệt phẳng nhạt màu nằm vắt ngang, đúng
+    cái vạch cần xoá. Ở đây là `backdrop-filter`: một dải mỏng đặt sát mép,
+    nhoè chính những gì đang nằm dưới nó, và mask chỉ dùng để độ nhoè mạnh
+    dần về phía mép. Nét vẽ vẫn còn, chỉ là tan ra như mực loang trên giấy
+    ướt, nên hai section chảy vào nhau mà không mất hình.
+
+    Nằm ở `z-index: -1` — trên ảnh nền, vân giấy và hoạ tiết (đều ở -10/-20),
+    dưới chữ. Chữ không bao giờ bị nhoè.
+  */
+  .seam-blur {
+    position: absolute;
+    left: 0;
+    right: 0;
+    z-index: -1;
+    height: clamp(2.5rem, 9vw, 5.5rem);
+    pointer-events: none;
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+  }
+
+  .seam-blur-top {
+    top: 0;
+    -webkit-mask-image: linear-gradient(to bottom, #000 0, rgb(0 0 0 / 0.45) 55%, transparent 100%);
+    mask-image: linear-gradient(to bottom, #000 0, rgb(0 0 0 / 0.45) 55%, transparent 100%);
+  }
+
+  .seam-blur-bottom {
+    bottom: 0;
+    -webkit-mask-image: linear-gradient(to top, #000 0, rgb(0 0 0 / 0.45) 55%, transparent 100%);
+    mask-image: linear-gradient(to top, #000 0, rgb(0 0 0 / 0.45) 55%, transparent 100%);
+  }
+
+  /*
     Lớp hiện dần TỪ TRÊN XUỐNG theo cú cuộn — dùng cho dải sen ở Agenda, để
     dòng sông chảy ra chứ không bật lên một lúc.
 

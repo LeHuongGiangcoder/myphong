@@ -1,5 +1,8 @@
 "use client";
 
+import Image from "next/image";
+import type { CSSProperties } from "react";
+
 import { useLocale } from "@/components/experience/LocaleProvider";
 import { ButtonLink } from "@/components/ui/Button";
 import { Divider } from "@/components/ui/Divider";
@@ -7,48 +10,113 @@ import { Caption, Eyebrow, Heading, SectionHead } from "@/components/ui/Heading"
 import { Reveal } from "@/components/ui/Reveal";
 import { SectionWrapper } from "@/components/ui/SectionWrapper";
 import { ceremony, venue, weddingInfo } from "@/content/client";
+import { element } from "@/lib/assets";
 
 /**
  * Time & Venue — khi nào, và ở đâu.
  *
- * MỘT cột chữ duy nhất, bám mép trái. Bức tranh giữ ĐÚNG khổ gốc 9:16, không
- * phóng và không cắt — dải lụa hồng trên, dải xanh và mái đình dưới đều phải
- * còn nguyên hình. Chỗ ngồi của chữ không lấy bằng cách phóng tranh mà bằng
- * cách để KHUNG cao hơn tranh rồi neo tranh xuống đáy: phần giấy thừa ở trên
- * nối liền với khoảng trống sẵn có trong tranh, thành một cột giấy sạch chạy
- * từ đỉnh section xuống tới ngang ngọn cây.
+ * BỨC TRANH CẮT LÀM HAI, CHỮ NGỒI VÀO KHOẢNG GIẤY GIỮA.
+ *
+ * Bức tranh của khách (1080×1920) có đúng một khoảng giấy trống, và nó không
+ * đủ rộng để chứa cột chữ. Quét mực theo từng hàng cho thấy:
+ *
+ *   0 → 19,6%    dải lụa hồng, có chỗ quét sát mép trái
+ *   19,6 → 51%   GIẤY TRỐNG, sạch trên toàn bộ bề ngang
+ *   51 → 100%    mái đình, dải lụa xanh, hàng cây
+ *
+ * Khoảng trống đó chỉ cao 31% bức tranh. Phóng tranh lên cho nó chứa nổi cột
+ * chữ (715px tiếng Việt / 760px tiếng Anh) thì phải phóng gần 280% — mái
+ * đình to gấp ba, hỏng bức tranh. Neo tranh xuống đáy rồi để chữ chảy từ
+ * giấy kem vào tranh thì chữ đè lên dải lụa hồng.
+ *
+ * Nên bức tranh được CẮT ở 35% — giữa khoảng giấy trống, chỗ sạch nhất — rồi
+ * xếp lại: lát trên neo đỉnh section, lát dưới neo đáy, cột chữ nằm trên
+ * giấy giữa hai lát. Giấy đó giãn ra theo chiều dài của chữ, nên bản tiếng
+ * Anh dài hơn cũng không đẩy chữ vào tranh. Cùng cách làm với tấm thiệp RSVP
+ * (components/sections/Rsvp.tsx), chỉ khác là ở đây hai lát không cần lát
+ * nối vì nền giữa chúng chính là vân giấy của section.
  *
  * Ba khối thông tin dùng CHUNG một nhịp bốn bậc, nhờ đó mắt đọc được thứ tự:
  *
  *   nhãn nhỏ in hoa (eyebrow)  →  cái tên (h3)  →  dòng phụ (lead)  →  chữ
  *   nhỏ nhạt (caption)
  */
+
+/**
+ * Bốn con số dưới đây đi cùng nhau — đổi ảnh timevenue là phải quét lại mực
+ * rồi sửa cả bốn.
+ *
+ *   SCALE   tranh rộng 130% bề ngang khung, tràn đều hai bên
+ *   CUT     chỗ cắt, tính theo chiều cao tranh
+ *   TOP/BOT chiều cao mỗi lát, viết thành tỉ lệ khung hình của vỏ cắt
+ *           (bề ngang khung : chiều cao lát) = 1 : SCALE × 16/9 × phần tranh
+ */
+const PLATE = {
+  /** 1 : 1,3 × 1920/1080 × 0,35 */
+  topRatio: "1000 / 809",
+  /** 1 : 1,3 × 1920/1080 × 0,65 */
+  bottomRatio: "1000 / 1502",
+} as const;
+
 export function WeddingInfo() {
   const { t } = useLocale();
+  const art = element("timevenue");
+
+  /* Chỉ MÉP CẮT mới cần tan: lát trên tan ở đáy, lát dưới tan ở đỉnh. Hai
+     con số nằm gọn trong phần giấy trống của mỗi lát (44% và 25% chiều cao
+     lát) nên vùng tan không bao giờ liếm vào nét vẽ.
+
+     Mép ngoài (đỉnh và đáy section) để 0: chỗ nối với section bên cạnh do
+     `.seam-blur` của SectionWrapper lo, tan thêm ở đây là chồng hai lớp
+     thành một dải nhạt. */
+  const topSeam = { "--seam-top": "0%", "--seam-bottom": "26%" } as CSSProperties;
+  const bottomSeam = { "--seam-top": "16%", "--seam-bottom": "0%" } as CSSProperties;
 
   return (
     <SectionWrapper section="weddingInfo" labelledBy="wedding-info-title" flush width="bleed">
-      {/*
-        Hai con số dưới đây đi cùng nhau, đổi một cái là phải đo lại cái kia.
+      <div className="relative mx-auto w-full max-w-stage">
+        {art ? (
+          <>
+            <div
+              aria-hidden
+              className="seam-soft pointer-events-none absolute inset-x-0 top-0 -z-10 overflow-hidden"
+              style={{ ...topSeam, aspectRatio: PLATE.topRatio }}
+            >
+              <Image
+                alt=""
+                src={art.src}
+                width={art.width ?? 1080}
+                height={art.height ?? 1920}
+                sizes="(max-width: 32rem) 130vw, 42rem"
+                className="absolute left-1/2 top-0 w-[130%] max-w-none -translate-x-1/2"
+              />
+            </div>
 
-        `9/32` là chiều cao khung. `top-[19%]` là chỗ dòng đầu tiên bắt đầu —
-        253px ở khổ 375px, tức cột chữ rời hẳn mép trên section và tụt xuống
-        gần đúng khoảng giấy trống của bức tranh (tranh bắt đầu ở 466px).
+            <div
+              aria-hidden
+              className="seam-soft pointer-events-none absolute inset-x-0 bottom-0 -z-10 overflow-hidden"
+              style={{ ...bottomSeam, aspectRatio: PLATE.bottomRatio }}
+            >
+              <Image
+                alt=""
+                src={art.src}
+                width={art.width ?? 1080}
+                height={art.height ?? 1920}
+                sizes="(max-width: 32rem) 130vw, 42rem"
+                className="absolute bottom-0 left-1/2 w-[130%] max-w-none -translate-x-1/2"
+              />
+            </div>
+          </>
+        ) : null}
 
-        Vì sao cột chữ không nằm trọn trong tranh: ở khổ 375px cột chữ cao
-        824px (bản tiếng Anh, dài hơn tiếng Việt chừng 45px) trong khi khoảng
-        trống của tranh phóng 130% chỉ cao 589px — muốn nhét trọn thì phải
-        phóng tranh lên gần 190%, lúc đó mái đình to gấp đôi và hai dải lụa
-        mất gần hết. Nên cột chữ bắt đầu trên giấy kem rồi chảy vào tranh;
-        `.seam-soft` làm hai thứ giấy đó liền nhau nên mắt không thấy ranh.
-
-        Đo lại khi thêm chữ: cột chữ cao 715px (Việt) / 760px (Anh), còn mái
-        đình — thứ chắn đầu tiên bên cột trái — bắt đầu ở 68% chiều cao
-        tranh, tức 1056px tính từ đỉnh khung. Kéo `top` xuống quá 22% là chữ
-        chạm mái.
-      */}
-      <div className="relative mx-auto w-full max-w-stage" style={{ aspectRatio: "9 / 32" }}>
-        <Reveal className="absolute inset-x-0 top-[19%] flex w-[86%] flex-col items-start gap-block px-gutter text-left">
+        {/*
+          `pt` / `pb` tính theo % BỀ NGANG khung (padding % luôn ăn theo bề
+          ngang) nên chữ giữ đúng khoảng cách tới hai lát tranh ở mọi khổ
+          máy. Mỗi con số là chiều cao lát trừ đi phần giấy trống của lát đó:
+          chữ tụt vào vùng giấy ấy một quãng, nhờ vậy không có hai khoảng
+          trắng thừa trên dưới.
+        */}
+        <Reveal className="relative flex w-full flex-col items-start gap-block px-gutter pt-[52%] pb-[124%] text-left">
           <SectionHead
             eyebrow={t(weddingInfo.eyebrow)}
             title={t(weddingInfo.title)}

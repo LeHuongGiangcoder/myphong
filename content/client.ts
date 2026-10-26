@@ -103,6 +103,15 @@ export type SectionDesign = {
   divider?: DividerName | null;
   decor?: DecorPlacement[];
   /**
+   * Mép trên/dưới của section nhoè đi để chỗ nối với section bên cạnh không
+   * thành một đường kẻ. Mặc định bật.
+   *
+   * `false` cho section nào mà mép là một phần của bố cục chứ không phải chỗ
+   * nối — màn mở thiệp và hero: ảnh của chúng phải ăn hết khung, nhoè mép là
+   * hiện ra một dải màu nền viền quanh ảnh.
+   */
+  seam?: boolean;
+  /**
    * CHỈ cho section `intro`. Bật cảnh cổng Huế động thay cho nền tĩnh: khách
    * bấm mở thiệp thì cửa tách ra, ánh sáng và mây tràn ra, rồi cảnh đẩy qua
    * cửa sang hero. Nhịp và toạ độ nằm ở content/gateway.ts.
@@ -130,36 +139,38 @@ export const design: Record<SectionId, SectionDesign> = {
     gateway: true,
     background: "/images/intro.jpg",
     overlay: 0.55,
+    seam: false,
   },
-  hero: { anchor: "hero", tone: "dark", background: "/images/hero-plate.jpg", overlay: 0 },
+  /* `seam: false`: ảnh cặp đôi phải ăn hết khung hero. Nhoè mép là hiện ra
+     một viền nâu ô-liu chạy ngang trên và dưới bức ảnh. */
+  hero: {
+    anchor: "hero",
+    tone: "dark",
+    background: "/images/hero-plate.jpg",
+    overlay: 0,
+    seam: false,
+  },
   loveStory: { anchor: "love-story", tone: "paper" },
   gallery: { anchor: "gallery", tone: "light" },
   /*
-    Tranh mực của khách dùng NGUYÊN BẢN — ghép sẵn element lên vân giấy thành
-    một ảnh 9:16, không tách mảnh: bố cục dải mực là một mạch liền.
+    Tranh mực của khách giữ nguyên tỉ lệ và nguyên nét, nhưng CẮT LÀM HAI ở
+    35% — ngay giữa khoảng giấy trống của chính bức tranh. Lát trên (dải lụa
+    hồng) neo đỉnh section, lát dưới (mái đình, lụa xanh) neo đáy, cột chữ
+    nằm trên giấy giữa hai lát và giấy đó giãn theo chiều dài của chữ.
 
-    Tranh neo ở mép trên và giữ đúng khổ 9:16, nên khoảng giấy trống của nó
-    luôn rơi vào cùng một chỗ ở mọi khổ máy. Chỉ chữ ĐẦU section nằm trong
-    khoảng đó; phần còn lại chảy xuống dưới bức tranh, trên nền giấy trơn —
-    vùng trống của tranh chỉ cao bằng một nửa bức tranh, không chứa nổi cả
-    section ở khổ điện thoại. Xem components/sections/WeddingInfo.tsx.
+    Vì sao không để nguyên một tấm: khoảng trống trong tranh chỉ cao 31% bức
+    tranh, còn cột chữ cao gấp đôi thế — để nguyên thì chữ đè lên dải lụa.
+    Xem components/sections/WeddingInfo.tsx.
   */
   weddingInfo: {
     anchor: "wedding-info",
     tone: "light",
     background: "paper-cream",
     overlay: 0,
-    decor: [
-      {
-        name: "timevenue",
-        /* Phóng 130% và tràn đều hai bên: bức tranh giữ nguyên hình, chỉ to
-           hơn khung, nên khoảng giấy trống trong tranh cũng rộng ra theo và
-           cột chữ ngồi gọn trong đó. Neo ĐÁY, canh giữa — tràn đều hai bên
-           thì cả dải lụa hồng lẫn dải xanh đều chỉ hụt một ít ở rìa. */
-        at: "seam-soft bottom-0 left-1/2 w-[130%] max-w-none -translate-x-1/2",
-        sizes: "(max-width: 32rem) 130vw, 42rem",
-      },
-    ],
+    /* Bức tranh KHÔNG gắn làm `decor` ở đây: nó bị cắt làm hai lát, một neo
+       đỉnh một neo đáy, và cột chữ nằm trên giấy giữa hai lát — chiều cao
+       khoảng giấy đó phải giãn theo chữ nên phải dựng trong
+       components/sections/WeddingInfo.tsx. */
   },
   /*
     Dải sen của khách, dùng nguyên bản trong một khung 9:16. Chữ của section

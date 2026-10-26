@@ -31,16 +31,12 @@ export function ThankYou() {
   return (
     <SectionWrapper section="thankYou" labelledBy="thank-you-title" flush width="bleed">
       <div className="relative min-h-[100svh] w-full">
-        {/* Hai lớp mask chồng nhau: `.edge-feather` trên chính tấm ảnh làm
-            bốn góc tan vào giấy, còn `.seam-soft` trên lớp bọc lo riêng mép
-            TRÊN — chỗ nối với tấm thiệp RSVP. Mép dưới để nguyên
-            (`--seam-bottom: 0`) vì đó là chân trang, dưới ảnh không còn gì
-            để tan vào, mà dải tối dưới chân ảnh thì vẫn đậm. */}
+        {/* `.edge-feather` trên chính tấm ảnh làm bốn góc tan vào giấy, nên
+            ảnh chìm vào thiệp chứ không bị cắt bằng khung chữ nhật. Chỗ nối
+            với tấm thiệp RSVP ở trên do `.seam-blur` của SectionWrapper lo —
+            không chồng thêm mask ở đây. */}
         {thankYou.image ? (
-          <div
-            className="seam-soft absolute inset-0"
-            style={{ "--seam-bottom": "0%" } as CSSProperties}
-          >
+          <div className="absolute inset-0">
             <Image
               src={thankYou.image}
               alt={t(thankYou.imageAlt)}

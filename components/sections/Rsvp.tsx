@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type CSSProperties, type FormEvent } from "react";
+import { useState, type FormEvent } from "react";
 import Image from "next/image";
 
 import { useGuest } from "@/components/experience/GuestProvider";
@@ -139,13 +139,10 @@ export function Rsvp() {
         lên, và chừa hẳn một quãng giấy trống hai bên.
       */}
       <div className="relative mx-auto w-full max-w-stage">
-        {/* Vùng tan nông hơn mặc định: tấm thiệp cao hơn 1300px, 7% sẽ nuốt
-            mất cả dãy đèn lồng ở mép trên. */}
-        <div
-          aria-hidden
-          className="seam-soft absolute inset-0 flex flex-col"
-          style={{ "--seam-top": "2.5%", "--seam-bottom": "2.5%" } as CSSProperties}
-        >
+        {/* Tấm thiệp không tan mép: mái ngói ở đỉnh và dãy mây ở đáy phải
+            còn nguyên. Chỗ nối với section bên cạnh do `.seam-blur` của
+            SectionWrapper lo. */}
+        <div aria-hidden className="absolute inset-0 flex flex-col">
           {cardTop ? (
             <Image
               src={cardTop.src}
@@ -183,11 +180,16 @@ export function Rsvp() {
           ) : null}
         </div>
 
-        <div className="relative flex flex-col gap-block px-[23%] pt-[66%] pb-[46%]">
+        {/* `flush` ở SectionHead: khối này đã có `gap-block` của flex, nếu để
+            SectionHead giữ `mb-block` của nó thì dưới tiêu đề thành hai lần
+            khoảng cách. `pt` cũng rút lại — chữ triện ở góc trên trái buông
+            xuống tới 72% bề ngang lát thiệp trên, 58% là vừa chạm chân nó. */}
+        <div className="relative flex flex-col gap-block px-[23%] pt-[58%] pb-[46%]">
           <SectionHead
             eyebrow={t(rsvp.eyebrow)}
             title={personalized && guest ? `${t(rsvp.greeting)} ${guest.name}` : t(rsvp.title)}
             titleId="rsvp-title"
+            flush
           />
 
           <Reveal>
