@@ -30,50 +30,52 @@ export function Dresscode() {
         đoạn 77%–90% (dãy núi) là vướng — toàn bộ phần trên đọc được ở mọi bề
         ngang, nên chữ cứ căn giữa như bình thường, chỉ cần dừng trước núi.
       */}
-      <div className="relative mx-auto aspect-[1080/1690] w-full max-w-stage">
-        <div className="container-prose absolute inset-x-0 top-[6%] flex flex-col items-center">
-      <SectionHead
-        eyebrow={t(dresscode.eyebrow)}
-        title={t(dresscode.title)}
-        titleId="dresscode-title"
-      />
+      <div className="relative mx-auto aspect-[1080/2050] w-full max-w-stage">
+        <div className="container-prose absolute inset-x-0 top-[7%] flex flex-col items-center gap-block">
+          <SectionHead
+            eyebrow={t(dresscode.eyebrow)}
+            title={t(dresscode.title)}
+            titleId="dresscode-title"
+          />
 
-      <Reveal className="flex flex-col items-center gap-stack text-center">
-        <Heading level="h3">{t(dresscode.headline)}</Heading>
-        <Caption className="max-w-prose">{t(dresscode.note)}</Caption>
-      </Reveal>
+          <Reveal className="flex flex-col items-center gap-stack text-center">
+            <Heading level="h3">{t(dresscode.headline)}</Heading>
+            <Caption className="max-w-prose">{t(dresscode.note)}</Caption>
+          </Reveal>
 
-      {dresscode.swatches.length > 0 ? (
-        <Reveal delay={90} className="mt-block flex flex-col items-center gap-stack">
-          <ul className="grid w-full max-w-[18rem] grid-cols-4 gap-stack">
-            {dresscode.swatches.map((swatch) => (
-              <li key={swatch.hex} className="flex flex-col items-center gap-tight text-center">
-                <span
-                  aria-hidden
-                  className="aspect-square w-full"
-                  style={
-                    sun
-                      ? {
-                          backgroundColor: swatch.hex,
-                          maskImage: `url(${sun.src})`,
-                          WebkitMaskImage: `url(${sun.src})`,
-                          maskRepeat: "no-repeat",
-                          WebkitMaskRepeat: "no-repeat",
-                          maskSize: "contain",
-                          WebkitMaskSize: "contain",
-                          maskPosition: "center",
-                          WebkitMaskPosition: "center",
-                        }
-                      : { backgroundColor: swatch.hex }
-                  }
-                />
-                <span className="text-small text-tone-muted">{t(swatch.name)}</span>
-              </li>
-            ))}
-          </ul>
-          {dresscode.avoid ? <Caption className="text-center">{t(dresscode.avoid)}</Caption> : null}
-        </Reveal>
-      ) : null}
+          {dresscode.swatches.length > 0 ? (
+            <Reveal delay={90} className="mt-stack flex flex-col items-center gap-block">
+              <ul className="grid w-full max-w-[20rem] grid-cols-4 gap-stack">
+                {dresscode.swatches.map((swatch) => (
+                  <li key={swatch.hex} className="flex flex-col items-center gap-tight text-center">
+                    <span
+                      aria-hidden
+                      className="aspect-square w-full"
+                      style={
+                        sun
+                          ? {
+                              backgroundColor: swatch.hex,
+                              maskImage: `url(${sun.src})`,
+                              WebkitMaskImage: `url(${sun.src})`,
+                              maskRepeat: "no-repeat",
+                              WebkitMaskRepeat: "no-repeat",
+                              maskSize: "contain",
+                              WebkitMaskSize: "contain",
+                              maskPosition: "center",
+                              WebkitMaskPosition: "center",
+                            }
+                          : { backgroundColor: swatch.hex }
+                      }
+                    />
+                    <span className="text-small text-tone-muted">{t(swatch.name)}</span>
+                  </li>
+                ))}
+              </ul>
+              {dresscode.avoid ? (
+                <Caption className="text-center">{t(dresscode.avoid)}</Caption>
+              ) : null}
+            </Reveal>
+          ) : null}
         </div>
       </div>
     </SectionWrapper>

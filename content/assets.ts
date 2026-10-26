@@ -18,7 +18,7 @@ export const assets = {
   /** Hoạ tiết rời (hoa, ruy băng, con dấu) — nền trong suốt */
   elements: {
     "agenda": { src: "/brand/elements/agenda.webp", width: 1080, height: 1920 },
-    "dresscode": { src: "/brand/elements/dresscode.webp", width: 1080, height: 1690 },
+    "dresscode": { src: "/brand/elements/dresscode.webp", width: 1080, height: 2050 },
     "rsvp-bloom-left": { src: "/brand/elements/rsvp-bloom-left.webp", width: 520, height: 829 },
     "rsvp-bloom-right": { src: "/brand/elements/rsvp-bloom-right.webp", width: 520, height: 1128 },
     "rsvp-card-bottom": { src: "/brand/elements/rsvp-card-bottom.webp", width: 1080, height: 799 },
