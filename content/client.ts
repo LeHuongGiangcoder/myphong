@@ -263,11 +263,11 @@ export const families: {
 
 export const ceremony = {
   /** Giờ khai tiệc. Lịch, đồng hồ đếm ngược và link Google Calendar đều tính từ đây. */
-  startISO: "2027-12-11T17:30:00+07:00",
+  startISO: "2027-01-10T17:30:00+07:00",
   /** Giờ tan tiệc — chỉ dùng cho link thêm vào lịch. */
-  endISO: "2027-12-11T21:30:00+07:00",
-  weekday: { vi: "Thứ Bảy", en: "Saturday" },
-  dateShort: "11 . 12 . 2027",
+  endISO: "2027-01-10T21:30:00+07:00",
+  weekday: { vi: "Chủ Nhật", en: "Sunday" },
+  dateShort: "10 . 01 . 2027",
   timeLabel: "17:30",
   /** Ngày âm — gia đình tự đọc, không tính tự động. */
   lunar: {
@@ -288,8 +288,8 @@ export const venue = {
     label: { vi: "Đường vào phòng tiệc", en: "Finding the ballroom" },
     steps: [
       {
-        vi: "Quý khách đi cổng Sự kiện của khách sạn, số 27–29 Lý Thái Tổ, rồi theo thang cuốn đến Grand Ballroom, tầng B1.",
-        en: "Please use the hotel's Events entrance at 27–29 Lý Thái Tổ, then take the escalator down to the Grand Ballroom on floor B1.",
+        vi: "Quý khách di chuyển đến Cổng Sự kiện khách sạn Fairmont (số 27–29 Lý Thái Tổ), đi theo thang cuốn đến Grand Ballroom tại tầng B1.",
+        en: "Please make your way to the Fairmont hotel's Events entrance (27–29 Lý Thái Tổ), then take the escalator to the Grand Ballroom on floor B1.",
       },
       {
         vi: "Quý khách đi ô tô gửi xe dưới hầm, đi thang máy lên tầng B1 rồi theo biển chỉ dẫn.",
@@ -654,7 +654,7 @@ export const meta = {
   siteUrl: "https://myphong.gloweb.site",
   title: "Hoa Quốc Phong & Bùi Huyền My — Thiệp cưới",
   description:
-    "Trân trọng kính mời quý khách đến chung vui cùng gia đình chúng tôi ngày 20.12.2026. — Join us as we celebrate our wedding on 20.12.2026.",
+    "Trân trọng kính mời quý khách đến chung vui cùng gia đình chúng tôi ngày 10.01.2027. — Join us as we celebrate our wedding on 10.01.2027.",
   /** Ảnh hiện khi dán link lên Zalo / Facebook. */
   ogImage: "/images/og.jpg",
   locale: "vi_VN",
