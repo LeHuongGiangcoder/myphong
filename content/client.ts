@@ -291,10 +291,6 @@ export const venue = {
         vi: "Quý khách di chuyển đến Cổng Sự kiện khách sạn Fairmont (số 27–29 Lý Thái Tổ), đi theo thang cuốn đến Grand Ballroom tại tầng B1.",
         en: "Please make your way to the Fairmont hotel's Events entrance (27–29 Lý Thái Tổ), then take the escalator to the Grand Ballroom on floor B1.",
       },
-      {
-        vi: "Quý khách đi ô tô gửi xe dưới hầm, đi thang máy lên tầng B1 rồi theo biển chỉ dẫn.",
-        en: "If you come by car, park in the basement, take the lift up to floor B1 and follow the signs.",
-      },
     ],
   },
 };
