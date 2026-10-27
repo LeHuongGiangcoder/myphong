@@ -146,7 +146,7 @@ export const design: Record<SectionId, SectionDesign> = {
   hero: {
     anchor: "hero",
     tone: "dark",
-    background: "/images/hero-plate.jpg",
+    background: "/images/hero-m275.jpg",
     overlay: 0,
     seam: false,
   },
@@ -322,11 +322,8 @@ export const hero = {
     vi: "Thân gửi quý khách, trân trọng kính mời tới dự hôn lễ của chúng tôi.",
     en: "Dear guests, we warmly invite you to the celebration of our wedding.",
   },
-  /** Ảnh tách nền của cặp đôi, đứng trước tên hai người */
-  portrait: {
-    src: "/images/hero-couple.webp",
-    alt: { vi: "Chú rể và cô dâu", en: "The groom and the bride" },
-  },
+  /** Ảnh tách nền đứng đè lên tên. Để null khi dùng ảnh nguyên khung làm nền. */
+  portrait: null as null | { src: string; alt: { vi: string; en: string } },
 };
 
 /* -------------------------------------------------------------- LOVE STORY */
