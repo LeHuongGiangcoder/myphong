@@ -17,6 +17,7 @@
   --color-cream-deep: var(--t-color-cream-deep);
   --color-forest: var(--t-color-forest);
   --color-forest-deep: var(--t-color-forest-deep);
+  --color-espresso: var(--t-color-espresso);
   --color-forest-soft: var(--t-color-forest-soft);
   --color-ink: var(--t-color-ink);
   --color-ink-soft: var(--t-color-ink-soft);
@@ -391,6 +392,34 @@ h4 {
       #000 0,
       #000 var(--flow),
       transparent calc(var(--flow) + 14%)
+    );
+  }
+
+  /*
+    Dải tối ở mép trên / mép dưới một ảnh tràn viền, để chữ kem đặt lên ảnh
+    vẫn đọc được mà KHÔNG phải phủ tối cả bức ảnh — giữa hai dải là ảnh
+    nguyên vẹn. Đây là lớp phủ cho chữ đọc được, không phải để làm mờ cái gì
+    (xem Ba luật thiết kế trong CLAUDE.md).
+
+    Màu lấy từ `espresso`, nâu trầm tối nhất của palette — không dùng
+    `forest-deep` vì nó ngả ô-liu và phủ lên ảnh nắng thì ra nâu sáng.
+    Dải dưới đậm hơn dải trên vì nó đỡ nhiều dòng chữ hơn.
+  */
+  .scrim-top {
+    background: linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--t-color-espresso) 66%, transparent) 0,
+      color-mix(in srgb, var(--t-color-espresso) 62%, transparent) 55%,
+      transparent 100%
+    );
+  }
+
+  .scrim-bottom {
+    background: linear-gradient(
+      to top,
+      color-mix(in srgb, var(--t-color-espresso) 88%, transparent) 0,
+      color-mix(in srgb, var(--t-color-espresso) 62%, transparent) 60%,
+      transparent 100%
     );
   }
 

@@ -315,15 +315,24 @@ export const intro = {
 /* ------------------------------------------------------------------- HERO */
 
 export const hero = {
-  /** Dòng nhỏ in hoa trên tên hai người */
-  eyebrow: { vi: "Hôn lễ của", en: "The wedding celebration of" },
-  /** Lời chào mở đầu, đứng trên tên — đây là câu mời chính của thiệp */
+  /** Dòng nhỏ in hoa trên cùng, đứng trên tên thiệp */
+  eyebrow: { vi: "Trân trọng báo hỷ", en: "With joy we announce" },
+  /**
+   * Tên của tấm thiệp, chữ lớn nhất trang. Xuống dòng bằng `\n` — Hero in ra
+   * với `whitespace-pre-line`, nên chỗ ngắt dòng do nội dung quyết định chứ
+   * không phải do component.
+   */
+  title: { vi: "Ngày\nChung Đôi", en: "The Day\nWe Marry" },
+  /** Câu mời, đứng ngay dưới tên thiệp */
   invitation: {
-    vi: "Thân gửi quý khách, trân trọng kính mời tới dự hôn lễ của chúng tôi.",
-    en: "Dear guests, we warmly invite you to the celebration of our wedding.",
+    vi: "Chúng tôi và gia đình kính mời quý khách tới chung vui.",
+    en: "Together with our families, we warmly invite you to celebrate with us.",
   },
-  /** Ảnh tách nền đứng đè lên tên. Để null khi dùng ảnh nguyên khung làm nền. */
-  portrait: null as null | { src: string; alt: { vi: string; en: string } },
+  /** Nhãn nhỏ in hoa đứng trên tên từng người ở chân trang bìa */
+  roles: {
+    groom: { vi: "Chú rể", en: "Groom" },
+    bride: { vi: "Cô dâu", en: "Bride" },
+  },
 };
 
 /* -------------------------------------------------------------- LOVE STORY */
@@ -462,23 +471,30 @@ export const agenda = {
 /* -------------------------------------------------------------- DRESSCODE */
 
 export const dresscode = {
-  eyebrow: { vi: "Trang phục", en: "Dress code" },
-  title: { vi: "Dress Code", en: "Dress Code" },
+  eyebrow: { vi: "Dress code", en: "Dress code" },
+  title: { vi: "Gợi ý trang phục", en: "Outfit suggestions" },
   headline: { vi: "Thanh lịch & trang trọng", en: "Elegant & formal" },
   note: {
-    vi: "Để khung hình ngày cưới thật hoà hợp, kính mời quý khách chọn trang phục theo bảng màu dưới đây.",
-    en: "To keep the day looking its best, we would love you to dress in these colours.",
+    vi: "Chỉ là gợi ý để ngày cưới thêm hài hoà — quý khách cứ mặc điều mình thích.",
+    en: "Just a suggestion to keep the day harmonious — wear what you love.",
   },
-  /** Để mảng rỗng thì phần bảng màu tự ẩn. Mã màu không dịch. */
+  /**
+   * Để mảng rỗng thì phần bảng màu tự ẩn. Mã màu không dịch.
+   * Lấy từ bảng giấy màu khách gửi; xếp từ nhạt đến đậm theo hai hàng bốn ô.
+   */
   swatches: [
-    { name: { vi: "Hồng phấn", en: "Dusty rose" }, hex: "#c96e99" },
-    { name: { vi: "Tím lilac", en: "Lilac" }, hex: "#c49dcf" },
-    { name: { vi: "Kem", en: "Cream" }, hex: "#edd9a3" },
-    { name: { vi: "Xanh ô-liu", en: "Olive" }, hex: "#6d8c4c" },
+    { name: { vi: "Kem", en: "Ivory" }, hex: "#ddd6c3" },
+    { name: { vi: "Be cát", en: "Sand" }, hex: "#cdbb9e" },
+    { name: { vi: "Nude", en: "Blush" }, hex: "#d9b69f" },
+    { name: { vi: "Sage", en: "Sage" }, hex: "#aca581" },
+    { name: { vi: "Đồng", en: "Bronze" }, hex: "#7d623e" },
+    { name: { vi: "Đỏ nâu", en: "Marsala" }, hex: "#75433e" },
+    { name: { vi: "Rêu", en: "Forest" }, hex: "#434942" },
+    { name: { vi: "Mận", en: "Aubergine" }, hex: "#271918" },
   ],
   avoid: {
-    vi: "Xin hạn chế trang phục màu trắng tinh của cô dâu.",
-    en: "Please avoid bridal white.",
+    vi: "Xin nhường màu trắng tinh cho cô dâu.",
+    en: "Please leave pure white to the bride.",
   },
 };
 

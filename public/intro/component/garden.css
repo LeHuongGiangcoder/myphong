@@ -1,0 +1,70 @@
+/* All geometry is relative to a 9:16 canvas. No framework or build step. */
+:host {
+  display:block;
+  position:relative;
+  width:100%;
+  aspect-ratio:9 / 16;
+  isolation:isolate;
+  overflow:hidden;
+  background:#eae7d9;
+  --sun-duration:32s;
+  --wind-duration:7s;
+  --flight-duration:18s;
+  --flap-duration:.46s;
+  --sun-top:20%;
+  --sun-left:24%;
+  --sun-width:62%;
+  --sun-travel:12%;
+  --wind-angle:1.7deg;
+  --screen-edge:60.1%;
+  --bamboo-top:19%;
+  --bamboo-left:-7%;
+  --bamboo-width:98%;
+}
+*,*::before,*::after {box-sizing:border-box}
+.scene {position:absolute;inset:0;overflow:hidden;contain:layout paint}
+img {display:block;max-width:none;user-select:none;pointer-events:none}
+.background,.screen {position:absolute;inset:0;width:100%;height:100%;object-fit:fill}
+.background {z-index:0}
+/* Motion belongs to a full-canvas wrapper: its % travel uses the stage width. */
+.sun-motion {position:absolute;inset:0;z-index:1;animation:sun-drift var(--sun-duration) ease-in-out infinite alternate;will-change:transform}
+.sun {position:absolute;top:var(--sun-top);left:var(--sun-left);width:var(--sun-width);height:auto;aspect-ratio:1;clip-path:circle(48% at 50% 50%)}
+/* Reuse the exact background pixels. The opaque left screen masks the moving sun. */
+.screen {z-index:2;clip-path:inset(0 calc(100% - var(--screen-edge)) 0 0)}
+.bamboo {position:absolute;z-index:3;left:var(--bamboo-left);top:var(--bamboo-top);width:var(--bamboo-width);height:auto;transform-origin:5% 94%;animation:bamboo-sway var(--wind-duration) ease-in-out infinite;will-change:transform}
+.flight {position:absolute;inset:0;z-index:4;pointer-events:none;animation:flight-ivory var(--flight-duration) ease-in-out infinite;will-change:transform}
+.flight--olive {animation-name:flight-olive;animation-duration:calc(var(--flight-duration) * 1.23)}
+.butterfly {position:absolute;width:10%;aspect-ratio:3 / 2;perspective:220px;transform:rotate(-27deg);transform-style:preserve-3d}
+.butterfly--ivory {left:75%;top:15%}
+.butterfly--olive {left:67%;top:26%;width:9%;transform:rotate(20deg);--flap-duration:.38s}
+.wing,.butterfly-body {position:absolute;inset:0;width:100%;height:100%;object-fit:contain;transform-origin:50% 52%}
+/* The single sprite is clipped into independent left wing, right wing, body.
+   The middle polygon also preserves the antennae. All three share one cached file. */
+.wing--left {clip-path:polygon(0 0,32% 0,47% 40%,47% 100%,0 100%);animation:flap-left var(--flap-duration) ease-in-out infinite alternate}
+.wing--right {clip-path:polygon(68% 0,100% 0,100% 100%,53% 100%,53% 40%);animation:flap-right var(--flap-duration) ease-in-out infinite alternate}
+.butterfly-body {clip-path:polygon(32% 0,68% 0,53% 40%,53% 100%,47% 100%,47% 40%)}
+.butterfly--olive .wing {animation-delay:-.17s}
+.content {position:absolute;inset:0;z-index:5;pointer-events:none}
+::slotted(*) {pointer-events:auto}
+:host([paused]) *,:host([data-offscreen]) *,:host([data-hidden]) * {animation-play-state:paused !important}
+@keyframes sun-drift {from{transform:translate3d(0,0,0)}to{transform:translate3d(var(--sun-travel),0,0)}}
+@keyframes bamboo-sway {0%,100%{transform:rotate(calc(var(--wind-angle) * -1))}50%{transform:rotate(var(--wind-angle))}}
+@keyframes flight-ivory {
+  0%,100%{transform:translate3d(0,0,0) rotate(0deg)}
+  25%{transform:translate3d(-8%,3%,0) rotate(-5deg)}
+  50%{transform:translate3d(-3%,-3%,0) rotate(3deg)}
+  75%{transform:translate3d(4%,1%,0) rotate(-2deg)}
+}
+@keyframes flight-olive {
+  0%,100%{transform:translate3d(0,0,0) rotate(0deg)}
+  25%{transform:translate3d(9%,-5%,0) rotate(6deg)}
+  50%{transform:translate3d(3%,-9%,0) rotate(-2deg)}
+  75%{transform:translate3d(-5%,-3%,0) rotate(-5deg)}
+}
+@keyframes flap-left {from{transform:rotateY(8deg)}to{transform:rotateY(72deg)}}
+@keyframes flap-right {from{transform:rotateY(-8deg)}to{transform:rotateY(-72deg)}}
+@media(prefers-reduced-motion:reduce){
+  .sun-motion,.bamboo,.flight,.wing {animation:none !important;will-change:auto}
+  .wing--left{transform:rotateY(18deg)}
+  .wing--right{transform:rotateY(-18deg)}
+}

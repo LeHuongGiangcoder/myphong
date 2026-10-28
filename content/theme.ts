@@ -26,6 +26,12 @@ export const palette = {
   /** Nền của các section tối: nâu ô-liu của khách */
   forest: "#5c4a20",
   forestDeep: "#3c2f13",
+  /**
+   * Nâu trầm ngả đỏ, tối hơn hẳn `forestDeep`. Chỉ dành cho các lớp phủ làm
+   * chữ đọc được trên ảnh (hero, màn cảm ơn): `forestDeep` ngả ô-liu vàng nên
+   * phủ lên ảnh nắng thì ra màu nâu sáng, còn màu này giữ được độ trầm.
+   */
+  espresso: "#20120c",
   /** Xanh lá của khách */
   forestSoft: "#6d8c4c",
   /** Chữ trên nền sáng: đỏ mận đậm — chính màu chữ trong bản palette */

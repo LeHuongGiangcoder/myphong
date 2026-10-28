@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#e8e3d5">
+  <meta name="description" content="Bộ minh họa Á Đông 9:16: mặt trời di chuyển, tán lá đung đưa và đôi bướm đập cánh. Bản demo dành cho mobile.">
+  <title>Glow Garden · Animation 9:16</title>
+  <link rel="preload" href="assets/webp/background.webp" as="image">
+  <link rel="stylesheet" href="demo.css">
+  <script src="component/garden.js" defer></script>
+  <script src="demo.js" defer></script>
+</head>
+<body>
+  <main class="demo">
+    <div class="artwork"><glow-garden id="garden" sun-duration="32"></glow-garden></div>
+    <section class="controls" aria-label="Điều khiển bản demo">
+      <div class="title-row"><h1>Glow Garden</h1><span class="format">9:16 · MOBILE FIRST</span></div>
+      <div class="actions">
+        <button id="toggle" type="button" aria-pressed="false" aria-label="Tạm dừng chuyển động">Tạm dừng</button>
+        <button id="restart" class="secondary" type="button">Phát lại</button>
+      </div>
+      <label for="sun-speed">Hành trình mặt trời <output id="duration" for="sun-speed">32 giây</output></label>
+      <input id="sun-speed" type="range" min="12" max="60" value="32" step="1">
+      <p class="hint">Mặt trời trôi chậm, lá lay nhẹ, bướm bay và đập cánh độc lập.</p>
+      <p id="motion-status" class="status" role="status" aria-live="polite"></p>
+    </section>
+  </main>
+</body>
+</html>

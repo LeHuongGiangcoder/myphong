@@ -49,7 +49,7 @@ export function ThankYou() {
 
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-x-0 bottom-0 h-[50%] bg-linear-to-t from-forest-deep/86 via-forest-deep/78 via-82% to-transparent"
+          className="pointer-events-none absolute inset-x-0 bottom-0 h-[50%] bg-linear-to-t from-espresso/86 via-espresso/78 via-82% to-transparent"
         />
 
         {/* Khối chữ bám sát chân ảnh. Không chừa `mb-tap` cho nút nhạc: chữ

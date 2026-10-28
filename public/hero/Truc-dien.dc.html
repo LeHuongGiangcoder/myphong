@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<title>Hero E Trực diện</title>
+<script src="./vendor/react.js"></script>
+<script src="./vendor/react-dom.js"></script>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500&amp;family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#F7EFDF}a:hover{color:#ffffff}
+</style>
+</helmet>
+<div style="position: relative; width: 390px; height: 844px; overflow: hidden; background: #2a1410; font-family: 'Be Vietnam Pro', sans-serif; color: #F7EFDF">
+<img src="./assets/940dd36d3de701282135dc9835b9acc4.jpg" alt="Cô dâu chú rể trong áo nhật bình đỏ, đứng trước điện vàng và hồ sen ở Hoàng thành Huế" style="position: absolute; left: -100px; top: 0; width: 563px; height: 844px; display: block">
+
+<div style="position: absolute; left: 0; right: 0; top: 0; height: 330px; background: linear-gradient(to bottom, rgba(26,12,9,{{scrim}}) 0%, rgba(26,12,9,{{scrim}}) 35%, rgba(26,12,9,0) 100%)"></div>
+<div style="position: absolute; left: 0; right: 0; bottom: 0; height: 200px; background: linear-gradient(to bottom, rgba(26,12,9,0) 0%, rgba(26,12,9,0.6) 40%, rgba(26,12,9,0.86) 100%)"></div>
+
+<div style="position: absolute; left: 0; right: 0; top: 55px; display: flex; flex-direction: column; align-items: center; text-align: center">
+<p style="margin: 0; font-size: 8.5px; font-weight: 500; letter-spacing: 0.42em; text-transform: uppercase">Trân trọng báo hỷ</p>
+<h1 style="margin: 12px 0 0; font-family: 'Cormorant Garamond', serif; font-style: italic; font-weight: 400; font-size: 78px; line-height: 0.84; letter-spacing: -0.01em; text-shadow: 0 2px 18px rgba(26,12,9,0.35)">Ngày<br>Chung Đôi</h1>
+<div style="margin-top: 18px; display: flex; align-items: center; gap: 10px">
+<span style="display: block; width: 52px; height: 1px; background: rgba(247,239,223,0.6)"></span>
+<span style="font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 15px; line-height: 1">của</span>
+<span style="display: block; width: 52px; height: 1px; background: rgba(247,239,223,0.6)"></span>
+</div>
+
+</div>
+
+<div style="position: absolute; left: 0; right: 0; top: 744px; display: grid; grid-template-columns: minmax(0, 1fr) 24px minmax(0, 1fr); align-items: end; text-align: center">
+<div style="display: flex; flex-direction: column; align-items: center; gap: 4px">
+<span style="font-size: 7.5px; font-weight: 500; letter-spacing: 0.4em; text-transform: uppercase; opacity: 0.85">Chú rể</span>
+<span style="font-family: 'Cormorant Garamond', serif; font-weight: 500; font-size: 16px; line-height: 1; letter-spacing: 0.05em">HOA QUỐC PHONG</span>
+</div>
+<span style="font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 18px; line-height: 1">&amp;</span>
+<div style="display: flex; flex-direction: column; align-items: center; gap: 4px">
+<span style="font-size: 7.5px; font-weight: 500; letter-spacing: 0.4em; text-transform: uppercase; opacity: 0.85">Cô dâu</span>
+<span style="font-family: 'Cormorant Garamond', serif; font-weight: 500; font-size: 16px; line-height: 1; letter-spacing: 0.05em">BÙI HUYỀN MY</span>
+</div>
+</div>
+
+<p style="position: absolute; left: 0; right: 0; top: 790px; margin: 0; text-align: center; font-family: 'Cormorant Garamond', serif; font-weight: 400; font-size: 18px; line-height: 1; letter-spacing: 0.38em; font-variant-numeric: lining-nums">10 · 01 · 2027</p>
+<p style="position: absolute; left: 0; right: 0; top: 816px; margin: 0; text-align: center; font-size: 8px; line-height: 10px; font-weight: 500; letter-spacing: 0.4em; text-transform: uppercase; opacity: 0.9">Chủ Nhật · Fairmont Hanoi</p>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"scrim":{"editor":"range","default":0.5,"min":0,"max":0.8,"step":0.05},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return { scrim: this.props.scrim ?? 0.5 };
+  }
+}
+</script>
+</body>
+</html>

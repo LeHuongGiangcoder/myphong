@@ -8,7 +8,7 @@ import { dresscode } from "@/content/client";
 import { element } from "@/lib/assets";
 
 /**
- * Trang phục: một câu dẫn và bảng màu.
+ * Trang phục: một câu dẫn và bảng màu gợi ý (tám ô, hai hàng bốn).
  *
  * Ô màu đọc hex thẳng từ client.ts — đây là chỗ duy nhất trong site được phép
  * nhận mã màu từ nội dung, vì bảng màu là nội dung của khách chứ không phải
@@ -44,7 +44,7 @@ export function Dresscode() {
           </Reveal>
 
           {dresscode.swatches.length > 0 ? (
-            <Reveal delay={90} className="mt-stack flex flex-col items-center gap-block">
+            <Reveal delay={90} className="flex flex-col items-center gap-stack">
               <ul className="grid w-full max-w-[20rem] grid-cols-4 gap-stack">
                 {dresscode.swatches.map((swatch) => (
                   <li key={swatch.hex} className="flex flex-col items-center gap-tight text-center">
