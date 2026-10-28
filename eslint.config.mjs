@@ -7,7 +7,7 @@ const eslintConfig = [
   ...next,
   ...nextCoreWebVitals,
   ...nextTypescript,
-  { ignores: [".next/**", "node_modules/**", "public/**"] },
+  { ignores: [".next/**", "node_modules/**", "public/**", "archive/**"] },
 ];
 
 export default eslintConfig;

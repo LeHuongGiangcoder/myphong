@@ -29,14 +29,15 @@ khách sau không? Nếu có thì nên đưa ngược về glow-base thành mộ
 
 ```
 brand/           design system khách gửi — thả file vào rồi `npm run assets`
-  hue-gateway-intro/  bộ asset cổng Huế: guide, master PNG, demo, video tham
-                      chiếu. KHÔNG nằm trong public/ — chỉ bản WebP đã nén ở
-                      public/images/gateway/ mới gửi tới khách.
+  garden-intro/  bộ asset cổng Bình phong: master PNG, component web gốc, demo,
+                 bản thiết kế .dc.html. KHÔNG nằm trong public/ — chỉ năm ảnh
+                 WebP ở public/images/intro/ mới gửi tới khách.
+  hue-gateway-intro/  bộ asset cổng Huế (cổng cũ, đã archive)
   direction.md   creative direction: tinh thần, bảng màu, font, nền từng section
   textures/ backgrounds/ elements/ dividers/
 content/
   client.ts      nội dung của khách — sửa file này là xong một site
-  gateway.ts     nhịp + toạ độ của cảnh cổng Huế ở màn mở thiệp
+  intro.ts       nhịp + toạ độ + bố cục chữ của cổng Bình phong ở màn mở thiệp
   theme.ts       token thiết kế: palette, typography, spacing, motion
   assets.ts      TỰ SINH từ brand/ — bản kê có kiểu, đừng sửa tay
 components/
@@ -51,12 +52,14 @@ components/
     Reveal          đánh dấu khối để GSAP làm hiện khi cuộn tới
     Motion          toàn bộ GSAP của trang, gom vào một chỗ
     MusicToggle     nút bật/tắt nhạc
-    Gateway         cảnh cổng Huế của màn mở thiệp (canvas, bespoke site này)
+    Garden          cổng Bình phong của màn mở thiệp (bespoke site này)
   experience/
     ExperienceProvider  cổng mở thiệp + nhạc + khoá cuộn
     GuestProvider       tra tên khách từ `?to=` khi RSVP chạy chế độ personalized
   sections/      Intro · Hero · LoveStory · Gallery · WeddingInfo ·
                  Agenda · Dresscode · Rsvp · ThankYou
+archive/
+  hue-gateway/   cổng Huế cũ — ngoài build, README trong đó ghi cách bật lại
 lib/
   assets.ts      tra asset theo tên, trả null nếu brand/ chưa có
   calendar.ts    dựng link "Thêm vào lịch" của Google Calendar
@@ -181,61 +184,59 @@ dùng được cho cả nền sáng lẫn nền tối.
 **Đổi diện mạo một section là sửa `design`, không phải sửa file section.**
 File section chỉ còn nói "tôi là section nào" (`<SectionWrapper section="agenda">`).
 
-## Cổng Huế — màn mở thiệp động
+## Cổng Bình phong — màn mở thiệp động
 
-Màn mở thiệp của site này không phải ảnh tĩnh: khách bấm "Mở thiệp" thì hai
-cánh cửa tách ra, ánh vàng thoát ra, mây toả từ chân cổng, dòng sáng chảy
-xuống tiền cảnh — rồi cảnh đẩy qua ô cửa và tan vào hero.
+Màn mở thiệp là một tranh be vàng: dải nâu bên trái, dải ren ở giữa, giấy kem
+bên phải. Lúc chưa mở, dải ren che gần hết mặt trời (chỉ nhô một lưỡi mỏng),
+tán tre đung đưa, chưa có bướm. Bấm "Mở thiệp" → mặt trời trượt ra khỏi dải
+ren, lộ dần từ trái sang phải → hai con bướm từ mép phải bay vào, lượn quanh
+mặt trời → hero hiện lên bên dưới, tranh tan đi → bướm bay tiếp ngang qua hero
+rồi khuất.
 
-Bật/tắt bằng một dòng trong `content/client.ts`:
+Thiệp chung cho mọi khách nên người nhận luôn là "Quý khách" (`intro.guest`).
 
-```ts
-design.intro = { anchor: "intro", tone: "dark", gateway: true, background: "/images/intro.jpg" }
-```
+**Ba chỗ, ba vai trò:**
 
-`gateway: false` (hoặc thiếu một layer) thì màn mở thiệp quay về nền tĩnh
-`background` như khung nền gốc — không cần đụng code.
-
-**Ba file, ba vai trò:**
-
-| File | Sửa khi |
+| Chỗ | Sửa khi |
 |---|---|
-| `content/gateway.ts` | đổi nhịp: cửa mở nhanh/chậm hơn, mây đậm hơn, chỗ nối sang hero dài/ngắn hơn |
-| `components/ui/Gateway.tsx` | đổi *cách vẽ*: thêm/bớt layer, đổi thứ tự xếp lớp |
-| `public/images/gateway/` | thay chính bức tranh |
+| `content/intro.ts` | đổi nhịp (mặt trời, lúc hero hiện, đường bay của bướm), vị trí mặt trời / tre / bướm, vị trí và cỡ chữ trên tranh |
+| `components/ui/Garden.tsx` | đổi *cách dựng*: thêm/bớt lớp, đổi thứ tự xếp lớp |
+| `public/images/intro/` | thay chính bức tranh |
 
-**Vì sao là một canvas chứ không phải 11 thẻ `<img>`:** các lớp ánh sáng phải
-cộng kiểu `screen` và dòng sáng trên sông cần một mask mềm chạy từng khung
-hình — làm bằng DOM là 11 lớp `mix-blend-mode` + mask động, điện thoại tầm
-trung tụt khung ngay. Một canvas cũng bảo đảm cả cảnh dùng **chung một phép
-biến hình**: lệch một pixel giữa các lớp là hở khe sáng ở mép cửa.
+Chữ trên màn này (`components/sections/Intro.tsx`) phải dính đúng vào hoạ tiết
+nên là **ngoại lệ duy nhất** của luật "không số cứng": mọi vị trí và cỡ chữ
+tính bằng đơn vị thiết kế trong `garden.layout`, `du()` quy ra theo chiều cao
+màn hình. Màu thì vẫn đi qua tông `garden` trong `theme.ts`.
 
-Mọi nét vẽ nằm trong hệ toạ độ **1080 × 1920 của bức tranh**, không phải pixel
-màn hình. Backing buffer có thể nhỏ hơn trên máy yếu — `setTransform` lo quy
-đổi, nên code vẽ không cần biết máy nào.
+**Sân khấu:** tranh vẽ cho máy 390 × 844, phủ kín nên rộng 475 × 844. Cả cảnh
+nằm trong một khối 475 × 844 đơn vị đặt giữa màn hình và co theo chiều cao
+(`--iu`). Máy hẹp hơn 9:16 bị cắt hai bên; máy rộng hơn thì tranh đứng giữa,
+hai bên là màu giấy.
 
-**Khung hình:** màn hẹp hơn 9:16 (gần hết điện thoại) thì `cover`, rộng hơn
-thì `contain` và chừa viền màu `night` — để thấy trọn trần cổng, theo đúng
-guide của bộ asset.
+**Mặt trời nằm sau dải ren** nhờ lớp "khung che": chính ảnh nền, cắt từ mép
+trái tới `screenEdge`, vẽ đè lên mặt trời. Không mask, không cắt mặt trời.
 
-**Chỗ nối sang hero** nằm ở khối `handoff` trong `content/gateway.ts`. Nguyên
-tắc: hero phải hiện ra **trước khi** lớp cổng tan hết — chính nhịp chồng nhau
-đó làm mắt không thấy cú cắt. Vì vậy `ExperienceProvider` tách làm hai:
+**Bướm nằm ngoài lớp tranh** nên tranh tan mà bướm vẫn bay tiếp qua hero. Mỗi
+con là một ảnh cắt ba lớp (`.butterfly` trong globals.css): hai cánh gập bằng
+rotateY, không cần sprite sheet.
+
+**Chỗ nối sang hero:** hero phải hiện ra **trước khi** tranh tan hết — chính
+nhịp chồng nhau đó làm mắt không thấy cú cắt. Vì vậy `ExperienceProvider` tách
+làm hai:
 
 - `open()` — gọi ngay trong cú chạm, chỉ bật nhạc (trình duyệt điện thoại
   chặn mọi lần phát nhạc không sinh từ thao tác người dùng);
-- `reveal()` — gọi muộn hơn vài giây, lúc này hero mới hiện và trang mở khoá
-  cuộn.
+- `reveal()` — gọi muộn hơn vài giây (`timings.reveal`), lúc này hero mới hiện
+  và trang mở khoá cuộn.
 
 Site không có cảnh động thì gọi liền hai cái trong cùng một handler.
 
-**Đừng làm:** đừng fade cả hai bức tranh vào nhau ngay lúc bấm (núi và mái nhà
-sẽ bóng đôi — chỉ được hoà về end frame SAU khi cửa mở xong); đừng vẽ nét neon
-mới đè lên sông (chỉ animate mask của texture gốc); đừng hạ `opacity` của cả
-cảnh cho "dịu" — xem Ba luật thiết kế.
+**Đừng làm:** đừng hạ `opacity` của tre, mặt trời hay bướm cho "dịu" — xem Ba
+luật thiết kế; đừng đặt bướm vào trong lớp tranh (sẽ tan cùng tranh, mất đoạn
+bay qua hero).
 
-Chi tiết đầy đủ về từng layer: `brand/hue-gateway-intro/ANIMATION-GUIDE-VI.md`.
-Xem thử nhịp gốc: mở `brand/hue-gateway-intro/demo.html` bằng HTTP server.
+Cổng Huế cũ: `archive/hue-gateway/` (cách bật lại trong README ở đó), bộ asset
+gốc vẫn ở `brand/hue-gateway-intro/`.
 
 ## Chuyển động
 
@@ -290,11 +291,12 @@ và **không bao giờ** được vào repo.
      (cỡ chữ ô nhập phải ≥ 16px — `text-base`);
    - thử cả chiều ngang: biến thể `short:` dành cho máy nằm ngang.
 2. `npm run build` phải xanh.
-3. Bấm thử "Mở thiệp" trọn một lượt trên điện thoại: cửa không hở sáng lúc
-   còn đóng, mây bắt đầu đúng ở chân cổng, dòng sáng lan từ cổng ra chứ không
-   hiện một lúc, và hero phải chồng lên lớp cổng một nhịp — không được chớp
-   đen giữa hai cảnh. Bật "Giảm chuyển động" trong máy thử thêm một lượt: phải
-   vào thẳng hero trong khoảng một giây.
+3. Bấm thử "Mở thiệp" trọn một lượt trên điện thoại: lúc chưa mở mặt trời
+   chỉ nhô một lưỡi mỏng sau dải ren và chưa có bướm; bấm thì mặt trời lộ dần
+   từ trái sang phải, bướm bay vào từ mép phải; hero phải chồng lên tranh một
+   nhịp — không được chớp giữa hai cảnh — và bướm bay tiếp qua hero rồi khuất.
+   Bật "Giảm chuyển động" trong máy thử thêm một lượt: phải vào thẳng hero
+   trong khoảng một giây, không có bướm.
 4. Đã thay hết placeholder: không còn "Tên Cô Dâu", không còn ảnh mẫu, link Maps
    là link thật của khách.
 5. Không commit `.env` dưới bất kỳ dạng nào.

@@ -111,14 +111,6 @@ export type SectionDesign = {
    * hiện ra một dải màu nền viền quanh ảnh.
    */
   seam?: boolean;
-  /**
-   * CHỈ cho section `intro`. Bật cảnh cổng Huế động thay cho nền tĩnh: khách
-   * bấm mở thiệp thì cửa tách ra, ánh sáng và mây tràn ra, rồi cảnh đẩy qua
-   * cửa sang hero. Nhịp và toạ độ nằm ở content/gateway.ts.
-   *
-   * Tắt (hoặc thiếu layer) thì màn mở thiệp quay về ảnh `background` ở dưới.
-   */
-  gateway?: boolean;
 };
 
 /**
@@ -132,13 +124,14 @@ export type SectionDesign = {
  * tới khi khách gửi design system.
  */
 export const design: Record<SectionId, SectionDesign> = {
-  /* `background` ở đây là bản dự phòng: chỉ hiện nếu cảnh cổng tải lỗi. */
+  /*
+    Màn mở thiệp là cổng Bình phong (components/ui/Garden.tsx): tranh, mặt
+    trời, tre, bướm đều nằm trong code của cổng nên không có `background` ở
+    đây. Cổng Huế cũ đã archive — xem archive/hue-gateway/README.md.
+  */
   intro: {
     anchor: "intro",
-    tone: "dark",
-    gateway: true,
-    background: "/images/intro.jpg",
-    overlay: 0.55,
+    tone: "garden",
     seam: false,
   },
   /* `seam: false`: ảnh cặp đôi phải ăn hết khung hero. Nhoè mép là hiện ra
@@ -298,17 +291,26 @@ export const venue = {
 /* ------------------------------------------------------------------ INTRO */
 
 export const intro = {
-  eyebrow: { vi: "Save the Date", en: "Save the Date" },
+  /** Dòng nhỏ in hoa trên tên hai người, cột phải của tranh */
+  eyebrow: { vi: "Lễ thành hôn", en: "The wedding of" },
+  /** Tên hiển thị trên màn mở thiệp: ngắn hơn `couple.groomFull` / `brideFull` cho vừa cột hẹp */
+  names: { groom: "Quốc Phong", bride: "Huyền My" },
+  /** "Thân mời" + người nhận. Thiệp chung cho mọi khách nên người nhận là "Quý khách". */
+  inviteLabel: { vi: "Thân mời", en: "Cordially inviting" },
+  guest: { vi: "Quý khách", en: "Our guests" },
+  /** Dòng chữ dọc ở dải nâu bên trái */
+  vertical: { vi: "Trân trọng kính mời", en: "With warm regards" },
   /** Nút mở thiệp. Chính cú chạm này bật nhạc — xem ExperienceProvider. */
-  cta: { vi: "Mở thiệp", en: "Open invitation" },
-  note: { vi: "Trân trọng kính mời", en: "You are warmly invited" },
+  cta: { vi: "Mở thiệp", en: "Open" },
+  /** Dòng chữ nghiêng dưới nút */
+  tap: { vi: "chạm để mở", en: "tap to open" },
   /**
    * Chỉ trình đọc màn hình nghe thấy: báo trước rằng bấm nút sẽ chạy một cảnh
-   * mở cổng vài giây chứ không vào thiệp ngay. Dùng khi `design.intro.gateway`.
+   * vài giây (mặt trời lộ ra, bướm bay) chứ không vào thiệp ngay.
    */
   hint: {
-    vi: "Cổng sẽ mở ra trong vài giây trước khi vào thiệp.",
-    en: "The gate opens for a few seconds before the invitation begins.",
+    vi: "Tranh sẽ chuyển động vài giây trước khi vào thiệp.",
+    en: "The scene moves for a few seconds before the invitation begins.",
   },
 };
 

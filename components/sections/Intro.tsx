@@ -1,144 +1,219 @@
 "use client";
 
 import { useCallback, useState } from "react";
-import Image from "next/image";
 
 import { useExperience } from "@/components/experience/ExperienceProvider";
 import { useLocale } from "@/components/experience/LocaleProvider";
-import { Button } from "@/components/ui/Button";
-import { Divider } from "@/components/ui/Divider";
-import { Gateway } from "@/components/ui/Gateway";
-import { Eyebrow, Heading } from "@/components/ui/Heading";
-import { couple, design, intro } from "@/content/client";
-import { background as resolveBackground } from "@/lib/assets";
+import { Garden } from "@/components/ui/Garden";
+import { ceremony, design, intro, venue } from "@/content/client";
+import { garden, du } from "@/content/intro";
+
+const L = garden.layout;
+
+/** Noto Serif TC chỉ tải đúng một ký tự 囍 (U+56CD) cho ấn — vài trăm byte thay vì cả font Hán. */
+const SEAL_FONT =
+  "https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@700&text=%E5%9B%8D&display=swap";
 
 /**
- * Màn mở thiệp. Nằm phủ kín màn hình, giữ trang khoá cuộn cho tới khi khách
- * bấm "Mở thiệp" — chính cú chạm đó bật nhạc (xem ExperienceProvider).
+ * Màn mở thiệp: cổng Bình phong. Nằm phủ kín màn hình, giữ trang khoá cuộn
+ * cho tới khi khách bấm "Mở thiệp" — chính cú chạm đó bật nhạc (xem
+ * ExperienceProvider).
  *
- * Hai kiểu, chọn bằng `design.intro.gateway` trong content/client.ts:
+ * Bấm nút → mặt trời lộ ra, bướm bay vào (xem components/ui/Garden.tsx) →
+ * hero hiện lên bên dưới rồi tranh tan đi. Màn này SỐNG THÊM một nhịp sau khi
+ * hero hiện ra, và bướm còn bay tiếp qua hero, nên `opened` của
+ * ExperienceProvider KHÔNG quyết định lúc nào gỡ màn này đi — `phase` ở đây mới
+ * là cái quyết định.
  *
- *   gateway: true   cảnh cổng Huế động. Bấm nút → cửa mở trong ~4,8 giây →
- *                   cảnh đẩy qua ô cửa → hero hiện lên bên dưới rồi lớp cổng
- *                   tan đi. Màn này SỐNG THÊM một nhịp sau khi hero hiện ra,
- *                   chính nhịp chồng nhau đó làm chỗ nối không thấy cú cắt.
- *   gateway: false  nền ảnh tĩnh, bấm là vào thẳng hero (kiểu của khung nền).
+ * Thiệp chung cho mọi khách nên người nhận luôn là "Quý khách" (`intro.guest`),
+ * không tra tên từ `?to=`. Cổng Huế cũ nằm ở archive/hue-gateway.
  *
- * Vì vậy `opened` của ExperienceProvider KHÔNG còn quyết định lúc nào gỡ màn
- * này đi — `phase` ở đây mới là cái quyết định.
+ * Mọi vị trí và cỡ chữ ở đây đọc từ `garden.layout` (content/intro.ts), tính
+ * bằng đơn vị thiết kế rồi `du()` quy ra theo chiều cao màn hình — chữ phải
+ * dính đúng vào hoạ tiết của tranh nên không dùng được spacing của theme.
  */
 export function Intro() {
   const { open, reveal } = useExperience();
   const { t } = useLocale();
 
   const [phase, setPhase] = useState<"idle" | "opening" | "gone">("idle");
-  /* Cảnh cổng phải tải đủ layer mới cho bấm, nếu không cửa sẽ nhảy cóc. */
-  const [gateReady, setGateReady] = useState(false);
-  const [gateFailed, setGateFailed] = useState(false);
+  /* Tranh phải tải đủ ảnh mới cho bấm, nếu không mặt trời sẽ nhảy cóc. */
+  const [ready, setReady] = useState(false);
 
-  const spec = design.intro;
-  const useGate = (spec.gateway ?? false) && !gateFailed;
-
-  const onFail = useCallback(() => setGateFailed(true), []);
-  const onReady = useCallback(() => setGateReady(true), []);
+  const onReady = useCallback(() => setReady(true), []);
   const onFinished = useCallback(() => setPhase("gone"), []);
 
   const handleOpen = useCallback(() => {
     if (phase !== "idle") return;
     // Nhạc phải play() ngay trong cú chạm, trước mọi thứ khác.
     open();
-    if (useGate) {
-      setPhase("opening");
-      return;
-    }
-    reveal();
-    setPhase("gone");
-  }, [phase, open, reveal, useGate]);
+    setPhase("opening");
+  }, [phase, open]);
 
   if (phase === "gone") return null;
 
-  const invitation = (
-    <>
-      <Eyebrow>{t(intro.eyebrow)}</Eyebrow>
-
-      <Heading level="h1" className="flex items-baseline justify-center gap-[0.35em] short:text-h2">
-        <span>{couple.groom}</span>
-        <span className="font-script text-h2 text-tone-accent">&amp;</span>
-        <span>{couple.bride}</span>
-      </Heading>
-
-      <Divider diamond />
-
-      <p className="font-script text-h3">{t(intro.note)}</p>
-
-      <Button
-        onClick={handleOpen}
-        disabled={useGate && !gateReady}
-        className="mt-stack"
-        aria-describedby={useGate ? "intro-hint" : undefined}
-      >
-        {t(intro.cta)}
-      </Button>
-    </>
-  );
-
-  const dialog = {
-    "data-tone": spec.tone,
-    role: "dialog" as const,
-    "aria-modal": true,
-    "aria-label": t(intro.eyebrow),
-  };
-
-  if (useGate) {
-    return (
-      <div {...dialog} className="fixed inset-0 z-40 bg-night text-tone-fg">
-        <Gateway
-          open={phase === "opening"}
-          onReady={onReady}
-          onFail={onFail}
-          onReveal={reveal}
-          onFinished={onFinished}
-        >
-          {/* Chữ nằm trong ô cửa cổng — tận dụng khoảng trống giữa hai cánh.
-              Dải tối đặt ngay sau lưng text block để chữ đọc được trên nền cảnh. */}
-          <div
-            aria-hidden
-            className="pointer-events-none absolute inset-x-0 top-[30%] bottom-0 bg-linear-to-t from-night/80 via-night/50 to-transparent"
-          />
-          <div className="absolute inset-0 flex flex-col items-center justify-center" style={{ top: '10%' }}>
-            <div className="container-prose flex flex-col items-center gap-stack text-center">
-              {invitation}
-              <p id="intro-hint" className="sr-only">
-                {t(intro.hint)}
-              </p>
-            </div>
-          </div>
-        </Gateway>
-      </div>
-    );
-  }
-
-  const background = resolveBackground(spec.background);
+  const { names } = L;
+  const date = ceremony.dateShort.replaceAll(" . ", " · ");
 
   return (
     <div
-      {...dialog}
-      className="fixed inset-0 z-40 flex items-center justify-center bg-tone-bg text-tone-fg"
+      data-tone={design.intro.tone}
+      role="dialog"
+      aria-modal="true"
+      aria-label={t(intro.eyebrow)}
+      className="fixed inset-0 z-40 text-tone-fg"
     >
-      {background ? (
-        <>
-          <Image src={background.src} alt="" fill sizes="100vw" priority className="object-cover" />
-          <div
-            aria-hidden
-            className="absolute inset-0 bg-tone-bg"
-            style={{ opacity: spec.overlay ?? 0.55 }}
-          />
-        </>
-      ) : null}
+      <link rel="stylesheet" href={SEAL_FONT} precedence="default" />
 
-      <div className="container-prose relative flex flex-col items-center gap-stack text-center">
-        {invitation}
-      </div>
+      <Garden open={phase === "opening"} onReady={onReady} onReveal={reveal} onFinished={onFinished}>
+        {/* Dải nâu bên trái: vạch đứng + dòng chữ dọc */}
+        <span
+          aria-hidden
+          className="absolute bg-bark/45"
+          style={{ left: du(L.rule.x), top: du(L.rule.y), width: "1px", height: du(L.rule.h) }}
+        />
+        <p
+          className="absolute m-0 whitespace-nowrap font-body font-medium uppercase text-tone-contrast"
+          style={{
+            left: du(L.vertical.x),
+            top: du(L.vertical.y),
+            height: du(12),
+            lineHeight: du(12),
+            fontSize: du(L.vertical.size),
+            letterSpacing: `${L.vertical.ls}em`,
+            transformOrigin: "0 0",
+            transform: "rotate(-90deg)",
+          }}
+        >
+          {t(intro.vertical)}
+        </p>
+
+        {/* Ấn 囍 trên dải ren: viền kem + một nét thau mảnh, không đổ bóng */}
+        <div
+          aria-hidden
+          className="absolute rounded-card border border-brass/60 bg-ivory"
+          style={{
+            left: du(L.seal.x - L.seal.ring),
+            top: du(L.seal.y - L.seal.ring),
+            padding: du(L.seal.ring),
+          }}
+        >
+          <div
+            className="flex items-center justify-center rounded-paper bg-seal"
+            style={{ width: du(L.seal.size), height: du(L.seal.size) }}
+          >
+            <span
+              lang="zh-Hant"
+              className="font-cjk font-bold leading-none text-ivory"
+              style={{ fontSize: du(L.seal.glyph) }}
+            >
+              囍
+            </span>
+          </div>
+        </div>
+
+        {/* Nút mở thiệp + dòng gợi ý */}
+        <button
+          type="button"
+          data-garden-cta
+          onClick={handleOpen}
+          disabled={!ready}
+          aria-describedby="intro-hint"
+          className="absolute flex items-center justify-center border border-brass bg-ivory font-body font-medium uppercase text-tone-fg transition-[opacity,background-color] duration-200 ease-glow disabled:opacity-55 hover:[@media(hover:hover)]:bg-surface"
+          style={{
+            left: du(L.cta.x),
+            top: du(L.cta.y),
+            width: du(L.cta.w),
+            height: du(L.cta.h),
+            fontSize: du(L.cta.size),
+            letterSpacing: `${L.cta.ls}em`,
+          }}
+        >
+          {t(intro.cta)}
+        </button>
+        <p
+          data-garden-cta
+          aria-hidden
+          className="absolute m-0 text-center font-display italic text-tone-muted"
+          style={{ left: du(L.tap.x), top: du(L.tap.y), width: du(L.tap.w), fontSize: du(L.tap.size) }}
+        >
+          {t(intro.tap)}
+        </p>
+
+        {/* Cột phải trên nền giấy: tên hai người + lời mời */}
+        <div
+          className="absolute flex flex-col items-start"
+          style={{ left: du(names.x), top: du(names.y), width: du(names.w) }}
+        >
+          <p
+            className="m-0 font-body font-medium uppercase text-tone-muted"
+            style={{ fontSize: du(names.label.size), letterSpacing: `${names.label.ls}em` }}
+          >
+            {t(intro.eyebrow)}
+          </p>
+          <p
+            className="m-0 font-display font-medium italic text-tone-fg"
+            style={{ marginTop: du(names.gap.label), fontSize: du(names.name.size), lineHeight: 1.02 }}
+          >
+            <span className="block">{intro.names.groom}</span>
+            <span className="block font-light" style={{ fontSize: du(names.name.amp) }}>
+              &amp;
+            </span>
+            <span className="block">{intro.names.bride}</span>
+          </p>
+          <span
+            aria-hidden
+            className="block bg-brass"
+            style={{ marginTop: du(names.rule.gap), width: du(names.rule.w), height: "1px" }}
+          />
+          <p
+            className="m-0 font-body font-medium uppercase text-tone-muted"
+            style={{
+              marginTop: du(names.invite.gap),
+              fontSize: du(names.label.size),
+              letterSpacing: `${names.label.ls}em`,
+            }}
+          >
+            {t(intro.inviteLabel)}
+          </p>
+          <p
+            className="m-0 font-display font-medium italic text-tone-fg"
+            style={{
+              marginTop: du(names.gap.guest),
+              fontSize: du(names.invite.size),
+              lineHeight: 1.15,
+            }}
+          >
+            {t(intro.guest)}
+          </p>
+        </div>
+
+        {/* Ngày và nơi tổ chức, chân cột phải */}
+        <div
+          className="absolute flex flex-col items-start"
+          style={{ left: du(L.date.x), top: du(L.date.y), gap: du(6) }}
+        >
+          <p
+            className="m-0 font-display leading-none lining-nums text-tone-fg"
+            style={{ fontSize: du(L.date.size), letterSpacing: `${L.date.ls}em` }}
+          >
+            {date}
+          </p>
+          <p
+            className="m-0 font-body font-medium uppercase text-tone-muted"
+            style={{
+              fontSize: du(L.date.place.size),
+              letterSpacing: `${L.date.place.ls}em`,
+            }}
+          >
+            {venue.name}
+          </p>
+        </div>
+      </Garden>
+
+      <p id="intro-hint" className="sr-only">
+        {t(intro.hint)}
+      </p>
     </div>
   );
 }

@@ -59,6 +59,18 @@ export const palette = {
    */
   night: "#0c1d31",
   lantern: "#f2d49b",
+  /**
+   * Bảy màu của cổng Bình phong (màn mở thiệp, tranh be vàng): giấy, nâu óc
+   * chó, nâu thau, đỏ mận, ấn son và kem. Chỉ màn mở thiệp dùng — xem
+   * `tones.garden` ở dưới.
+   */
+  parchment: "#ede6d6",
+  ivory: "#f7f2e6",
+  bark: "#3f2814",
+  walnut: "#6b4a2a",
+  brass: "#a8864e",
+  burgundy: "#5c1512",
+  seal: "#8e1f1a",
 } as const;
 
 /**
@@ -82,6 +94,15 @@ export const tones = {
     accent: palette.gold,
     line: palette.line,
     contrast: palette.forest,
+  },
+  /** Màn mở thiệp Bình phong: chữ đỏ mận trên giấy be, nhấn bằng nâu thau. */
+  garden: {
+    bg: palette.parchment,
+    fg: palette.burgundy,
+    muted: palette.walnut,
+    accent: palette.brass,
+    line: palette.brass,
+    contrast: palette.bark,
   },
   dark: {
     bg: palette.forest,
@@ -109,6 +130,12 @@ export const fonts = {
   display: 'var(--ff-display), Georgia, "Times New Roman", serif',
   body: "var(--ff-body), ui-sans-serif, system-ui, sans-serif",
   script: 'var(--ff-script), "Apple Chancery", cursive',
+  /**
+   * Chỉ cho ấn 囍 ở màn mở thiệp. Noto Serif TC được tải đúng một ký tự đó
+   * (xem components/sections/Intro.tsx); máy không tải được thì rơi về font
+   * Hán có sẵn trên iOS / macOS / Android.
+   */
+  cjk: '"Noto Serif TC", "Songti TC", "Hiragino Mincho ProN", "Noto Serif CJK TC", serif',
 } as const;
 
 /** Thang chữ. Không được dùng size nào ngoài danh sách này. */
@@ -213,6 +240,7 @@ export function themeCssVars(): string {
   push("font-display", fonts.display);
   push("font-body", fonts.body);
   push("font-script", fonts.script);
+  push("font-cjk", fonts.cjk);
 
   for (const [key, step] of Object.entries(typeScale)) {
     push(`text-${kebab(key)}`, step.size);
