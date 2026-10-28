@@ -58,9 +58,9 @@ export function Hero() {
           className="mb-stack flex flex-col items-center gap-stack"
         >
           <div className="flex items-end justify-center gap-tight whitespace-nowrap">
-            <Name role={t(hero.roles.groom)} name={couple.groomFull} />
+            <Name role={t(hero.roles.groom)} name={t(couple.groomFull)} />
             <span className="font-display italic text-base sm:text-h4 leading-none text-tone-fg">&amp;</span>
-            <Name role={t(hero.roles.bride)} name={couple.brideFull} />
+            <Name role={t(hero.roles.bride)} name={t(couple.brideFull)} />
           </div>
 
           <div className="flex flex-col items-center gap-tight">

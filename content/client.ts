@@ -185,14 +185,14 @@ export const design: Record<SectionId, SectionDesign> = {
 
 /* ------------------------------------------------------------------ COUPLE */
 
-/** Tên người không dịch — cùng một chuỗi ở cả hai thứ tiếng. */
-export const couple = {
-  /** Tên hiển thị lớn ở hero và màn mở thiệp */
-  groom: "Phong",
-  bride: "My",
+/** Tên người: bản tiếng Anh dùng tên quốc tế của hai bạn. */
+export const couple: { groom: L; bride: L; groomFull: L; brideFull: L } = {
+  /** Tên ngắn, dùng ở tiêu đề sự kiện trên lịch */
+  groom: { vi: "Phong", en: "Steven" },
+  bride: { vi: "My", en: "Mia" },
   /** Tên đầy đủ, dùng trong phần thông tin lễ cưới */
-  groomFull: "Hoa Quốc Phong",
-  brideFull: "Bùi Huyền My"
+  groomFull: { vi: "Hoa Quốc Phong", en: "Steven QP Hoa" },
+  brideFull: { vi: "Bùi Huyền My", en: "Mia HM Bui" },
 };
 
 /** Bố mẹ hai bên — hiện ở section Time & Venue */
@@ -274,7 +274,10 @@ export const intro = {
   /** Dòng nhỏ in hoa trên tên hai người, cột phải của tranh */
   eyebrow: { vi: "Lễ thành hôn", en: "The wedding of" },
   /** Tên hiển thị trên màn mở thiệp: ngắn hơn `couple.groomFull` / `brideFull` cho vừa cột hẹp */
-  names: { groom: "Quốc Phong", bride: "Huyền My" },
+  names: {
+    groom: { vi: "Quốc Phong", en: "Steven QP Hoa" } as L,
+    bride: { vi: "Huyền My", en: "Mia HM Bui" } as L,
+  },
   /** "Thân mời" + người nhận. Thiệp chung cho mọi khách nên người nhận là "Quý khách". */
   inviteLabel: { vi: "Thân mời", en: "Cordially inviting" },
   guest: { vi: "Quý khách", en: "Our guests" },

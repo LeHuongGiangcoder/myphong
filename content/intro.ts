@@ -132,12 +132,12 @@ export const garden = {
     /** Khối tên hai người + lời mời, cột phải trên nền giấy. */
     names: {
       x: 300.5,
-      y: 506,
-      w: 120,
-      label: { size: 7.5, ls: 0.42 },
-      name: { size: 28, amp: 22 },
-      rule: { w: 36, gap: 16 },
-      invite: { gap: 14, size: 19 },
+      y: 476,
+      w: 128,
+      label: { size: 8.5, ls: 0.4 },
+      name: { size: 30, amp: 24 },
+      rule: { w: 40, gap: 18 },
+      invite: { gap: 16, size: 21 },
       /** Khoảng cách: nhãn → tên, và nhãn "Thân mời" → người nhận */
       gap: { label: 10, guest: 6 },
     },

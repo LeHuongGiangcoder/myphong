@@ -134,11 +134,11 @@ export function Intro() {
             className="m-0 font-display font-medium italic text-tone-fg"
             style={{ marginTop: du(names.gap.label), fontSize: du(names.name.size), lineHeight: 1.02 }}
           >
-            <span className="block">{intro.names.groom}</span>
+            <span className="block">{t(intro.names.groom)}</span>
             <span className="block font-light" style={{ fontSize: du(names.name.amp) }}>
               &amp;
             </span>
-            <span className="block">{intro.names.bride}</span>
+            <span className="block">{t(intro.names.bride)}</span>
           </p>
           <span
             aria-hidden

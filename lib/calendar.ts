@@ -18,7 +18,7 @@ const TITLE = {
  * thứ tiếng khách đang đọc thiệp.
  */
 export function googleCalendarUrl(lang: Lang): string {
-  const names = `${couple.groom} & ${couple.bride}`;
+  const names = `${pick(couple.groom, lang)} & ${pick(couple.bride, lang)}`;
   const params = new URLSearchParams({
     action: "TEMPLATE",
     text: TITLE[lang](names),
