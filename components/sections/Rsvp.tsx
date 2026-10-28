@@ -16,8 +16,16 @@ import { element } from "@/lib/assets";
 
 type Status = "idle" | "sending" | "sent" | "error";
 
-/** Ba lát thiệp luôn trải đúng bề ngang của thiệp, không phải của màn hình. */
-const CARD_SIZES = "(max-width: 32rem) 100vw, 32rem";
+/**
+ * Tấm thiệp được vẽ rộng hơn khung chứa 20% mỗi chiều (10% tràn ra mỗi bên),
+ * để mái ngói chìa khỏi viewport và ô giấy rộng ra cho form thoáng. Phần tràn
+ * bị `overflow-x-clip` của SectionWrapper cắt. Đổi số này thì đổi cả
+ * `px-[…]`, `pt-[…]`, `pb-[…]` của khối nội dung bên dưới theo cùng tỉ lệ.
+ */
+const CARD_BLEED = "w-[120%] -translate-x-1/2 left-1/2";
+
+/** Ba lát thiệp trải đúng bề ngang của thiệp (120% khung), không phải của màn hình. */
+const CARD_SIZES = "(max-width: 32rem) 120vw, 39rem";
 
 /**
  * Hoa đỏ và sparkle — trước đây rải ở ĐẦU thiệp (cạnh mái ngói, đèn lồng) làm
@@ -27,10 +35,10 @@ const CARD_SIZES = "(max-width: 32rem) 100vw, 32rem";
  *
  * `at` tính theo % của KHUNG thiệp (cao theo form), `w` là % bề ngang khung —
  * kích thước giữ đúng tỉ lệ so với khi còn nằm trên tranh gốc. Hai dải lề bên
- * ngoài tấm giấy rộng 17% mỗi bên, nên không hoạ tiết nào rộng quá ~10%.
+ * ngoài tấm giấy chỉ còn ~11% mỗi bên (thiệp đã phóng 120%), nên không hoạ tiết nào rộng quá ~10%.
  */
 const MID_ORNAMENTS: readonly OrnamentPlacement[] = [
-  { name: "sparkle-red", at: "left-[3%] top-[34%]", w: "9%" },
+  { name: "sparkle-red", at: "left-[1%] top-[34%]", w: "9%" },
   { name: "flower-red-right", at: "right-0 top-[41%]", w: "6.7%" },
   { name: "sparkle-gold", at: "right-[5%] top-[49%]", w: "5%" },
   { name: "flower-red-left", at: "left-0 top-[53%]", w: "5.4%" },
@@ -162,7 +170,7 @@ export function Rsvp() {
         {/* Tấm thiệp không tan mép: mái ngói ở đỉnh và dãy mây ở đáy phải
             còn nguyên. Chỗ nối với section bên cạnh do `.seam-blur` của
             SectionWrapper lo. */}
-        <div aria-hidden className="absolute inset-0 flex flex-col">
+        <div aria-hidden className={`absolute inset-y-0 flex flex-col ${CARD_BLEED}`}>
           {cardTop ? (
             <Image
               src={cardTop.src}
@@ -208,7 +216,7 @@ export function Rsvp() {
             SectionHead giữ `mb-block` của nó thì dưới tiêu đề thành hai lần
             khoảng cách. `pt` cũng rút lại — chữ triện ở góc trên trái buông
             xuống tới 72% bề ngang lát thiệp trên, 58% là vừa chạm chân nó. */}
-        <div className="relative flex flex-col gap-block px-[23%] pt-[58%] pb-[46%]">
+        <div className="relative flex flex-col gap-block px-[18%] pt-[70%] pb-[55%]">
           <SectionHead
             eyebrow={t(rsvp.eyebrow)}
             title={personalized && guest ? `${t(rsvp.greeting)} ${guest.name}` : t(rsvp.title)}
