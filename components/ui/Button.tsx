@@ -3,7 +3,7 @@ import type { AnchorHTMLAttributes, ButtonHTMLAttributes, ReactNode } from "reac
 type Variant = "primary" | "outline" | "icon";
 
 const BASE =
-  "inline-flex items-center justify-center gap-tight rounded-btn font-body text-eyebrow font-semibold uppercase transition-[transform,background-color,color] duration-200 ease-glow disabled:opacity-55 disabled:pointer-events-none";
+  "inline-flex items-center justify-center gap-tight font-body text-eyebrow font-semibold uppercase transition-[transform,background-color,color] duration-200 ease-glow disabled:opacity-55 disabled:pointer-events-none";
 
 /*
   Vùng chạm luôn >= 2.75rem (min-h-tap) để ngón tay bấm không trượt.
@@ -13,19 +13,19 @@ const BASE =
   nhãn quá dài. Nút căng hết màn trông như thanh công cụ của ứng dụng, không
   phải như một tấm thiệp.
 
-  Mặt nút là kính mờ (`.glass` / `.glass-strong` trong globals.css) — màu lấy
-  từ tông của section nên không phải khai báo lại ở đây.
+  Mặt nút là hình chữ nhật phẳng (`.btn-solid` / `.btn-ghost` trong
+  globals.css) — màu lấy từ tông của section nên không phải khai báo lại ở đây.
+  KHÔNG thêm `rounded-*` ở đây: hai class đó đã đặt góc vuông.
 
-  KHÔNG có bóng đổ quanh nút. Bóng viền biến mặt kính thành một viên thuốc
-  phẳng dán lên giấy; chất kính nằm ở nền trong và vệt sáng mép trên của
-  `.glass`, không ở cái bóng.
+  KHÔNG có bóng đổ quanh nút: nút đặc phẳng đặt thẳng lên giấy, như một con
+  dấu, không phải một vật nổi.
 */
 const VARIANT: Record<Variant, string> = {
   primary:
-    "min-h-tap w-auto min-w-[11rem] max-w-full px-block py-stack glass-strong text-tone-bg hover:[@media(hover:hover)]:-translate-y-px",
+    "min-h-tap w-auto min-w-[11rem] max-w-full px-block py-stack btn-solid text-tone-bg hover:[@media(hover:hover)]:-translate-y-px",
   outline:
-    "min-h-tap w-auto min-w-[11rem] max-w-full px-block py-stack glass text-tone-fg hover:[@media(hover:hover)]:-translate-y-px",
-  icon: "size-tap min-w-tap glass text-tone-fg",
+    "min-h-tap w-auto min-w-[11rem] max-w-full px-block py-stack btn-ghost text-tone-fg hover:[@media(hover:hover)]:-translate-y-px",
+  icon: "size-tap min-w-tap btn-ghost text-tone-fg",
 };
 
 type Common = { variant?: Variant; className?: string; children: ReactNode };

@@ -8,6 +8,7 @@ import { useLocale } from "@/components/experience/LocaleProvider";
 import { Button } from "@/components/ui/Button";
 import { Heading, Script, SectionHead } from "@/components/ui/Heading";
 import { Choice, Field, FieldLabel, Stepper } from "@/components/ui/Field";
+import { Ornaments, type OrnamentPlacement } from "@/components/ui/Ornaments";
 import { Reveal } from "@/components/ui/Reveal";
 import { SectionWrapper } from "@/components/ui/SectionWrapper";
 import { rsvp } from "@/content/client";
@@ -17,6 +18,25 @@ type Status = "idle" | "sending" | "sent" | "error";
 
 /** Ba lát thiệp luôn trải đúng bề ngang của thiệp, không phải của màn hình. */
 const CARD_SIZES = "(max-width: 32rem) 100vw, 32rem";
+
+/**
+ * Hoa đỏ và sparkle — trước đây rải ở ĐẦU thiệp (cạnh mái ngói, đèn lồng) làm
+ * phần đầu quá nhiều hoạ tiết. Giờ chúng được gỡ khỏi lát trên (xem
+ * scripts/recolor-paper.mjs) và đặt lại ở khoảng GIỮA section, hai bên tấm
+ * giấy, nơi form dài và trống nhất.
+ *
+ * `at` tính theo % của KHUNG thiệp (cao theo form), `w` là % bề ngang khung —
+ * kích thước giữ đúng tỉ lệ so với khi còn nằm trên tranh gốc. Hai dải lề bên
+ * ngoài tấm giấy rộng 17% mỗi bên, nên không hoạ tiết nào rộng quá ~10%.
+ */
+const MID_ORNAMENTS: readonly OrnamentPlacement[] = [
+  { name: "sparkle-red", at: "left-[3%] top-[34%]", w: "9%" },
+  { name: "flower-red-right", at: "right-0 top-[41%]", w: "6.7%" },
+  { name: "sparkle-gold", at: "right-[5%] top-[49%]", w: "5%" },
+  { name: "flower-red-left", at: "left-0 top-[53%]", w: "5.4%" },
+  { name: "sparkle-red", at: "right-[3%] top-[63%]", w: "8%" },
+  { name: "sparkle-gold", at: "left-[6%] top-[70%]", w: "4.6%" },
+] as const;
 
 /**
  * Form RSVP — chế độ `general`: một form mở, ai có link site cũng trả lời được.
@@ -181,6 +201,8 @@ export function Rsvp() {
             />
           ) : null}
         </div>
+
+        <Ornaments items={MID_ORNAMENTS} />
 
         {/* `flush` ở SectionHead: khối này đã có `gap-block` của flex, nếu để
             SectionHead giữ `mb-block` của nó thì dưới tiêu đề thành hai lần

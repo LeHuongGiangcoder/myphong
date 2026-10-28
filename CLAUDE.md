@@ -172,6 +172,17 @@ weddingInfo: {
 },
 ```
 
+**Đổi màu giấy nền của tranh dựng sẵn:** thiệp RSVP là ảnh đặc có giấy kem vẽ sẵn, nên đổi màu nền section mà không đổi ảnh sẽ lộ hình chữ nhật.
+`node scripts/recolor-paper.mjs [#màu]` đọc bản gốc ở `brand/paper-cream-originals/`,
+thắp lại giấy thành màu mới (mặc định `#ede6d6`, nền tông `garden`) rồi ghi vào
+`brand/elements/`; sau đó `npm run assets`. Ô giấy của thiệp RSVP giữ màu kem sáng,
+và hai đèn lồng hồng ở góc trên được đổi thành trắng ngà. Cùng script đó tách hoa đỏ,
+sparkle và mây nhỏ của thiệp thành sprite trong suốt (`sparkle-red/gold`,
+`flower-red-left/right`, `cloud-small`) và gỡ chúng khỏi tấm thiệp; đặt lại bằng
+`components/ui/Ornaments.tsx` (RSVP, Time & Venue) — sprite nhỏ và nét mảnh nên
+phục vụ `unoptimized`, qua AVIF là nhoè mất. Ảnh đổi mà dev server
+vẫn hiện bản cũ: xoá `.next/dev/cache/images`.
+
 Tên asset được TypeScript kiểm tra theo `content/assets.ts`, nên gõ sai là
 build đỏ chứ không âm thầm mất ảnh. `background` nhận thêm đường dẫn `"/..."`
 cho ảnh của chính cặp đôi trong `public/images`.

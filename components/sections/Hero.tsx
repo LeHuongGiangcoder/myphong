@@ -33,7 +33,7 @@ export function Hero() {
 
       <div className="relative mx-auto flex min-h-[100svh] w-full max-w-container-stage flex-col items-center justify-between px-gutter pb-tap pt-section text-center short:pb-stack short:pt-stack">
         <div data-reveal data-hero className="flex flex-col items-center gap-tight">
-          <p className="font-body text-eyebrow font-medium uppercase text-tone-fg">
+          <p className="head-eyebrow text-tone-fg">
             {t(hero.eyebrow)}
           </p>
           <Heading

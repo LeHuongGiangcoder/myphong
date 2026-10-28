@@ -60,9 +60,8 @@ export const palette = {
   night: "#0c1d31",
   lantern: "#f2d49b",
   /**
-   * Bảy màu của cổng Bình phong (màn mở thiệp, tranh be vàng): giấy, nâu óc
-   * chó, nâu thau, đỏ mận, ấn son và kem. Chỉ màn mở thiệp dùng — xem
-   * `tones.garden` ở dưới.
+   * Màu của bộ tranh be vàng (màn mở thiệp và Time & Venue): giấy, nâu óc
+   * chó, nâu thau, đỏ mận, ấn son, kem và be đậm — xem `tones.garden` ở dưới.
    */
   parchment: "#ede6d6",
   ivory: "#f7f2e6",
@@ -71,6 +70,10 @@ export const palette = {
   brass: "#a8864e",
   burgundy: "#5c1512",
   seal: "#8e1f1a",
+  /** Nền thẻ địa điểm ở section Time & Venue */
+  camel: "#c19f71",
+  /** Mảng sáng của khung hoạ tiết ở section Agenda */
+  sand: "#e6d7b8",
 } as const;
 
 /**
@@ -132,7 +135,7 @@ export const fonts = {
   script: 'var(--ff-script), "Apple Chancery", cursive',
   /**
    * Chỉ cho ấn 囍 ở màn mở thiệp. Noto Serif TC được tải đúng một ký tự đó
-   * (xem components/sections/Intro.tsx); máy không tải được thì rơi về font
+   * (xem components/ui/Seal.tsx); máy không tải được thì rơi về font
    * Hán có sẵn trên iOS / macOS / Android.
    */
   cjk: '"Noto Serif TC", "Songti TC", "Hiragino Mincho ProN", "Noto Serif CJK TC", serif',

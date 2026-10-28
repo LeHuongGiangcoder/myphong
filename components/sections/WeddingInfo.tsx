@@ -1,167 +1,156 @@
 "use client";
 
-import Image from "next/image";
-import type { CSSProperties } from "react";
-
 import { useLocale } from "@/components/experience/LocaleProvider";
 import { ButtonLink } from "@/components/ui/Button";
-import { Divider } from "@/components/ui/Divider";
-import { Caption, Eyebrow, Heading, SectionHead } from "@/components/ui/Heading";
+import { Eyebrow, Heading } from "@/components/ui/Heading";
+import { Ornaments, type OrnamentPlacement } from "@/components/ui/Ornaments";
 import { Reveal } from "@/components/ui/Reveal";
 import { SectionWrapper } from "@/components/ui/SectionWrapper";
+import { Seal } from "@/components/ui/Seal";
 import { ceremony, venue, weddingInfo } from "@/content/client";
-import { element } from "@/lib/assets";
 
 /**
- * Time & Venue — khi nào, và ở đâu.
+ * Time & Venue — khi nào, và ở đâu. Dựng theo bản thiết kế khách gửi
+ * (public/Time & Venue-html): một tờ giấy be vàng, đọc từ trên xuống theo thứ
+ * tự người ta cần biết — ấn → ngày → giờ → nơi → đường vào → bản đồ.
  *
- * BỨC TRANH CẮT LÀM HAI, CHỮ NGỒI VÀO KHOẢNG GIẤY GIỮA.
+ * Ngày là tâm của trang: số "10" cỡ `poster` ở giữa, hai bên là hai ô viền
+ * hai nét ("Chủ Nhật", "01 · 2027") — dòng chữ nhỏ kẹp giữa hai vạch ngang như
+ * con dấu ngày tháng.
  *
- * Bức tranh của khách (1080×1920) có đúng một khoảng giấy trống, và nó không
- * đủ rộng để chứa cột chữ. Quét mực theo từng hàng cho thấy:
+ * Thẻ địa điểm có một dải hẹp bên phải trích từ chính bức tranh ở màn mở thiệp
+ * (đoạn dải ren), để thẻ nối về cùng bộ tranh mà không phải nhân đôi cả tấm ảnh.
  *
- *   0 → 19,6%    dải lụa hồng, có chỗ quét sát mép trái
- *   19,6 → 51%   GIẤY TRỐNG, sạch trên toàn bộ bề ngang
- *   51 → 100%    mái đình, dải lụa xanh, hàng cây
- *
- * Khoảng trống đó chỉ cao 31% bức tranh. Phóng tranh lên cho nó chứa nổi cột
- * chữ (715px tiếng Việt / 760px tiếng Anh) thì phải phóng gần 280% — mái
- * đình to gấp ba, hỏng bức tranh. Neo tranh xuống đáy rồi để chữ chảy từ
- * giấy kem vào tranh thì chữ đè lên dải lụa hồng.
- *
- * Nên bức tranh được CẮT ở 35% — giữa khoảng giấy trống, chỗ sạch nhất — rồi
- * xếp lại: lát trên neo đỉnh section, lát dưới neo đáy, cột chữ nằm trên
- * giấy giữa hai lát. Giấy đó giãn ra theo chiều dài của chữ, nên bản tiếng
- * Anh dài hơn cũng không đẩy chữ vào tranh. Cùng cách làm với tấm thiệp RSVP
- * (components/sections/Rsvp.tsx), chỉ khác là ở đây hai lát không cần lát
- * nối vì nền giữa chúng chính là vân giấy của section.
- *
- * Ba khối thông tin dùng CHUNG một nhịp bốn bậc, nhờ đó mắt đọc được thứ tự:
- *
- *   nhãn nhỏ in hoa (eyebrow)  →  cái tên (h3)  →  dòng phụ (lead)  →  chữ
- *   nhỏ nhạt (caption)
+ * Section không có ảnh nền nên mọi màu đi qua tông `garden` của theme.ts.
  */
 
-/**
- * Bốn con số dưới đây đi cùng nhau — đổi ảnh timevenue là phải quét lại mực
- * rồi sửa cả bốn.
- *
- *   SCALE   tranh rộng 130% bề ngang khung, tràn đều hai bên
- *   CUT     chỗ cắt, tính theo chiều cao tranh
- *   TOP/BOT chiều cao mỗi lát, viết thành tỉ lệ khung hình của vỏ cắt
- *           (bề ngang khung : chiều cao lát) = 1 : SCALE × 16/9 × phần tranh
- */
-const PLATE = {
-  /** 1 : 1,3 × 1920/1080 × 0,35 */
-  topRatio: "1000 / 809",
-  /** 1 : 1,3 × 1920/1080 × 0,65 */
-  bottomRatio: "1000 / 1502",
+/** Dải ren cắt từ `public/images/intro/background.webp`: phóng ~10 lần, đặt vào đoạn đặc nhất của ren. */
+const LATTICE_STRIP = {
+  src: "/images/intro/background.webp",
+  size: "1020% auto",
+  position: "40% 82%",
 } as const;
+
+/**
+ * Sparkle nhân từ thiệp RSVP: đậu ở các góc quanh khối chữ, chỗ không có chữ
+ * nào — chữ căn giữa, nên hai lề trên và dưới còn trống.
+ */
+const ORNAMENTS: readonly OrnamentPlacement[] = [
+  { name: "sparkle-red", at: "left-[7%] top-[2.5%]", w: "9%" },
+  { name: "sparkle-gold", at: "left-[4%] top-[25%]", w: "5%" },
+  { name: "sparkle-red", at: "bottom-[6%] right-[7%]", w: "8%" },
+];
 
 export function WeddingInfo() {
   const { t } = useLocale();
-  const art = element("timevenue");
-
-  /* Chỉ MÉP CẮT mới cần tan: lát trên tan ở đáy, lát dưới tan ở đỉnh. Hai
-     con số nằm gọn trong phần giấy trống của mỗi lát (44% và 25% chiều cao
-     lát) nên vùng tan không bao giờ liếm vào nét vẽ.
-
-     Mép ngoài (đỉnh và đáy section) để 0: chỗ nối với section bên cạnh do
-     `.seam-blur` của SectionWrapper lo, tan thêm ở đây là chồng hai lớp
-     thành một dải nhạt. */
-  const topSeam = { "--seam-top": "0%", "--seam-bottom": "26%" } as CSSProperties;
-  const bottomSeam = { "--seam-top": "16%", "--seam-bottom": "0%" } as CSSProperties;
+  const [day, month, year] = ceremony.dateShort.split(" . ");
+  const steps = venue.directions.steps;
 
   return (
-    <SectionWrapper section="weddingInfo" labelledBy="wedding-info-title" flush width="bleed">
+    <SectionWrapper section="weddingInfo" labelledBy="wedding-info-title">
       <div className="relative mx-auto w-full max-w-stage">
-        {art ? (
-          <>
-            <div
-              aria-hidden
-              className="seam-soft pointer-events-none absolute inset-x-0 top-0 -z-10 overflow-hidden"
-              style={{ ...topSeam, aspectRatio: PLATE.topRatio }}
-            >
-              <Image
-                alt=""
-                src={art.src}
-                width={art.width ?? 1080}
-                height={art.height ?? 1920}
-                sizes="(max-width: 32rem) 130vw, 42rem"
-                quality={95}
-                className="absolute left-1/2 top-0 w-[130%] max-w-none -translate-x-1/2"
-              />
+      <Ornaments items={ORNAMENTS} />
+        <Reveal className="relative flex w-full flex-col items-center gap-block text-center text-tone-contrast">
+          <div className="flex w-full flex-col items-center gap-stack">
+            <Seal size="1.75rem" glyph="1.1rem" ring="0.1875rem" />
+            <Eyebrow className="text-tone-muted">{t(weddingInfo.saveTheDateLabel)}</Eyebrow>
+
+            <div className="grid w-full grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-x-tight">
+              <p className="border-y border-tone-line py-tight text-eyebrow font-medium uppercase text-tone-fg">
+                {t(ceremony.weekday)}
+              </p>
+              <Heading as="p" level="poster" className="font-light leading-[0.82] lining-nums text-tone-fg">
+                {day}
+              </Heading>
+              <p className="border-y border-tone-line py-tight text-eyebrow font-medium uppercase text-tone-fg">
+                {month} · {year}
+              </p>
             </div>
 
-            <div
-              aria-hidden
-              className="seam-soft pointer-events-none absolute inset-x-0 bottom-0 -z-10 overflow-hidden"
-              style={{ ...bottomSeam, aspectRatio: PLATE.bottomRatio }}
-            >
-              <Image
-                alt=""
-                src={art.src}
-                width={art.width ?? 1080}
-                height={art.height ?? 1920}
-                sizes="(max-width: 32rem) 130vw, 42rem"
-                quality={95}
-                className="absolute bottom-0 left-1/2 w-[130%] max-w-none -translate-x-1/2"
-              />
-            </div>
-          </>
-        ) : null}
-
-        {/*
-          `pt` / `pb` tính theo % BỀ NGANG khung (padding % luôn ăn theo bề
-          ngang) nên chữ giữ đúng khoảng cách tới hai lát tranh ở mọi khổ máy.
-
-          `pb` KHÔNG phải là chiều cao lát dưới. Chữ được phép tụt sâu vào lát
-          đó, vì nét vẽ trong lát bắt đầu so le hai bên — quét mực theo hàng
-          cho thấy, tính trên chiều cao cả bức tranh:
-
-            54 → 70%   chỉ có lụa xanh và hàng cây, đều nằm bên PHẢI mép 66%
-            70% trở xuống   mái đình tràn sang trái tới mép 19%
-
-          Nút "Xem bản đồ" rộng chừng 50% khung và bám mép trái, nên nó ngồi
-          lọt vào quãng 54–70% — hàng cây chạy bên phải nó. Chỉ mái đình mới
-          là thứ chặn thật. `pb` 88% đặt đáy nút cao hơn đỉnh mái chừng 70px;
-          lớn hơn nữa là hở ra một mảng giấy trắng to giữa nút và bức tranh.
-        */}
-        <Reveal className="relative flex w-full flex-col items-start gap-block px-gutter pt-[52%] pb-[88%] text-left">
-          <SectionHead
-            eyebrow={t(weddingInfo.eyebrow)}
-            title={t(weddingInfo.title)}
-            titleId="wedding-info-title"
-            align="left"
-            flush
-          >
-            <Divider className="mt-stack max-w-[3.5rem]" />
-          </SectionHead>
-
-          <div className="flex flex-col gap-tight">
-            <Eyebrow>{t(weddingInfo.saveTheDateLabel)}</Eyebrow>
-            <Heading level="h3">{ceremony.dateShort}</Heading>
-            <p className="text-lead">
-              {t(ceremony.weekday)} · {ceremony.timeLabel}
+            <p className="font-display text-h2 tracking-wider lining-nums text-tone-fg">
+              {ceremony.timeLabel}
             </p>
-            <Caption>{t(ceremony.lunar)}</Caption>
+            <p className="font-display text-base italic text-tone-muted">{t(ceremony.lunar)}</p>
           </div>
 
-          <div className="flex flex-col gap-tight">
-            <Eyebrow>{t(weddingInfo.venueLabel)}</Eyebrow>
-            <Heading level="h3">{venue.name}</Heading>
-            <p className="text-lead">{t(venue.hall)}</p>
-            <Caption>{venue.address}</Caption>
+          {/* Thẻ địa điểm: khung kem hở một mép phải, nối sang dải ren hẹp */}
+          <div className="flex w-full bg-camel text-left">
+            <div className="m-2 mr-0 flex min-w-0 flex-1 flex-col gap-tight border border-r-0 border-ivory/70 p-stack">
+              <Eyebrow className="text-tone-contrast">{t(weddingInfo.venueLabel)}</Eyebrow>
+              <Heading
+                level="h2"
+                id="wedding-info-title"
+                className="text-tone-fg"
+              >
+                {venue.name}
+              </Heading>
+              <p className="mt-tight text-small font-medium">{t(venue.hall)}</p>
+              <p className="text-small">{venue.address}</p>
+            </div>
+            <div
+              aria-hidden
+              className="m-2 ml-0 w-tap border border-ivory/70 border-l-tone-line"
+              style={{
+                backgroundImage: `url(${LATTICE_STRIP.src})`,
+                backgroundSize: LATTICE_STRIP.size,
+                backgroundPosition: LATTICE_STRIP.position,
+              }}
+            />
           </div>
 
-          <div className="flex flex-col gap-tight">
-            <Eyebrow>{t(venue.directions.label)}</Eyebrow>
-            {venue.directions.steps.map((step) => (
-              <Caption key={step.vi}>{t(step)}</Caption>
-            ))}
+          <div className="flex w-full flex-col items-stretch gap-stack text-left">
+            <Eyebrow className="text-tone-muted">{t(venue.directions.label)}</Eyebrow>
+            <ol className="flex flex-col">
+              {steps.map((step, i) => {
+                const last = i === steps.length - 1;
+                return (
+                  <li
+                    key={step.em.vi}
+                    className={[
+                      "relative flex gap-stack",
+                      // Đường nối chảy từ viên thoi này xuống viên kế tiếp
+                      last ? "" : "pb-stack before:absolute before:bottom-0 before:left-2.5 before:top-3.5 before:w-px before:bg-tone-line",
+                    ].join(" ")}
+                  >
+                    <span className="mt-1 flex w-5 shrink-0 justify-center">
+                      <span
+                        aria-hidden
+                        className={[
+                          "relative z-10 size-2 rotate-45 border border-tone-accent",
+                          last ? "bg-tone-fg" : "bg-tone-bg",
+                        ].join(" ")}
+                      />
+                    </span>
+                    <p className="text-small">
+                      {step.before ? t(step.before) : null}
+                      <span className="font-medium text-tone-fg">{t(step.em)}</span>
+                      {step.after ? t(step.after) : null}
+                    </p>
+                  </li>
+                );
+              })}
+            </ol>
           </div>
 
-          <ButtonLink href={venue.mapUrl} target="_blank" rel="noreferrer noopener">
+          <ButtonLink
+            variant="primary"
+            href={venue.mapUrl}
+            target="_blank"
+            rel="noreferrer noopener"
+            className="gap-tight"
+          >
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.4"
+              aria-hidden
+            >
+              <path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z" />
+              <circle cx="12" cy="9.5" r="2.4" />
+            </svg>
             {t(venue.mapLabel)}
           </ButtonLink>
         </Reveal>

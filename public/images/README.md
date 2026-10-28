@@ -10,6 +10,7 @@ khách mới chỉ cần ghi đè file, không phải sửa code:
 | `couple-01…04.jpg` | bốn chương Love Story | dọc, 3:4 |
 | `couple-05.jpg` | Thông tin lễ cưới | dọc, 4:5 |
 | `couple-06.jpg` | Lời cảm ơn | dọc, 4:5 |
+| `agenda.webp` | đầu khung Agenda | vuông, 1:1 (cắt 294:300) |
 | `gallery-01…06.jpg` | Album | dọc, 2:3 |
 
 Thêm ảnh album thì thêm `gallery-07.jpg`… rồi khai trong `gallery.shots`.

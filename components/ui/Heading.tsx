@@ -9,7 +9,7 @@ const LEVEL_CLASS: Record<Level, string> = {
   poster: "font-display text-poster",
   display: "font-display text-display",
   h1: "font-display text-h1",
-  h2: "font-display text-h2",
+  h2: "head-title",
   h3: "font-display text-h3",
   h4: "font-display text-h4",
 };
@@ -55,7 +55,7 @@ export function Eyebrow({
 }: TextProps & { as?: ElementType }) {
   return (
     <Tag
-      className={`font-body text-eyebrow font-medium uppercase text-tone-accent ${className}`}
+      className={`head-eyebrow text-tone-accent ${className}`}
       {...rest}
     >
       {children}

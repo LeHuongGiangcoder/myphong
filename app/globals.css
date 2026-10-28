@@ -32,7 +32,7 @@
   /* Hai màu của cảnh cổng ở màn mở thiệp */
   --color-night: var(--t-color-night);
   --color-lantern: var(--t-color-lantern);
-  /* Bảy màu của cổng Bình phong — màn mở thiệp */
+  /* Màu của bộ tranh be vàng — màn mở thiệp, Time & Venue */
   --color-parchment: var(--t-color-parchment);
   --color-ivory: var(--t-color-ivory);
   --color-bark: var(--t-color-bark);
@@ -40,6 +40,8 @@
   --color-brass: var(--t-color-brass);
   --color-burgundy: var(--t-color-burgundy);
   --color-seal: var(--t-color-seal);
+  --color-camel: var(--t-color-camel);
+  --color-sand: var(--t-color-sand);
 
   /* Màu theo tông của section — SectionWrapper đặt data-tone, con tự đổi màu */
   --color-tone-bg: var(--t-section-bg);
@@ -212,6 +214,34 @@ h4 {
     opacity: 0;
   }
 
+  /*
+    Đầu mục section: một dòng nhỏ in hoa + một tiêu đề nghiêng. Chuẩn lấy từ
+    Trình tự buổi lễ (Agenda). Cỡ, tracking, kiểu chữ ở đây; màu và căn lề do
+    chỗ dùng quyết định (`text-tone-*`, `text-left`/`text-center`).
+
+    Mọi section dùng đúng một cỡ — không ghi đè cỡ theo khung riêng, nếu không
+    là lệch nhau vài px giữa các section.
+  */
+  .head-eyebrow {
+    font-family: var(--t-font-body);
+    font-weight: 500;
+    text-transform: uppercase;
+    font-size: var(--head-eyebrow-size, 0.53125rem);
+    line-height: 1.2;
+    letter-spacing: var(--head-eyebrow-tracking, 0.44em);
+  }
+
+  .head-title {
+    font-family: var(--t-font-display);
+    /* Cùng giá trị luật h1–h4 ở trên (luật đó không nằm trong layer nên luôn
+       thắng); ghi ra đây để khuôn tự đủ nghĩa. */
+    font-weight: var(--t-weight-display);
+    font-style: italic;
+    font-size: var(--head-title-size, 2.125rem);
+    line-height: 1;
+    letter-spacing: 0;
+  }
+
   .container-site {
     width: 100%;
     max-width: var(--t-size-container-site);
@@ -311,20 +341,37 @@ h4 {
   }
 
   /*
-    Mặt kính mờ cho nút bấm: nền trong, hậu cảnh nhoè sau lưng, viền một nét
-    mảnh bắt sáng. Cả hai lớp đều trộn từ MÀU CỦA TÔNG section đang bọc nó,
-    nên cùng một class dùng được trên giấy kem lẫn trên ảnh tối.
+    Nút bấm: HÌNH CHỮ NHẬT PHẲNG, không bo góc, không bóng, không vệt sáng.
+    Màu trộn từ MÀU CỦA TÔNG section đang bọc nó nên cùng một class dùng được
+    trên giấy be lẫn trên ảnh tối.
 
-    `backdrop-filter` chỉ nhoè những gì nằm SAU nút, nên nút đặt trên tranh
-    thì thấy tranh nhoè, đặt trên giấy trơn thì chỉ còn lớp nền trong — vẫn
-    đúng tinh thần, không phải thêm ảnh giả.
+    `.btn-solid` là nút chính: đặc, màu chữ của tông (đỏ mận trên giấy be),
+    chữ ngược màu — nên hai màu đó luôn đủ tương phản trên mọi tông. Một nét
+    viền mảnh sáng hơn nền nút để mép nút còn rõ khi đặt trên nền tối.
 
-    Kính KHÔNG có bóng đổ ra ngoài. Một viên thuốc phẳng cộng bóng quanh viền
-    đọc ra là cái nút của bảng điều khiển, không phải mặt kính. Thứ làm mắt
-    tin đó là kính nằm ở chính mặt nút: nền trong hơn, và một vệt sáng chảy
-    từ mép trên xuống (`background-image`) giả ánh sáng bắt vào cạnh vát.
-    Vệt sáng đó là nền, không phải `box-shadow`, nên luật bóng mềm trong
-    CLAUDE.md vẫn nguyên.
+    `.btn-ghost` là nút phụ: giấy của tông, mờ nhẹ,
+    viền mảnh.
+
+    Hai class này thay cho `.glass-strong` và `.glass` cũ ở các nút chữ; `.glass` còn lại chỉ để cho nút nhạc.
+    Chúng đặt `border-radius: 0` ngay trong class — nơi dùng KHÔNG được thêm
+    `rounded-*`, utility luôn thắng class trong layer.
+  */
+  .btn-solid {
+    border-radius: 0;
+    background-color: var(--t-section-fg);
+    border: 1px solid color-mix(in srgb, var(--t-section-bg) 28%, var(--t-section-fg));
+    transition: background-color var(--t-duration-fast) var(--t-ease);
+  }
+
+  .btn-solid:hover {
+    background-color: color-mix(in srgb, var(--t-section-fg) 88%, #000);
+  }
+
+  /*
+    Mặt kính mờ bo tròn — CHỈ cho nút nhạc nổi, giữ nguyên diện mạo cũ. Nút nhạc
+    nằm trên cả ảnh lẫn giấy nên cần nền trong + hậu cảnh nhoè; vệt sáng mép trên
+    là `background-image`, không phải `box-shadow`, nên luật bóng mềm vẫn nguyên.
+    Các nút còn lại là chữ nhật phẳng (`.btn-solid` / `.btn-ghost`).
   */
   .glass {
     background-color: color-mix(in srgb, var(--t-section-bg) 34%, transparent);
@@ -339,19 +386,12 @@ h4 {
     border: 1px solid color-mix(in srgb, var(--t-section-fg) 14%, transparent);
   }
 
-  /* Bản đậm, cho nút chính: vẫn là mặt kính nhưng ăn màu chữ, để chữ ngược
-     màu trên nó giữ đủ tương phản trên mọi nền. */
-  .glass-strong {
-    background-color: color-mix(in srgb, var(--t-section-fg) 82%, transparent);
-    background-image: linear-gradient(
-      to bottom,
-      color-mix(in srgb, var(--t-section-bg) 26%, transparent) 0,
-      color-mix(in srgb, var(--t-section-bg) 5%, transparent) 52%,
-      transparent 100%
-    );
-    backdrop-filter: blur(16px) saturate(150%);
-    -webkit-backdrop-filter: blur(16px) saturate(150%);
-    border: 1px solid color-mix(in srgb, var(--t-section-bg) 24%, transparent);
+  .btn-ghost {
+    border-radius: 0;
+    background-color: color-mix(in srgb, var(--t-section-bg) 90%, transparent);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid color-mix(in srgb, var(--t-section-fg) 40%, transparent);
   }
 
   /*

@@ -155,58 +155,25 @@ export const design: Record<SectionId, SectionDesign> = {
     tranh, còn cột chữ cao gấp đôi thế — để nguyên thì chữ đè lên dải lụa.
     Xem components/sections/WeddingInfo.tsx.
   */
-  weddingInfo: {
-    anchor: "wedding-info",
-    tone: "light",
-    background: "paper-cream",
-    overlay: 0,
-    /* Bức tranh KHÔNG gắn làm `decor` ở đây: nó bị cắt làm hai lát, một neo
-       đỉnh một neo đáy, và cột chữ nằm trên giấy giữa hai lát — chiều cao
-       khoảng giấy đó phải giãn theo chữ nên phải dựng trong
-       components/sections/WeddingInfo.tsx. */
-  },
+  /* Time & Venue là một tờ giấy phẳng tông be vàng, không có ảnh nền: bố cục
+     (ngày, thẻ địa điểm, đường vào) dựng trong components/sections/WeddingInfo.tsx. */
+  weddingInfo: { anchor: "wedding-info", tone: "garden" },
   /*
     Dải sen của khách, dùng nguyên bản trong một khung 9:16. Chữ của section
     nằm trong năm ô giấy trống so le hai bên dải sen — toạ độ đo bằng tương
     phản, xem components/sections/Agenda.tsx.
   */
-  agenda: {
-    anchor: "agenda",
-    tone: "light",
-    /* Cùng vân giấy đã ghép vào bức tranh, trải cho cả section — nếu không,
-       chỗ tranh kết thúc sẽ lộ một đường nối giữa giấy (#fdf8f1) và màu kem
-       của theme (#f7eedc). */
-    background: "paper-cream",
-    overlay: 0,
-    /* Dải sen đặt thẳng trong components/sections/Agenda.tsx: nó phải bám
-       mép phải của KHUNG rộng tối đa 32rem, không phải mép phải màn hình. */
-  },
-  /* Tranh tre + núi của khách, nguyên bản trong khung 9:16. Chữ nằm ở phần
-     trên; dãy núi ở chân tranh để trống. Xem components/sections/Dresscode.tsx. */
-  dresscode: {
-    anchor: "dresscode",
-    tone: "light",
-    /* Cùng vân giấy đã ghép vào bức tranh, trải cho cả section — nếu không,
-       chỗ tranh kết thúc sẽ lộ một đường nối giữa giấy (#fdf8f1) và màu kem
-       của theme (#f7eedc). */
-    background: "paper-cream",
-    overlay: 0,
-    decor: [
-      {
-        name: "dresscode",
-        at: "seam-soft inset-x-0 top-0 mx-auto w-full max-w-stage",
-        sizes: "(max-width: 32rem) 100vw, 32rem",
-      },
-    ],
-  },
+  /* Agenda là một tấm khung hoạ tiết dựng bằng SVG + chữ trong
+     components/sections/Agenda.tsx; section chỉ cần tông. */
+  agenda: { anchor: "agenda", tone: "garden" },
+  /* Tranh tre + núi của khách, cắt làm hai lát (tre ở đỉnh, núi ở chân) và đặt
+     thẳng trong components/sections/Dresscode.tsx — không gắn làm `decor` ở đây. */
+  dresscode: { anchor: "dresscode", tone: "garden" },
   /* Tấm thiệp được DỰNG trong components/sections/Rsvp.tsx từ ba lát cắt,
-     vì nó phải kéo dài theo form — không gắn làm `decor` ở đây được. */
-  rsvp: {
-    anchor: "rsvp",
-    tone: "light",
-    background: "paper-cream",
-    overlay: 0,
-  },
+     vì nó phải kéo dài theo form — không gắn làm `decor` ở đây được. Ba lát đã
+     đổi giấy sang màu nền `garden` và hai đèn lồng đã thành trắng ngà
+     (scripts/recolor-paper.mjs); ô giấy của thiệp giữ màu kem sáng. */
+  rsvp: { anchor: "rsvp", tone: "garden" },
   /* Ảnh cưới hoà vào giấy — xem components/sections/ThankYou.tsx. */
   thankYou: {
     anchor: "thank-you",
@@ -264,27 +231,40 @@ export const ceremony = {
   timeLabel: "17:30",
   /** Ngày âm — gia đình tự đọc, không tính tự động. */
   lunar: {
-    vi: "Tức ngày 02 tháng 11 năm Bính Ngọ",
-    en: "The 2nd day of the 11th lunar month, Year of the Fire Horse",
+    vi: "Tức ngày mùng 3 tháng Chạp năm Bính Ngọ",
+    en: "The 3rd day of the 12th lunar month, Year of the Fire Horse",
   },
 };
 
 export const venue = {
   name: "Fairmont Hanoi",
-  hall: { vi: "Grand Ballroom — Tầng B1", en: "Grand Ballroom — Floor B1" },
+  hall: { vi: "Grand Ballroom · Tầng B1", en: "Grand Ballroom · Floor B1" },
   address: "27–29 Lý Thái Tổ, Hoàn Kiếm, Hà Nội",
   /** Link Maps của khách. Nên dùng link chia sẻ ghim sẵn, đừng để ?query= tự tìm. */
-  mapUrl: "https://www.google.com/maps",
+  mapUrl: "https://www.google.com/maps/search/?api=1&query=Fairmont+Hanoi+27-29+Ly+Thai+To",
   mapLabel: { vi: "Xem bản đồ", en: "Open in Maps" },
-  /** Đường vào phòng tiệc — gia đình nhắn, đừng rút gọn thành một dòng. */
+  /**
+   * Đường vào phòng tiệc — từng bước một. Mỗi bước là ba đoạn nối liền
+   * `before` + `em` + `after`; chỉ `em` được nhấn (đậm, màu chữ chính), hai đoạn
+   * còn lại có thể bỏ. Bước cuối được đánh dấu bằng viên thoi đặc.
+   */
   directions: {
     label: { vi: "Đường vào phòng tiệc", en: "Finding the ballroom" },
     steps: [
       {
-        vi: "Quý khách di chuyển đến Cổng Sự kiện khách sạn Fairmont (số 27–29 Lý Thái Tổ), đi theo thang cuốn đến Grand Ballroom tại tầng B1.",
-        en: "Please make your way to the Fairmont hotel's Events entrance (27–29 Lý Thái Tổ), then take the escalator to the Grand Ballroom on floor B1.",
+        em: { vi: "Cổng Sự kiện", en: "Events entrance" },
+        after: { vi: " khách sạn Fairmont, số 27–29 Lý Thái Tổ", en: " of the Fairmont hotel, 27–29 Lý Thái Tổ" },
       },
-    ],
+      {
+        before: { vi: "Đi theo ", en: "Take the " },
+        em: { vi: "thang cuốn", en: "escalator" },
+        after: { vi: " xuống tầng B1", en: " down to floor B1" },
+      },
+      {
+        before: { vi: "Đến ", en: "Arrive at the " },
+        em: { vi: "Grand Ballroom", en: "Grand Ballroom" },
+      },
+    ] as { before?: L; em: L; after?: L }[],
   },
 };
 
@@ -446,10 +426,15 @@ export const weddingInfo = {
 export const agenda = {
   eyebrow: { vi: "Chương trình", en: "Agenda" },
   title: { vi: "Trình tự buổi lễ", en: "Order of the day" },
-  intro: { vi: "Giờ dự kiến của buổi tiệc.", en: "The schedule we have planned." },
-  /* Mỗi mục chỉ còn giờ và tên: bốn mốc nằm trong các ô giấy trống dọc dải
-     sen, ô rộng khoảng 170px và cao 68px — thêm một dòng ghi chú nữa là tràn
-     ra lá sen. Xem components/sections/Agenda.tsx. */
+  /** Ảnh ở đầu tấm khung, tỉ lệ ~1:1 (public/images/agenda.webp) */
+  photo: "/images/agenda.webp",
+  photoAlt: {
+    vi: "Cô dâu chú rể trong áo nhật bình đỏ đứng giữa hành lang gỗ, phía sau là vườn cây xanh",
+    en: "The couple in red ceremonial dress on a timber veranda, a green garden behind them",
+  },
+  /* Mỗi mục chỉ còn giờ và tên. Bốn mốc đậu so le hai bên đường thời gian ở
+     giữa — mục `highlight` được đánh dấu bằng ấn 囍 thay cho viên thoi. Xem
+     components/sections/Agenda.tsx. */
   items: [
     {
       time: "17:30",
@@ -458,6 +443,7 @@ export const agenda = {
     {
       time: "18:00",
       title: { vi: "Làm lễ", en: "Ceremony" },
+      highlight: true,
     },
     {
       time: "18:30",
@@ -467,7 +453,7 @@ export const agenda = {
       time: "19:30",
       title: { vi: "Tiệc sau lễ", en: "Celebration" },
     },
-  ],
+  ] as { time: string; title: L; highlight?: boolean }[],
 };
 
 /* -------------------------------------------------------------- DRESSCODE */

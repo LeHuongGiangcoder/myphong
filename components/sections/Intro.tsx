@@ -5,14 +5,11 @@ import { useCallback, useState } from "react";
 import { useExperience } from "@/components/experience/ExperienceProvider";
 import { useLocale } from "@/components/experience/LocaleProvider";
 import { Garden } from "@/components/ui/Garden";
+import { Seal } from "@/components/ui/Seal";
 import { ceremony, design, intro, venue } from "@/content/client";
 import { garden, du } from "@/content/intro";
 
 const L = garden.layout;
-
-/** Noto Serif TC chỉ tải đúng một ký tự 囍 (U+56CD) cho ấn — vài trăm byte thay vì cả font Hán. */
-const SEAL_FONT =
-  "https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@700&text=%E5%9B%8D&display=swap";
 
 /**
  * Màn mở thiệp: cổng Bình phong. Nằm phủ kín màn hình, giữ trang khoá cuộn
@@ -63,8 +60,6 @@ export function Intro() {
       aria-label={t(intro.eyebrow)}
       className="fixed inset-0 z-40 text-tone-fg"
     >
-      <link rel="stylesheet" href={SEAL_FONT} precedence="default" />
-
       <Garden open={phase === "opening"} onReady={onReady} onReveal={reveal} onFinished={onFinished}>
         {/* Dải nâu bên trái: vạch đứng + dòng chữ dọc */}
         <span
@@ -88,28 +83,12 @@ export function Intro() {
           {t(intro.vertical)}
         </p>
 
-        {/* Ấn 囍 trên dải ren: viền kem + một nét thau mảnh, không đổ bóng */}
+        {/* Ấn 囍 trên dải ren */}
         <div
-          aria-hidden
-          className="absolute rounded-card border border-brass/60 bg-ivory"
-          style={{
-            left: du(L.seal.x - L.seal.ring),
-            top: du(L.seal.y - L.seal.ring),
-            padding: du(L.seal.ring),
-          }}
+          className="absolute"
+          style={{ left: du(L.seal.x - L.seal.ring), top: du(L.seal.y - L.seal.ring) }}
         >
-          <div
-            className="flex items-center justify-center rounded-paper bg-seal"
-            style={{ width: du(L.seal.size), height: du(L.seal.size) }}
-          >
-            <span
-              lang="zh-Hant"
-              className="font-cjk font-bold leading-none text-ivory"
-              style={{ fontSize: du(L.seal.glyph) }}
-            >
-              囍
-            </span>
-          </div>
+          <Seal size={du(L.seal.size)} glyph={du(L.seal.glyph)} ring={du(L.seal.ring)} />
         </div>
 
         {/* Nút mở thiệp + dòng gợi ý */}
