@@ -133,7 +133,7 @@ export function SectionHead({
         .join(" ")}
     >
       {eyebrow ? <Eyebrow>{eyebrow}</Eyebrow> : null}
-      <Heading level="h2" id={titleId}>
+      <Heading level="h2" id={titleId} className="whitespace-pre-line">
         {title}
       </Heading>
       {intro ? <Lead className="max-w-prose">{intro}</Lead> : null}

@@ -311,7 +311,7 @@ export const hero = {
   /** Câu mời, đứng ngay dưới tên thiệp */
   invitation: {
     vi: "Chúng tôi và gia đình kính mời quý khách tới chung vui.",
-    en: "Together with our families, we warmly invite you to celebrate with us.",
+    en: "With our families, we warmly invite you to celebrate with us.",
   },
   /** Nhãn nhỏ in hoa đứng trên tên từng người ở chân trang bìa */
   roles: {
@@ -420,7 +420,7 @@ export const weddingInfo = {
   /** Dòng nhỏ trên tiêu đề "Save the Date" */
   inviteLabel: { vi: "Trân trọng kính mời", en: "Together with their families" },
   /** `\n` xuống dòng: "Save" một dòng, "the Date" dòng dưới */
-  saveTheDateLabel: { vi: "Save\nthe Date", en: "Save\nthe Date" },
+  saveTheDateLabel: { vi: "Tham dự\nHôn lễ", en: "Save\nthe Date" },
   timeLabel: { vi: "Thời gian", en: "Time" },
   /** Nhãn ô giờ, cạnh ô ngày: giờ đón khách = `ceremony.timeLabel` */
   receptionLabel: { vi: "Đón khách", en: "Reception" },
@@ -465,8 +465,8 @@ export const agenda = {
 /* -------------------------------------------------------------- DRESSCODE */
 
 export const dresscode = {
-  eyebrow: { vi: "Dress code", en: "Dress code" },
-  title: { vi: "Gợi ý bảng màu trang phục", en: "Suggested outfit palette" },
+  eyebrow: { vi: "Màu sắc", en: "Dress code" },
+  title: { vi: "Gợi ý bảng màu\ntrang phục", en: "Suggested outfit palette" },
   /**
    * Để mảng rỗng thì phần bảng màu tự ẩn. Mã màu không dịch.
    * Lấy từ bảng giấy màu khách gửi; xếp từ nhạt đến đậm theo hai hàng bốn ô.
