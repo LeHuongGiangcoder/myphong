@@ -605,16 +605,16 @@ export const rsvp = {
 /* --------------------------------------------------------------- THANK YOU */
 
 export const thankYou = {
-  eyebrow: { vi: "Thank you", en: "Thank you" },
+  eyebrow: { vi: "Thank you", en: "With gratitude" },
   title: { vi: "Cảm ơn quý khách", en: "Thank you" },
   lines: [
     {
       vi: "Sự đồng hành của quý khách",
-      en: "Thank you for taking the time",
+      en: "Your presence is the greatest gift",
     },
     {
       vi: "là niềm vinh dự của gia đình chúng tôi.",
-      en: "to share our biggest day with us.",
+      en: "to us and our families.",
     },
   ],
   signature: "Phong & My",
