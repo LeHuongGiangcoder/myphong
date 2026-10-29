@@ -419,7 +419,8 @@ export const weddingInfo = {
   },
   /** Dòng nhỏ trên tiêu đề "Save the Date" */
   inviteLabel: { vi: "Trân trọng kính mời", en: "Together with their families" },
-  saveTheDateLabel: { vi: "Save the Date", en: "Save the Date" },
+  /** `\n` xuống dòng: "Save" một dòng, "the Date" dòng dưới */
+  saveTheDateLabel: { vi: "Save\nthe Date", en: "Save\nthe Date" },
   timeLabel: { vi: "Thời gian", en: "Time" },
   /** Nhãn ô giờ, cạnh ô ngày: giờ đón khách = `ceremony.timeLabel` */
   receptionLabel: { vi: "Đón khách", en: "Reception" },
@@ -465,12 +466,7 @@ export const agenda = {
 
 export const dresscode = {
   eyebrow: { vi: "Dress code", en: "Dress code" },
-  title: { vi: "Gợi ý trang phục", en: "Outfit suggestions" },
-  headline: { vi: "Thanh lịch & trang trọng", en: "Elegant & formal" },
-  note: {
-    vi: "Chỉ là gợi ý để ngày cưới thêm hài hoà — quý khách cứ mặc điều mình thích.",
-    en: "Just a suggestion to keep the day harmonious — wear what you love.",
-  },
+  title: { vi: "Gợi ý bảng màu trang phục", en: "Suggested outfit palette" },
   /**
    * Để mảng rỗng thì phần bảng màu tự ẩn. Mã màu không dịch.
    * Lấy từ bảng giấy màu khách gửi; xếp từ nhạt đến đậm theo hai hàng bốn ô.
@@ -483,11 +479,11 @@ export const dresscode = {
     { name: { vi: "Đồng", en: "Bronze" }, hex: "#7d623e" },
     { name: { vi: "Đỏ nâu", en: "Marsala" }, hex: "#75433e" },
     { name: { vi: "Rêu", en: "Forest" }, hex: "#434942" },
-    { name: { vi: "Mận", en: "Aubergine" }, hex: "#271918" },
+    { name: { vi: "Đen", en: "Black" }, hex: "#1a1a1a" },
   ],
   avoid: {
-    vi: "Xin nhường màu trắng tinh cho cô dâu.",
-    en: "Please leave pure white to the bride.",
+    vi: "* bảng màu trên chỉ mang tính tham khảo",
+    en: "* the palette above is for reference only",
   },
 };
 

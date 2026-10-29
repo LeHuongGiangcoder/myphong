@@ -18,7 +18,7 @@ type Status = "idle" | "sending" | "sent" | "error";
 
 /**
  * Tấm thiệp được vẽ rộng hơn khung chứa 20% mỗi chiều (10% tràn ra mỗi bên),
- * để mái ngói chìa khỏi viewport và ô giấy rộng ra cho form thoáng. Phần tràn
+ * để ô giấy rộng ra cho form thoáng. Phần tràn
  * bị `overflow-x-clip` của SectionWrapper cắt. Đổi số này thì đổi cả
  * `px-[…]`, `pt-[…]`, `pb-[…]` của khối nội dung bên dưới theo cùng tỉ lệ.
  */
@@ -144,13 +144,13 @@ export function Rsvp() {
       {/*
         TẤM THIỆP CO GIÃN.
 
-        Bức tranh của khách vẽ sẵn một tấm thiệp: mái ngói, đèn lồng, mây, và
+        Bức tranh của khách vẽ sẵn một tấm thiệp: đèn lồng, mây, và
         một ô giấy có viền ở giữa. Ô đó cao 366px ở khổ điện thoại, còn bảy
         câu hỏi cao hơn 900px — nên tấm giấy phải kéo dài ra theo form.
 
         Cách làm: cắt bức tranh làm ba lát theo chiều dọc và xếp lại bằng flex.
 
-          rsvp-card-top     mái + đèn lồng + mép trên ô giấy   (cao cố định)
+          rsvp-card-top     đèn lồng + mép trên ô giấy         (cao cố định)
           rsvp-card-mid     20px "chỉ giấy + hai vạch viền"    (flex-1, lặp)
           rsvp-card-bottom  mép dưới ô giấy + mây              (cao cố định)
 
@@ -167,7 +167,7 @@ export function Rsvp() {
         lên, và chừa hẳn một quãng giấy trống hai bên.
       */}
       <div className="relative mx-auto w-full max-w-stage">
-        {/* Tấm thiệp không tan mép: mái ngói ở đỉnh và dãy mây ở đáy phải
+        {/* Tấm thiệp không tan mép: đèn lồng ở đỉnh và dãy mây ở đáy phải
             còn nguyên. Chỗ nối với section bên cạnh do `.seam-blur` của
             SectionWrapper lo. */}
         <div aria-hidden className={`absolute inset-y-0 flex flex-col ${CARD_BLEED}`}>
@@ -215,8 +215,9 @@ export function Rsvp() {
         {/* `flush` ở SectionHead: khối này đã có `gap-block` của flex, nếu để
             SectionHead giữ `mb-block` của nó thì dưới tiêu đề thành hai lần
             khoảng cách. `pt` cũng rút lại — chữ triện ở góc trên trái buông
-            xuống tới 72% bề ngang lát thiệp trên, 58% là vừa chạm chân nó. */}
-        <div className="relative flex flex-col gap-block px-[18%] pt-[70%] pb-[55%]">
+            xuống tới 40% bề ngang lát thiệp trên (mái đã bỏ, mép giấy nâng lên ngang
+            điểm giữa hai đèn lồng), 38% là vừa chạm chân nó. */}
+        <div className="relative flex flex-col gap-block px-[18%] pt-[38%] pb-[55%]">
           <SectionHead
             eyebrow={t(rsvp.eyebrow)}
             title={personalized && guest ? `${t(rsvp.greeting)} ${guest.name}` : t(rsvp.title)}

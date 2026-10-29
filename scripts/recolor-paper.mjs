@@ -19,6 +19,9 @@
  * trong suốt (`brand/elements/sparkle-*.webp`, `flower-red-*`, `cloud-small.webp`) và
  * gỡ khỏi tấm thiệp ở những chỗ cần — xem ORNAMENTS.
  *
+ * Lát trên của thiệp RSVP còn được dựng lại (`reshapeTop`): bỏ mái đình và nâng
+ * mép trên của ô giấy lên ngang điểm giữa hai đèn lồng.
+ *
  * Riêng thiệp RSVP: hai chiếc đèn lồng hồng ở hai góc trên được đổi thành
  * trắng ngà. Chỉ những điểm vừa hồng vừa không-vàng mới bị đổi (nên nét viền,
  * hoa vàng và nắp đèn giữ nguyên), độ sáng tối của thân đèn được giữ để còn
@@ -191,6 +194,155 @@ function median(values) {
   return values[values.length >> 1];
 }
 
+/**
+ * Bỏ mái đình khỏi lát trên của thiệp RSVP và nâng mép trên ô giấy lên ngang
+ * điểm giữa hai đèn lồng (đèn trái y 105–345, đèn phải y 75–362 → giữa ≈ 222).
+ *
+ *   1. Chụp lại những thứ phải dời: nét viền trên của ô giấy, hai cột viền
+ *      dọc, và hoạ tiết chữ triện ở góc trên trái.
+ *   2. Phủ giấy kem lên toàn bộ phần ô giấy từ mép trên mới tới chân mái cũ,
+ *      vẽ lại viền (dọc + ngang) và dời hoạ tiết góc lên đúng khoảng cách cũ
+ *      so với mép giấy.
+ *   3. Xoá hai cánh mái nhô ra ngoài ô giấy — theo màu chứ không theo hình chữ
+ *      nhật, vì cánh trái chồng lên nút thắt của đèn lồng và cánh phải sát dây
+ *      tua của đèn bên phải; nắp đèn và nút thắt (đỏ) được giữ nguyên.
+ */
+const RESHAPE = {
+  newTop: 222,
+  oldTop: 513,
+  /** Hàng viền trên ô giấy ở bản gốc (y 511–516, nằm ngay dưới chân mái). */
+  lineRows: [511, 516],
+  /** Cột viền dọc đo ở y 800, nơi không còn gì chen vào. */
+  leftCols: [184, 194],
+  rightCols: [876, 890],
+  /** Hoạ tiết chữ triện ở góc trên trái ô giấy. */
+  corner: [205, 530, 400, 790],
+  /**
+   * Vùng nền ngoài ô giấy có cánh mái, bắt đầu từ chân nắp đèn (đèn trái y 348,
+   * đèn phải y 368). `green` = chỉ xoá điểm xanh rêu: mũi cánh mái chồng lên
+   * nắp đèn một đoạn ngắn, mà nắp đèn thì nâu/vàng, không có xanh.
+   */
+  wings: [
+    { box: [56, 348, 184, 522] },
+    { box: [890, 370, 1012, 522] },
+    { box: [56, 300, 112, 350], green: true },
+    { box: [890, 300, 1012, 372], green: true },
+    // Mũi cánh phải nằm trước thân đèn, ngoài nắp (x < 978): xoá mọi điểm tối.
+    { box: [920, 318, 978, 372], dark: true },
+  ],
+};
+
+function reshapeTop(buf, W, H, paper) {
+  const { newTop, oldTop, lineRows, leftCols, rightCols, corner, wings } = RESHAPE;
+  const dy = oldTop - newTop;
+  const at = (x, y) => (y * W + x) * 3;
+  const grab = (x0, y0, x1, y1) => {
+    const out = [];
+    for (let y = y0; y <= y1; y++) {
+      const row = [];
+      for (let x = x0; x <= x1; x++) row.push([buf[at(x, y)], buf[at(x, y) + 1], buf[at(x, y) + 2]]);
+      out.push(row);
+    }
+    return out;
+  };
+  const put = (x0, y0, block) =>
+    block.forEach((row, j) =>
+      row.forEach((c, i) => {
+        const o = at(x0 + i, y0 + j);
+        buf[o] = c[0]; buf[o + 1] = c[1]; buf[o + 2] = c[2];
+      }),
+    );
+
+  // Giấy kem của ô: đo ở chỗ trống giữa ô, trên và dưới vùng sắp phủ (kem của bản gốc
+  // đậm dần theo chiều dọc vài bậc — phủ một màu phẳng sẽ để lại vệt ngang ở chỗ nối).
+  const sampleCream = (ya, yb) =>
+    [0, 1, 2].map((k) => {
+      const v = [];
+      for (let y = ya; y < yb; y += 2) for (let x = 450; x < 650; x += 2) v.push(buf[at(x, y) + k]);
+      return median(v);
+    });
+  const cream = sampleCream(600, 700);
+  const creamTop = sampleCream(556, 600);
+  const creamBottom = sampleCream(792, 840);
+  const creamAt = (y) => {
+    const t = clamp((y - newTop) / (corner[3] - newTop));
+    return creamTop.map((c, k) => c + (creamBottom[k] - c) * t);
+  };
+
+  const lineTpl = grab(leftCols[0] + 3, lineRows[0], rightCols[1] - 6, lineRows[1]);
+  const leftTpl = grab(leftCols[0], 800, leftCols[1], 800)[0];
+  const rightTpl = grab(rightCols[0], 800, rightCols[1], 800)[0];
+  const cornerTpl = grab(corner[0], corner[1], corner[2], corner[3]);
+
+  let seed = 777;
+  const grain = () => ((seed = (seed * 1664525 + 1013904223) >>> 0) / 4294967296 - 0.5) * 3;
+  const fill = (x, y, base) => {
+    const n = grain();
+    const o = at(x, y);
+    for (let k = 0; k < 3; k++) buf[o + k] = Math.round(clamp(base[k] + n, 0, 255));
+  };
+
+  // 2. Phủ giấy kem: từ mép trên mới xuống hết chân mái cũ + hoạ tiết góc cũ.
+  for (let y = newTop - 3; y <= corner[3]; y++)
+    for (let x = leftCols[0]; x <= rightCols[1]; x++) fill(x, y, creamAt(y));
+  // Viền dọc kéo lên tới mép trên mới. Cột đo ở y 800 nên chỉ phủ tới chân hoạ tiết góc.
+  for (let y = newTop; y <= corner[3]; y++) {
+    leftTpl.forEach((c, i) => { const o = at(leftCols[0] + i, y); buf[o] = c[0]; buf[o + 1] = c[1]; buf[o + 2] = c[2]; });
+    rightTpl.forEach((c, i) => { const o = at(rightCols[0] + i, y); buf[o] = c[0]; buf[o + 1] = c[1]; buf[o + 2] = c[2]; });
+  }
+  // Nét viền ngang mới.
+  put(leftCols[0] + 3, newTop, lineTpl);
+  // Hoạ tiết góc dời lên theo mép giấy.
+  cornerTpl.forEach((row, j) =>
+    row.forEach((c, i) => {
+      // Chỉ chép nét hoạ tiết, không chép nền: nền kem của bản gốc lệch vài bậc so với màu phủ.
+      const local = creamAt(corner[1] + j);
+      if (Math.max(Math.abs(c[0] - local[0]), Math.abs(c[1] - local[1]), Math.abs(c[2] - local[2])) <= 8) return;
+      const o = at(corner[0] + i, corner[1] - dy + j);
+      buf[o] = c[0]; buf[o + 1] = c[1]; buf[o + 2] = c[2];
+    }),
+  );
+
+  // 3. Hai cánh mái ngoài ô giấy: xoá theo màu, chừa nắp đèn và nút thắt đỏ.
+  const isPaperish = (x, y) => {
+    const o = at(x, y);
+    return Math.max(Math.abs(buf[o] - paper[0]), Math.abs(buf[o + 1] - paper[1]), Math.abs(buf[o + 2] - paper[2])) <= 16;
+  };
+  const protectedAt = (x, y) => {
+    const o = at(x, y);
+    const [r, g, b] = [buf[o], buf[o + 1], buf[o + 2]];
+    if (x >= 1003 && y >= 368) return true; // dây tua phải
+    return r - g > 45 && b >= g - 12; // nút thắt đỏ
+  };
+  const isGreen = (x, y) => {
+    const o = at(x, y);
+    return buf[o + 1] >= buf[o] - 10 && buf[o + 1] - buf[o + 2] > 8;
+  };
+  const isDark = (x, y) => {
+    const o = at(x, y);
+    return lum(buf[o], buf[o + 1], buf[o + 2]) < 0.5;
+  };
+  for (const { box: [x0, y0, x1, y1], green, dark } of wings) {
+    const mask = new Uint8Array((x1 - x0) * (y1 - y0));
+    for (let y = y0; y < y1; y++)
+      for (let x = x0; x < x1; x++)
+        if (!isPaperish(x, y) && !protectedAt(x, y) && (!green || isGreen(x, y)) && (!dark || isDark(x, y))) mask[(y - y0) * (x1 - x0) + (x - x0)] = 1;
+    // Nở mặt nạ 3px để lấy luôn viền khử răng cưa của mái.
+    const grown = new Uint8Array(mask);
+    for (let y = y0; y < y1; y++)
+      for (let x = x0; x < x1; x++)
+        if (mask[(y - y0) * (x1 - x0) + (x - x0)])
+          for (let dyy = -3; dyy <= 3; dyy++)
+            for (let dxx = -3; dxx <= 3; dxx++) {
+              const xx = x + dxx, yy = y + dyy;
+              if (xx >= x0 && xx < x1 && yy >= y0 && yy < y1) grown[(yy - y0) * (x1 - x0) + (xx - x0)] = 1;
+            }
+    for (let y = y0; y < y1; y++)
+      for (let x = x0; x < x1; x++)
+        if (grown[(y - y0) * (x1 - x0) + (x - x0)] && !protectedAt(x, y) && ((!green && !dark) || mask[(y - y0) * (x1 - x0) + (x - x0)])) fill(x, y, paper);
+  }
+}
+
 for (const [name, opts] of Object.entries(FILES)) {
   const { data, info } = await sharp(path.join(FROM, name))
     .removeAlpha()
@@ -270,6 +422,7 @@ for (const [name, opts] of Object.entries(FILES)) {
     for (const sp of orn.sprites) if (sp.erase) erase(out, W, H, sp.box, TARGET);
     for (const box of orn.erase ?? []) erase(out, W, H, box, TARGET);
   }
+  if (name === "rsvp-card-top.webp") reshapeTop(out, W, H, TARGET);
 
   await mkdir(TO, { recursive: true });
   await sharp(out, { raw: { width: W, height: H, channels: 3 } })

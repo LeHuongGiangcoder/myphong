@@ -74,11 +74,6 @@ export function Dresscode() {
             titleId="dresscode-title"
           />
 
-          <Reveal className="flex flex-col items-center gap-stack text-center">
-            <Heading level="h3">{t(dresscode.headline)}</Heading>
-            <Caption className="max-w-prose">{t(dresscode.note)}</Caption>
-          </Reveal>
-
           {dresscode.swatches.length > 0 ? (
             <Reveal delay={90} className="flex flex-col items-center gap-stack">
               <ul className="grid w-full max-w-[20rem] grid-cols-4 gap-stack">
