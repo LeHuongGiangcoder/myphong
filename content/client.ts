@@ -417,17 +417,23 @@ export const weddingInfo = {
     vi: "Kính mời quý khách tới dự tiệc mừng lễ thành hôn.",
     en: "We would be honoured to have you at our wedding reception.",
   },
-  saveTheDateLabel: { vi: "Save the date", en: "Save the date" },
+  /** Dòng nhỏ trên tiêu đề "Save the Date" */
+  inviteLabel: { vi: "Trân trọng kính mời", en: "Together with their families" },
+  saveTheDateLabel: { vi: "Save the Date", en: "Save the Date" },
+  timeLabel: { vi: "Thời gian", en: "Time" },
+  /** Nhãn ô giờ, cạnh ô ngày: giờ đón khách = `ceremony.timeLabel` */
+  receptionLabel: { vi: "Đón khách", en: "Reception" },
   venueLabel: { vi: "Địa điểm", en: "Venue" },
   calendarLabel: { vi: "Thêm vào lịch", en: "Add to calendar" },
-  photo: "/images/couple-05.jpg",
+  /** Ảnh cổng vòm ở đầu section, tỉ lệ 2:3 */
+  photo: "/images/couple/P.M1905.jpg",
   photoAlt: { vi: "Cô dâu và chú rể", en: "The bride and groom" },
 };
 
 /* ----------------------------------------------------------------- AGENDA */
 
 export const agenda = {
-  eyebrow: { vi: "Chương trình", en: "Agenda" },
+  eyebrow: { vi: "Chương trình", en: "Schedule" },
   title: { vi: "Trình tự buổi lễ", en: "Order of the day" },
   /** Ảnh ở đầu tấm khung, tỉ lệ ~1:1 (public/images/agenda.webp) */
   photo: "/images/agenda.webp",
@@ -444,17 +450,13 @@ export const agenda = {
       title: { vi: "Đón khách", en: "Welcome" },
     },
     {
-      time: "18:00",
+      time: "18:30",
       title: { vi: "Làm lễ", en: "Ceremony" },
       highlight: true,
     },
     {
-      time: "18:30",
-      title: { vi: "Khai tiệc", en: "Dinner begins" },
-    },
-    {
-      time: "19:30",
-      title: { vi: "Tiệc sau lễ", en: "Celebration" },
+      time: "19:00",
+      title: { vi: "Khai tiệc", en: "Dinner" },
     },
   ] as { time: string; title: L; highlight?: boolean }[],
 };
