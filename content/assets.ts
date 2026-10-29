@@ -22,6 +22,8 @@ export const assets = {
     "dresscode": { src: "/brand/elements/dresscode.webp", width: 1080, height: 2300 },
     "flower-red-left": { src: "/brand/elements/flower-red-left.webp", width: 58, height: 66 },
     "flower-red-right": { src: "/brand/elements/flower-red-right.webp", width: 72, height: 116 },
+    "lantern-left": { src: "/brand/elements/lantern-left.webp", width: 246, height: 700 },
+    "lantern-right": { src: "/brand/elements/lantern-right.webp", width: 210, height: 650 },
     "lotus-left-stem": { src: "/brand/elements/lotus-left-stem.webp", width: 720, height: 286 },
     "lotus-left-top": { src: "/brand/elements/lotus-left-top.webp", width: 720, height: 2092 },
     "lotus-right": { src: "/brand/elements/lotus-right.webp", width: 720, height: 1651 },

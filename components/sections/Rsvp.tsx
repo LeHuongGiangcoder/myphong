@@ -47,6 +47,21 @@ const MID_ORNAMENTS: readonly OrnamentPlacement[] = [
 ] as const;
 
 /**
+ * Hai đèn lồng treo ở đỉnh thiệp, đung đưa nhẹ như có gió. Trong tranh gốc chúng
+ * bị cắt ở mép ảnh rồi bị 10% tràn của thiệp cắt thêm; sprite (xem
+ * scripts/recolor-paper.mjs) đã được dựng lại nguyên chiếc, ở đây chỉ việc đặt
+ * chúng xịch vào trong vùng nhìn thấy (10%–90% bề ngang thiệp).
+ *
+ * `at` + `w` tính theo % bề ngang KHUNG thiệp; sprite rộng nhất ở trục dây treo
+ * nên `left` = tâm − w/2. `delay`/`duration` lệch nhau để hai đèn không đung
+ * đưa đồng pha.
+ */
+const LANTERNS = [
+  { name: "lantern-left", left: "9.8%", w: "13.5%", delay: "0s", duration: "6.5s" },
+  { name: "lantern-right", left: "77%", w: "12%", delay: "-2.4s", duration: "7.5s" },
+] as const;
+
+/**
  * Form RSVP — chế độ `general`: một form mở, ai có link site cũng trả lời được.
  *
  * Bảy câu hỏi, hỏi dần theo câu trả lời:
@@ -208,6 +223,25 @@ export function Rsvp() {
               className="w-full"
             />
           ) : null}
+        </div>
+
+        <div aria-hidden className={`pointer-events-none absolute inset-y-0 ${CARD_BLEED}`}>
+          {LANTERNS.map((l) => {
+            const art = element(l.name);
+            if (!art) return null;
+            return (
+              <Image
+                key={l.name}
+                src={art.src}
+                alt=""
+                width={art.width ?? 200}
+                height={art.height ?? 650}
+                unoptimized
+                className="absolute top-0 h-auto origin-top animate-sway-soft select-none motion-reduce:animate-none"
+                style={{ left: l.left, width: l.w, animationDelay: l.delay, animationDuration: l.duration }}
+              />
+            );
+          })}
         </div>
 
         <Ornaments items={MID_ORNAMENTS} />
