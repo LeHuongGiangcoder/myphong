@@ -42,7 +42,7 @@ export function ThankYou() {
               alt={t(thankYou.imageAlt)}
               fill
               sizes="100vw"
-              className="edge-feather object-cover"
+              className="fade-top object-cover"
             />
           </div>
         ) : null}

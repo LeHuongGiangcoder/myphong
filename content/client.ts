@@ -174,12 +174,12 @@ export const design: Record<SectionId, SectionDesign> = {
      đổi giấy sang màu nền `garden` và hai đèn lồng đã thành trắng ngà
      (scripts/recolor-paper.mjs); ô giấy của thiệp giữ màu kem sáng. */
   rsvp: { anchor: "rsvp", tone: "garden" },
-  /* Ảnh cưới hoà vào giấy — xem components/sections/ThankYou.tsx. */
+  /* Ảnh cưới hoà vào giấy — xem components/sections/ThankYou.tsx. Cùng tông
+     `garden` và không có ảnh nền riêng như RSVP, để chân mây của thiệp tan vào
+     đúng màu giấy mà đỉnh ảnh cưới tan ra — hai bên đường nối cùng một màu. */
   thankYou: {
     anchor: "thank-you",
-    tone: "light",
-    background: "paper-cream",
-    overlay: 0,
+    tone: "garden",
   },
 };
 

@@ -8,6 +8,7 @@ import { useLocale } from "@/components/experience/LocaleProvider";
 import { Button } from "@/components/ui/Button";
 import { Heading, Script, SectionHead } from "@/components/ui/Heading";
 import { Choice, Field, FieldLabel, Stepper } from "@/components/ui/Field";
+import { FallingPetals } from "@/components/ui/FallingPetals";
 import { Ornaments, type OrnamentPlacement } from "@/components/ui/Ornaments";
 import { Reveal } from "@/components/ui/Reveal";
 import { SectionWrapper } from "@/components/ui/SectionWrapper";
@@ -155,7 +156,7 @@ export function Rsvp() {
   }
 
   return (
-    <SectionWrapper section="rsvp" flush width="bleed" labelledBy="rsvp-title">
+    <SectionWrapper section="rsvp" flush width="bleed" labelledBy="rsvp-title" className="z-10">
       {/*
         TẤM THIỆP CO GIÃN.
 
@@ -220,9 +221,14 @@ export function Rsvp() {
               height={cardBottom.height ?? 799}
               sizes={CARD_SIZES}
               quality={95}
-              className="w-full"
+              className="fade-bottom w-full"
             />
           ) : null}
+        </div>
+
+        {/* Cánh hoa rơi: khung có tỉ lệ đúng của lát dưới (1080 × 799), bám đáy. */}
+        <div aria-hidden className={`pointer-events-none absolute bottom-0 aspect-[1080/799] ${CARD_BLEED}`}>
+          <FallingPetals />
         </div>
 
         <div aria-hidden className={`pointer-events-none absolute inset-y-0 ${CARD_BLEED}`}>

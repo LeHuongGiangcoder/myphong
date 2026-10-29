@@ -431,6 +431,83 @@ h4 {
   }
 
   /*
+    Cánh hoa rơi (FallingPetals): trôi xuống `--petal-fall`, lắc ngang quanh
+    `--petal-drift`, xoay tới `--petal-spin`. Hiện ra nhanh ở chỗ bắt đầu,
+    chỉ tan đi ở chặng cuối quãng rơi — lúc đó nó đã nằm giữa ảnh cưới.
+  */
+  .petal-fall {
+    --petal-fall: 110svh;
+    animation: petal-fall 14s linear infinite;
+    will-change: transform, opacity;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .petal-fall {
+      animation: none;
+    }
+  }
+  @keyframes petal-fall {
+    0% {
+      opacity: 0;
+      transform: translate3d(0, 0, 0) rotate(0deg);
+    }
+    6% {
+      opacity: 1;
+    }
+    25% {
+      transform: translate3d(calc(var(--petal-drift) * -0.4), calc(var(--petal-fall) * 0.25), 0)
+        rotate(calc(var(--petal-spin) * 0.3));
+    }
+    50% {
+      transform: translate3d(calc(var(--petal-drift) * 0.6), calc(var(--petal-fall) * 0.5), 0)
+        rotate(calc(var(--petal-spin) * 0.6));
+    }
+    75% {
+      opacity: 1;
+      transform: translate3d(calc(var(--petal-drift) * 0.1), calc(var(--petal-fall) * 0.75), 0)
+        rotate(calc(var(--petal-spin) * 0.85));
+    }
+    100% {
+      opacity: 0;
+      transform: translate3d(var(--petal-drift), var(--petal-fall), 0) rotate(var(--petal-spin));
+    }
+  }
+
+  /*
+    Mép TRÊN của một lớp ảnh tan dần xuống từ trong suốt, cộng với
+    `.edge-feather` (giao hai mặt nạ). Dùng cho ảnh cưới ở Thank you: tấm ảnh
+    nhạt vào giấy chứ không bắt đầu bằng một đường cắt ngang.
+  */
+  .fade-top {
+    --fade-top-ramp: linear-gradient(
+      to bottom,
+      transparent 0,
+      rgb(0 0 0 / 0.08) 3%,
+      rgb(0 0 0 / 0.5) 9%,
+      rgb(0 0 0 / 0.92) 15%,
+      #000 20%
+    );
+    -webkit-mask-image: var(--fade-top-ramp), radial-gradient(ellipse 95% 90% at 50% 50%, #000 66%, transparent 100%);
+    mask-image: var(--fade-top-ramp), radial-gradient(ellipse 95% 90% at 50% 50%, #000 66%, transparent 100%);
+    -webkit-mask-composite: source-in;
+    mask-composite: intersect;
+  }
+
+  /* Mép DƯỚI tan dần về trong suốt — chân lớp mây của thiệp RSVP. */
+  .fade-bottom {
+    --fade-bottom-ramp: linear-gradient(
+      to bottom,
+      #000 0,
+      #000 82%,
+      rgb(0 0 0 / 0.92) 85%,
+      rgb(0 0 0 / 0.5) 91%,
+      rgb(0 0 0 / 0.08) 97%,
+      transparent 100%
+    );
+    -webkit-mask-image: var(--fade-bottom-ramp);
+    mask-image: var(--fade-bottom-ramp);
+  }
+
+  /*
     Lớp hiện dần TỪ TRÊN XUỐNG theo cú cuộn — dùng cho dải sen ở Agenda, để
     dòng sông chảy ra chứ không bật lên một lúc.
 
