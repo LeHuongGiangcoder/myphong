@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useLocale } from "@/components/experience/LocaleProvider";
 import { ButtonLink } from "@/components/ui/Button";
 import { Eyebrow, Heading } from "@/components/ui/Heading";
+import { Butterfly } from "@/components/ui/Butterfly";
 import { Reveal } from "@/components/ui/Reveal";
 import { SectionWrapper } from "@/components/ui/SectionWrapper";
 import { ceremony, venue, weddingInfo } from "@/content/client";
@@ -82,7 +83,9 @@ export function WeddingInfo() {
             <div className={`flex flex-col ${TEXT_INDENT}`}>
               {/* Lời mời + ảnh cổng vòm. Khung ảnh nhô lên 30px so với dòng mời, tràn ra sát mép phải màn hình, đáy ngang gạch đứt dưới "Thời gian". */}
               <div className="grid grid-cols-[minmax(0,1fr)_46%] items-start">
-                <div className="flex min-h-[15.75rem] flex-col justify-between pt-[1.875rem]">
+                <div className="relative flex min-h-[15.75rem] flex-col justify-between pt-[1.875rem]">
+                  {/* Con bướm nằm giữa "Save the Date" và "Thời gian", trong khoảng trống bên trái ảnh. */}
+                  <Butterfly className="absolute right-[18%] top-[48%] w-[32%]" />
                   <div className="flex flex-col gap-3">
                     <Eyebrow className="whitespace-nowrap text-tone-muted [--head-eyebrow-tracking:0.3em]">
                       {t(weddingInfo.inviteLabel)}

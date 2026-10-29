@@ -624,6 +624,19 @@ h4 {
     animation: butterfly-flap-right var(--flap, 0.46s) ease-in-out infinite alternate;
   }
 
+  /* Bướm lượn tại chỗ (components/ui/Butterfly.tsx): một vòng nhỏ, nghiêng theo hướng bay. */
+  .butterfly-drift {
+    animation: butterfly-drift 11s ease-in-out infinite;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .butterfly-drift {
+      animation: none;
+    }
+    .butterfly[data-flying] > img {
+      animation: none;
+    }
+  }
+
   /* Ô nhập của form RSVP. Giữ font-size >= 16px, nếu nhỏ hơn iOS Safari
      sẽ tự phóng cả trang khi người dùng chạm vào ô. */
   .field-input {
@@ -655,6 +668,22 @@ h4 {
     min-height: 7rem;
     line-height: var(--t-leading-body);
     resize: vertical;
+  }
+}
+
+@keyframes butterfly-drift {
+  0%,
+  100% {
+    transform: translate(0, 0) rotate(-8deg);
+  }
+  25% {
+    transform: translate(14%, -22%) rotate(10deg);
+  }
+  50% {
+    transform: translate(32%, 4%) rotate(22deg);
+  }
+  75% {
+    transform: translate(12%, 20%) rotate(-12deg);
   }
 }
 
