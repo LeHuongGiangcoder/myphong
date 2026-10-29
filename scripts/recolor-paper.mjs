@@ -111,6 +111,11 @@ const ORNAMENTS = {
   "rsvp-card-bottom.webp": {
     sprites: [
       { name: "cloud-small", box: [888, 0, 1080, 164], mode: "line", erase: false },
+      // Ba cánh hoa rơi quanh bông hoa hồng — gỡ khỏi tranh để RSVP cho chúng rơi
+      // (components/ui/FallingPetals.tsx), bắt đầu đúng chỗ cũ.
+      { name: "petal-a", box: [80, 40, 146, 108], mode: "paint", erase: true },
+      { name: "petal-b", box: [36, 372, 96, 430], mode: "paint", erase: true },
+      { name: "petal-c", box: [390, 470, 456, 520], mode: "paint", erase: true },
     ],
   },
 };
