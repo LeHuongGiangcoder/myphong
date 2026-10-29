@@ -54,6 +54,22 @@ const LANTERNS = [
 const IVORY = [252, 246, 234];
 
 /**
+ * Hai đèn lồng được tách khỏi lát trên thành sprite trong suốt để RSVP đặt lại
+ * và cho đung đưa (xem components/sections/Rsvp.tsx). Trong tranh gốc cả hai bị
+ * cắt ở mép ảnh (thân đèn thiếu ~50px mỗi bên), nên sprite được dựng đối xứng:
+ * chép nửa còn nguyên qua trục `cx`, `half` chọn nửa nào để giữ.
+ *
+ *   cx     trục đối xứng (x trong ảnh 1080 rộng) — vòng treo, nắp và tua rua
+ *   box    vùng quét [x0, y0, x1, y1]
+ *   half   "right" = giữ nửa phải (cx → x1), "left" = giữ nửa trái (x0 → cx)
+ *   tassel dải mây vàng nằm sau tua rua của đèn trái: từ `from` xuống chỉ giữ điểm đỏ
+ */
+const LANTERN_SPRITES = [
+  { name: "lantern-left", box: [0, 0, 178, 700], cx: 55, half: "right", tassel: { from: 568 } },
+  { name: "lantern-right", box: [922, 0, 1080, 650], cx: 1027, half: "left" },
+];
+
+/**
  * Hoạ tiết nhỏ trên thiệp RSVP: tách thành sprite trong suốt (để đặt lại chỗ
  * khác hoặc nhân sang section khác) và/hoặc xoá khỏi tấm thiệp. `box` là
  * [x0, y0, x1, y1] trong ảnh 1080 rộng.
@@ -156,6 +172,41 @@ function extractSprite(buf, W, [x0, y0, x1, y1], mode, paper) {
       rgba[o] = c[0]; rgba[o + 1] = c[1]; rgba[o + 2] = c[2]; rgba[o + 3] = Math.round(a * 255);
     }
   return { rgba, w, h };
+}
+
+/**
+ * Mặt nạ một vật trên nền giấy: điểm khác giấy, cộng mọi điểm giấy nằm lọt bên
+ * trong (thân đèn trắng ngà gần màu giấy — không lấp thì sprite thủng lỗ).
+ * Trả về độ đục 0..1; mép khử răng cưa theo độ lệch so với giấy.
+ */
+function silhouette(buf, W, [x0, y0, x1, y1], paper, keep) {
+  const w = x1 - x0, h = y1 - y0;
+  const diff = new Float32Array(w * h);
+  for (let y = 0; y < h; y++)
+    for (let x = 0; x < w; x++) {
+      const i = ((y0 + y) * W + (x0 + x)) * 3;
+      const d = Math.max(Math.abs(buf[i] - paper[0]), Math.abs(buf[i + 1] - paper[1]), Math.abs(buf[i + 2] - paper[2]));
+      diff[y * w + x] = keep(x0 + x, y0 + y, i) ? d : 0;
+    }
+  // Giấy thông ra mép hộp = bên ngoài.
+  const outside = new Uint8Array(w * h);
+  const stack = [];
+  const push = (x, y) => {
+    if (x < 0 || y < 0 || x >= w || y >= h) return;
+    const k = y * w + x;
+    if (outside[k] || diff[k] >= 12) return;
+    outside[k] = 1;
+    stack.push(k);
+  };
+  for (let x = 0; x < w; x++) { push(x, 0); push(x, h - 1); }
+  for (let y = 0; y < h; y++) { push(0, y); push(w - 1, y); }
+  while (stack.length) {
+    const k = stack.pop(), x = k % w, y = (k / w) | 0;
+    push(x + 1, y); push(x - 1, y); push(x, y + 1); push(x, y - 1);
+  }
+  const alpha = new Float32Array(w * h);
+  for (let k = 0; k < w * h; k++) alpha[k] = outside[k] ? smooth(6, 30, diff[k]) : 1;
+  return { alpha, w, h };
 }
 
 /** Tô một vùng bằng màu giấy lấy ở viền quanh nó + hạt nhẹ, mép tan dần 6px. */
@@ -423,6 +474,53 @@ for (const [name, opts] of Object.entries(FILES)) {
     for (const box of orn.erase ?? []) erase(out, W, H, box, TARGET);
   }
   if (name === "rsvp-card-top.webp") reshapeTop(out, W, H, TARGET);
+
+  if (opts.lanterns) {
+    for (const lp of LANTERN_SPRITES) {
+      const [x0, y0, x1, y1] = lp.box;
+      // Chỉ phần tua rua của đèn trái: bên dưới `from`, giữ điểm đỏ/xanh rêu, bỏ mây vàng.
+      const keep = (x, y, i) =>
+        !lp.tassel || y < lp.tassel.from || out[i] - out[i + 1] > 35 || out[i + 1] > out[i] + 5;
+      const { alpha, w, h } = silhouette(out, W, lp.box, TARGET, keep);
+
+      // Dựng nửa đối xứng: trục cx, rộng gấp đôi nửa giữ lại.
+      const keepRight = lp.half === "right";
+      const halfW = keepRight ? x1 - lp.cx : lp.cx - x0;
+      const sw = halfW * 2;
+      const rgba = Buffer.alloc(sw * h * 4);
+      for (let y = 0; y < h; y++)
+        for (let dx = 0; dx < halfW; dx++) {
+          const sx = keepRight ? lp.cx - x0 + dx : lp.cx - x0 - 1 - dx; // nguồn: dx tính từ trục ra ngoài
+          const a = alpha[y * w + sx];
+          const i = ((y0 + y) * W + (x0 + sx)) * 3;
+          for (const side of [-1, 1]) {
+            const ox = side < 0 ? halfW - 1 - dx : halfW + dx;
+            const o = (y * sw + ox) * 4;
+            rgba[o] = out[i]; rgba[o + 1] = out[i + 1]; rgba[o + 2] = out[i + 2];
+            rgba[o + 3] = Math.round(a * 255);
+          }
+        }
+      await sharp(rgba, { raw: { width: sw, height: h, channels: 4 } }).webp({ lossless: true }).toFile(path.join(TO, `${lp.name}.webp`));
+      console.log(`  sprite ${lp.name} ${sw}×${h}`);
+
+      // Gỡ đèn khỏi tấm thiệp: tô giấy lên mọi điểm của mặt nạ (nở 4px lấy viền răng cưa).
+      let seed = 4242;
+      const grain = () => ((seed = (seed * 1664525 + 1013904223) >>> 0) / 4294967296 - 0.5) * 5;
+      for (let y = 0; y < h; y++)
+        for (let x = 0; x < w; x++) {
+          let hit = false;
+          for (let dy = -4; dy <= 4 && !hit; dy++)
+            for (let dx = -4; dx <= 4; dx++) {
+              const xx = x + dx, yy = y + dy;
+              if (xx >= 0 && yy >= 0 && xx < w && yy < h && alpha[yy * w + xx] > 0.02) { hit = true; break; }
+            }
+          if (!hit) continue;
+          const i = ((y0 + y) * W + (x0 + x)) * 3;
+          const n = grain();
+          for (let k = 0; k < 3; k++) out[i + k] = Math.round(clamp(TARGET[k] + n, 0, 255));
+        }
+    }
+  }
 
   await mkdir(TO, { recursive: true });
   await sharp(out, { raw: { width: W, height: H, channels: 3 } })
