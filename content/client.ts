@@ -311,7 +311,7 @@ export const hero = {
   /** Câu mời, đứng ngay dưới tên thiệp */
   invitation: {
     vi: "Chúng tôi và gia đình kính mời quý khách tới chung vui.",
-    en: "With our families, we warmly invite you to celebrate with us.",
+    en: "Together with our families, we warmly invite you to celebrate with us.",
   },
   /** Nhãn nhỏ in hoa đứng trên tên từng người ở chân trang bìa */
   roles: {
@@ -418,7 +418,7 @@ export const weddingInfo = {
     en: "We would be honoured to have you at our wedding reception.",
   },
   /** Dòng nhỏ trên tiêu đề "Save the Date" */
-  inviteLabel: { vi: "Trân trọng kính mời", en: "Together with their families" },
+  inviteLabel: { vi: "Trân trọng kính mời", en: "With their families" },
   /** `\n` xuống dòng: "Save" một dòng, "the Date" dòng dưới */
   saveTheDateLabel: { vi: "Tham dự\nHôn lễ", en: "Save\nthe Date" },
   timeLabel: { vi: "Thời gian", en: "Time" },
