@@ -15,8 +15,9 @@ import { couple, hero } from "@/content/client";
  * đó chỉ hai dải `scrim-top` / `scrim-bottom` ở hai mép đỡ chữ, nên khoảng
  * giữa — mái ngói, bức tường vàng, mặt hồ sen — vẫn là ảnh nguyên vẹn.
  *
- * Tên hai người xếp thành một cột căn giữa, dấu "&" nằm giữa, nên hai tên dài
- * ngắn khác nhau cũng không lệch nhau.
+ * Tên hai người căn ĐỀU theo dấu "&": một hàng flex căn giữa với `gap-tight`
+ * bằng nhau hai bên, chứ không phải lưới hai cột 1fr — lưới 1fr đặt mỗi tên vào
+ * giữa nửa của nó nên hai tên dài ngắn khác nhau làm khoảng hở hai bên "&" lệch.
  *
  * Các khối gắn `data-hero` nên chúng hiện theo cú chạm mở thiệp chứ không chờ
  * cuộn — hero nằm ngay dưới màn mở thiệp nên sẽ không bao giờ "cuộn tới".
@@ -43,18 +44,19 @@ export function Hero() {
           </p>
         </div>
 
-        {/* Tên hai người xếp dọc, cỡ h3: là thứ duy nhất ở chân trang nên
-            phải nổi hơn nhãn "Chú rể / Cô dâu" và câu mời phía trên. mb-stack
-            cộng với pb-tap của khối cha chừa chỗ cho nút nhạc ở góc dưới phải. */}
+        {/* mb-stack cộng với pb-tap của khối cha chừa chỗ cho nút nhạc ở góc
+            dưới phải. */}
         <div
           data-reveal
           data-hero
           data-reveal-delay="120"
           className="mb-stack flex flex-col items-center gap-stack"
         >
-          <Name role={t(hero.roles.groom)} name={t(couple.groomFull)} />
-          <span className="font-display italic text-h3 leading-none text-tone-fg">&amp;</span>
-          <Name role={t(hero.roles.bride)} name={t(couple.brideFull)} />
+          <div className="flex items-end justify-center gap-tight whitespace-nowrap">
+            <Name role={t(hero.roles.groom)} name={t(couple.groomFull)} />
+            <span className="font-display italic text-base sm:text-h4 leading-none text-tone-fg">&amp;</span>
+            <Name role={t(hero.roles.bride)} name={t(couple.brideFull)} />
+          </div>
         </div>
       </div>
 
@@ -68,7 +70,7 @@ function Name({ role, name }: { role: string; name: string }) {
   return (
     <span className="flex flex-col items-center gap-tight">
       <span className="head-eyebrow text-tone-fg">{role}</span>
-      <span className="font-display text-h3 font-medium uppercase leading-none tracking-wide text-tone-fg">
+      <span className="font-display text-base sm:text-h4 font-medium uppercase leading-none text-tone-fg">
         {name}
       </span>
     </span>

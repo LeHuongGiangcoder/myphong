@@ -123,7 +123,7 @@ export function WeddingInfo() {
                   <Eyebrow className="text-tone-muted">
                     {t(weddingInfo.receptionLabel)}
                   </Eyebrow>
-                  <p className="mt-2 font-display text-h3 lining-nums leading-none text-tone-muted">
+                  <p className="mt-2 font-display text-h3 lining-nums leading-none text-tone-fg">
                     {ceremony.timeLabel}
                   </p>
                 </div>
