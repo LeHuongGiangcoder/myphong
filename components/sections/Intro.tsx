@@ -6,7 +6,7 @@ import { useExperience } from "@/components/experience/ExperienceProvider";
 import { useLocale } from "@/components/experience/LocaleProvider";
 import { Garden } from "@/components/ui/Garden";
 import { Seal } from "@/components/ui/Seal";
-import { ceremony, design, intro, venue } from "@/content/client";
+import { design, intro } from "@/content/client";
 import { garden, du } from "@/content/intro";
 
 const L = garden.layout;
@@ -50,7 +50,6 @@ export function Intro() {
   if (phase === "gone") return null;
 
   const { names } = L;
-  const date = ceremony.dateShort.replaceAll(" . ", " · ");
 
   return (
     <div
@@ -98,7 +97,7 @@ export function Intro() {
           onClick={handleOpen}
           disabled={!ready}
           aria-describedby="intro-hint"
-          className="absolute flex items-center justify-center border border-brass bg-ivory font-body font-medium uppercase text-tone-fg transition-[opacity,background-color] duration-200 ease-glow disabled:opacity-55 hover:[@media(hover:hover)]:bg-surface"
+          className="absolute flex items-center justify-center border border-brass bg-tone-fg font-body font-semibold uppercase text-ivory shadow-paper transition-[opacity,background-color] duration-200 ease-glow disabled:opacity-55 hover:[@media(hover:hover)]:bg-tone-accent"
           style={{
             left: du(L.cta.x),
             top: du(L.cta.y),
@@ -113,7 +112,7 @@ export function Intro() {
         <p
           data-garden-cta
           aria-hidden
-          className="absolute m-0 text-center font-display italic text-tone-muted"
+          className="absolute m-0 text-center font-display italic text-tone-fg"
           style={{ left: du(L.tap.x), top: du(L.tap.y), width: du(L.tap.w), fontSize: du(L.tap.size) }}
         >
           {t(intro.tap)}
@@ -138,7 +137,7 @@ export function Intro() {
             <span className="block font-light" style={{ fontSize: du(names.name.amp) }}>
               &amp;
             </span>
-            <span className="block">{t(intro.names.bride)}</span>
+            <span className="block whitespace-nowrap">{t(intro.names.bride)}</span>
           </p>
           <span
             aria-hidden
@@ -164,28 +163,6 @@ export function Intro() {
             }}
           >
             {t(intro.guest)}
-          </p>
-        </div>
-
-        {/* Ngày và nơi tổ chức, chân cột phải */}
-        <div
-          className="absolute flex flex-col items-start"
-          style={{ left: du(L.date.x), top: du(L.date.y), gap: du(6) }}
-        >
-          <p
-            className="m-0 font-display leading-none lining-nums text-tone-fg"
-            style={{ fontSize: du(L.date.size), letterSpacing: `${L.date.ls}em` }}
-          >
-            {date}
-          </p>
-          <p
-            className="m-0 font-body font-medium uppercase text-tone-muted"
-            style={{
-              fontSize: du(L.date.place.size),
-              letterSpacing: `${L.date.place.ls}em`,
-            }}
-          >
-            {venue.name}
           </p>
         </div>
       </Garden>

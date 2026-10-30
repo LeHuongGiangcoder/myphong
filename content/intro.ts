@@ -127,21 +127,20 @@ export const garden = {
     vertical: { x: 102.5, y: 818, size: 9, ls: 0.46 },
     /** Ấn 囍 trên dải ren; `ring` là viền kem quanh ấn. */
     seal: { x: 187.5, y: 548, size: 58, glyph: 36, ring: 4 },
-    cta: { x: 160.5, y: 728, w: 112, h: 46, size: 9.5, ls: 0.34 },
-    tap: { x: 147.5, y: 782, w: 138, size: 13 },
+    cta: { x: 152.5, y: 722, w: 128, h: 56, size: 12.5, ls: 0.3 },
+    tap: { x: 147.5, y: 790, w: 138, size: 15 },
     /** Khối tên hai người + lời mời, cột phải trên nền giấy. */
     names: {
       x: 300.5,
-      y: 476,
-      w: 128,
-      label: { size: 8.5, ls: 0.4 },
-      name: { size: 30, amp: 24 },
-      rule: { w: 40, gap: 18 },
-      invite: { gap: 16, size: 21 },
+      y: 500,
+      w: 134,
+      label: { size: 10, ls: 0.34 },
+      name: { size: 33, amp: 26 },
+      rule: { w: 48, gap: 20 },
+      invite: { gap: 18, size: 27 },
       /** Khoảng cách: nhãn → tên, và nhãn "Thân mời" → người nhận */
       gap: { label: 10, guest: 6 },
     },
-    date: { x: 300.5, y: 772, size: 17, ls: 0.12, place: { size: 7.5, ls: 0.36 } },
   },
 } as const;
 
