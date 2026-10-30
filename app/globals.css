@@ -106,6 +106,7 @@
   --animate-sway: glow-sway 7s ease-in-out infinite;
   --animate-nudge: glow-nudge 1.6s ease-in-out infinite;
   --animate-sway-soft: glow-sway-soft 6s ease-in-out infinite;
+  --animate-bob: glow-bob 1.8s ease-in-out infinite;
 
   @keyframes glow-sway {
     0%,
@@ -123,6 +124,15 @@
     }
     50% {
       transform: rotate(1.1deg);
+    }
+  }
+  @keyframes glow-bob {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(6px);
     }
   }
   @keyframes glow-nudge {

@@ -2,6 +2,7 @@
 
 import { useLocale } from "@/components/experience/LocaleProvider";
 import { Heading } from "@/components/ui/Heading";
+import { ScrollHint } from "@/components/ui/ScrollHint";
 import { SectionWrapper } from "@/components/ui/SectionWrapper";
 import { ceremony, couple, hero, venue } from "@/content/client";
 
@@ -73,6 +74,8 @@ export function Hero() {
           </div>
         </div>
       </div>
+
+      <ScrollHint label={t(hero.scrollHint)} />
     </SectionWrapper>
   );
 }
