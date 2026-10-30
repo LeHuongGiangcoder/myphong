@@ -65,10 +65,10 @@ export function Hero() {
           </div>
 
           <div className="flex flex-col items-center gap-tight">
-            <p className="font-display text-h4 leading-none tracking-widest lining-nums text-tone-fg">
+            <p className="font-display text-h4 leading-none tracking-wider lining-nums text-tone-fg">
               {ceremony.dateShort}
             </p>
-            <p className="font-body text-eyebrow font-medium uppercase text-tone-fg">
+            <p className="head-eyebrow text-tone-fg">
               {t(ceremony.weekday)} · {venue.name}
             </p>
           </div>
@@ -84,7 +84,7 @@ export function Hero() {
 function Name({ role, name }: { role: string; name: string }) {
   return (
     <span className="flex flex-col items-center gap-tight">
-      <span className="font-body text-eyebrow font-medium uppercase text-tone-fg">{role}</span>
+      <span className="head-eyebrow text-tone-fg">{role}</span>
       <span className="font-display text-base sm:text-h4 font-medium uppercase leading-none text-tone-fg">
         {name}
       </span>

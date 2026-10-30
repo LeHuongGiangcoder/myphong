@@ -1,12 +1,12 @@
 import type { Metadata, Viewport } from "next";
-import { Be_Vietnam_Pro, Cormorant_Garamond, Pinyon_Script } from "next/font/google";
+import { Be_Vietnam_Pro, Cormorant_Garamond } from "next/font/google";
 
 import { meta } from "@/content/client";
 import { palette, themeCssVars } from "@/content/theme";
 import "./globals.css";
 
 /*
-  Cả ba font đều phải có subset "vietnamese", nếu không dấu tiếng Việt sẽ rơi
+  Cả hai font đều phải có subset "vietnamese", nếu không dấu tiếng Việt sẽ rơi
   về font hệ thống và chữ bị lệch nét giữa các từ.
 
   Cormorant khai báo cả italic thật: italic giả do trình duyệt kéo nghiêng làm
@@ -24,13 +24,6 @@ const body = Be_Vietnam_Pro({
   variable: "--ff-body",
   subsets: ["latin", "vietnamese"],
   weight: ["300", "400", "500", "600"],
-  display: "swap",
-});
-
-const script = Pinyon_Script({
-  variable: "--ff-script",
-  subsets: ["latin", "vietnamese"],
-  weight: "400",
   display: "swap",
 });
 
@@ -60,7 +53,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html
       lang={meta.lang}
-      className={`${display.variable} ${body.variable} ${script.variable}`}
+      className={`${display.variable} ${body.variable}`}
     >
       <head>
         {/* Token của content/theme.ts, in ra dưới dạng CSS variable */}

@@ -84,7 +84,7 @@ export function Caption({ className = "", children, ...rest }: TextProps) {
 /** Chữ viết tay — dành cho lời ký và một hai câu nhấn. */
 export function Script({ className = "", children, ...rest }: TextProps) {
   return (
-    <p className={`font-script text-h3 text-tone-accent ${className}`} {...rest}>
+    <p className={`font-display italic text-h3 text-tone-accent ${className}`} {...rest}>
       {children}
     </p>
   );

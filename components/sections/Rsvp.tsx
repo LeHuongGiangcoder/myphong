@@ -257,7 +257,7 @@ export function Rsvp() {
             khoảng cách. `pt` cũng rút lại — chữ triện ở góc trên trái buông
             xuống tới 40% bề ngang lát thiệp trên (mái đã bỏ, mép giấy nâng lên ngang
             điểm giữa hai đèn lồng), 38% là vừa chạm chân nó. */}
-        <div className="relative flex flex-col gap-block px-[18%] pt-[38%] pb-[55%]">
+        <div className="relative flex flex-col gap-block px-[15%] pt-[38%] pb-[55%]">
           <SectionHead
             eyebrow={t(rsvp.eyebrow)}
             title={personalized && guest ? `${t(rsvp.greeting)} ${guest.name}` : t(rsvp.title)}

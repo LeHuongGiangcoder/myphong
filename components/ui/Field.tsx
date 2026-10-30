@@ -10,7 +10,7 @@ export function FieldLabel({
   as?: "label" | "legend";
   children: ReactNode;
 }) {
-  const className = "font-body text-eyebrow font-medium uppercase text-tone-muted";
+  const className = "field-label font-body font-medium uppercase text-tone-muted";
   return Tag === "legend" ? (
     <legend className={className}>{children}</legend>
   ) : (

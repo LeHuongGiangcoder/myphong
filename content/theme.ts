@@ -122,8 +122,9 @@ export type Tone = keyof typeof tones;
 /* ------------------------------------------------------------- TYPOGRAPHY */
 
 /**
- * Ba họ chữ. Giá trị là CSS variable do next/font sinh ra trong layout.tsx
- * (--ff-display / --ff-body / --ff-script) — đổi font thì sửa cả hai nơi.
+ * Hai họ chữ (Cormorant cho tiêu đề + nhãn phụ, Be Vietnam Pro cho đoạn văn
+ * và form). Giá trị là CSS variable do next/font sinh ra trong layout.tsx
+ * (--ff-display / --ff-body) — đổi font thì sửa cả hai nơi.
  *
  * Lưu ý tiếng Việt: chỉ chọn font có subset "vietnamese" trên Google Fonts.
  * Font script mua ngoài thường thiếu dấu (ơ, ư, đ, dấu chồng) nên không dùng
@@ -132,7 +133,8 @@ export type Tone = keyof typeof tones;
 export const fonts = {
   display: 'var(--ff-display), Georgia, "Times New Roman", serif',
   body: "var(--ff-body), ui-sans-serif, system-ui, sans-serif",
-  script: 'var(--ff-script), "Apple Chancery", cursive',
+  /** Không còn font script riêng: chữ "viết tay" là Cormorant italic */
+  script: 'var(--ff-display), Georgia, "Times New Roman", serif',
   /**
    * Chỉ cho ấn 囍 ở màn mở thiệp. Noto Serif TC được tải đúng một ký tự đó
    * (xem components/ui/Seal.tsx); máy không tải được thì rơi về font

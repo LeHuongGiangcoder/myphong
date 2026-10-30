@@ -308,6 +308,8 @@ export const hero = {
    * không phải do component.
    */
   title: { vi: "Ngày\nChung Đôi", en: "The Day\nWe Marry" },
+  /** Nhãn nhỏ của gợi ý cuộn ở đáy hero */
+  scrollHint: { vi: "Cuộn xuống", en: "Scroll" },
   /** Câu mời, đứng ngay dưới tên thiệp */
   invitation: {
     vi: "Chúng tôi và gia đình kính mời quý khách tới chung vui.",

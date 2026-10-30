@@ -233,12 +233,12 @@ h4 {
     là lệch nhau vài px giữa các section.
   */
   .head-eyebrow {
-    font-family: var(--t-font-body);
-    font-weight: 500;
+    font-family: var(--t-font-display);
+    font-weight: 600;
     text-transform: uppercase;
-    font-size: var(--head-eyebrow-size, 0.53125rem);
+    font-size: var(--head-eyebrow-size, 0.8125rem);
     line-height: 1.2;
-    letter-spacing: var(--head-eyebrow-tracking, 0.44em);
+    letter-spacing: var(--head-eyebrow-tracking, 0.22em);
   }
 
   .head-title {
@@ -649,6 +649,15 @@ h4 {
 
   /* Ô nhập của form RSVP. Giữ font-size >= 16px, nếu nhỏ hơn iOS Safari
      sẽ tự phóng cả trang khi người dùng chạm vào ô. */
+  /* Nhãn ô nhập: một dòng ở mọi khổ máy. Cỡ chữ co theo bề ngang màn hình
+     (trần = cỡ eyebrow), tracking hẹp hơn eyebrow vì nhãn dài cả câu hỏi. */
+  .field-label {
+    font-size: min(var(--t-text-eyebrow), 2.9vw);
+    line-height: var(--t-leading-eyebrow);
+    letter-spacing: 0.12em;
+    text-wrap: balance;
+  }
+
   .field-input {
     width: 100%;
     min-height: var(--t-size-tap);

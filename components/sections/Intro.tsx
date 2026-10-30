@@ -67,7 +67,7 @@ export function Intro() {
           style={{ left: du(L.rule.x), top: du(L.rule.y), width: "1px", height: du(L.rule.h) }}
         />
         <p
-          className="absolute m-0 whitespace-nowrap font-body font-medium uppercase text-tone-contrast"
+          className="absolute m-0 whitespace-nowrap font-display font-semibold uppercase text-tone-contrast"
           style={{
             left: du(L.vertical.x),
             top: du(L.vertical.y),
@@ -124,7 +124,7 @@ export function Intro() {
           style={{ left: du(names.x), top: du(names.y), width: du(names.w) }}
         >
           <p
-            className="m-0 font-body font-medium uppercase text-tone-muted"
+            className="m-0 font-display font-semibold uppercase text-tone-muted"
             style={{ fontSize: du(names.label.size), letterSpacing: `${names.label.ls}em` }}
           >
             {t(intro.eyebrow)}
@@ -145,7 +145,7 @@ export function Intro() {
             style={{ marginTop: du(names.rule.gap), width: du(names.rule.w), height: "1px" }}
           />
           <p
-            className="m-0 font-body font-medium uppercase text-tone-muted"
+            className="m-0 font-display font-semibold uppercase text-tone-muted"
             style={{
               marginTop: du(names.invite.gap),
               fontSize: du(names.label.size),

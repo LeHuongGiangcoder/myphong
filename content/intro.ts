@@ -124,7 +124,7 @@ export const garden = {
   layout: {
     /** Vạch đứng và dòng chữ dọc ở dải nâu bên trái. */
     rule: { x: 107.5, y: 470, h: 136 },
-    vertical: { x: 102.5, y: 818, size: 9, ls: 0.46 },
+    vertical: { x: 102.5, y: 818, size: 10, ls: 0.3 },
     /** Ấn 囍 trên dải ren; `ring` là viền kem quanh ấn. */
     seal: { x: 187.5, y: 548, size: 58, glyph: 36, ring: 4 },
     cta: { x: 152.5, y: 722, w: 128, h: 56, size: 12.5, ls: 0.3 },
@@ -134,7 +134,7 @@ export const garden = {
       x: 300.5,
       y: 500,
       w: 134,
-      label: { size: 10, ls: 0.34 },
+      label: { size: 11, ls: 0.22 },
       name: { size: 33, amp: 26 },
       rule: { w: 48, gap: 20 },
       invite: { gap: 18, size: 27 },
