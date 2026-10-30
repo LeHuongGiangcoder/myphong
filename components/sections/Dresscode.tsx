@@ -69,7 +69,6 @@ export function Dresscode() {
 
         <div className="container-prose relative flex flex-col items-center gap-block pt-[14%]">
           <SectionHead
-            eyebrow={t(dresscode.eyebrow)}
             title={t(dresscode.title)}
             titleId="dresscode-title"
           />

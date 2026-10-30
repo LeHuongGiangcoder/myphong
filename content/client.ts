@@ -467,7 +467,6 @@ export const agenda = {
 /* -------------------------------------------------------------- DRESSCODE */
 
 export const dresscode = {
-  eyebrow: { vi: "Màu sắc", en: "Dress code" },
   title: { vi: "Gợi ý màu\ntrang phục", en: "Suggested outfit palette" },
   /**
    * Để mảng rỗng thì phần bảng màu tự ẩn. Mã màu không dịch.
