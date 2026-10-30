@@ -609,7 +609,7 @@ export const thankYou = {
   title: { vi: "Cảm ơn quý khách", en: "Thank you" },
   lines: [
     {
-      vi: "Sự đồng hành của quý khách",
+      vi: "Sự hiện diện của quý khách",
       en: "Your presence is the greatest gift",
     },
     {

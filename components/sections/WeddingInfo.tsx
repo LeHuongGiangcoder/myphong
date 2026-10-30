@@ -119,10 +119,7 @@ export function WeddingInfo() {
                     {t(ceremony.weekday)}
                   </Eyebrow>
                   <p className="mt-2 font-display text-h1 lining-nums leading-none text-tone-fg">
-                    {day}.{month}
-                  </p>
-                  <p className="mt-[3px] font-display text-h4 leading-none tracking-[0.28em] lining-nums text-tone-fg">
-                    {year}
+                    {day}.{month}.{year}
                   </p>
                 </div>
                 <span aria-hidden className="h-[5.25rem] w-px bg-tone-line" />
@@ -130,14 +127,11 @@ export function WeddingInfo() {
                   <Eyebrow className="text-tone-muted">
                     {t(weddingInfo.receptionLabel)}
                   </Eyebrow>
-                  <p className="mt-2 font-display text-h1 italic lining-nums leading-none text-tone-fg">
+                  <p className="mt-2 font-display text-h1 lining-nums leading-none text-tone-fg">
                     {ceremony.timeLabel}
                   </p>
                 </div>
               </div>
-              <p className="mt-4 font-display text-base italic text-tone-muted">
-                {t(ceremony.lunar)}
-              </p>
 
               {/* Địa điểm */}
               <div className="mt-[2.625rem] flex flex-col items-start">
