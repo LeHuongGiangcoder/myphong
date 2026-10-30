@@ -146,3 +146,19 @@ export const garden = {
 
 /** Một đơn vị thiết kế → CSS. `--iu` do Garden.tsx đặt: 1 đơn vị = chiều cao màn hình / 844. */
 export const du = (n: number) => `calc(${n} * var(--iu))`;
+
+/**
+ * Bề ngang còn lại từ mép trái của cột x tới mép phải MÀN HÌNH (chừa 14px).
+ * Sân khấu đứng giữa màn hình nên mép trái của x nằm ở
+ * `50vw + (x − stage.w / 2) · iu`. Máy càng cao hẹp (Samsung 20:9 trở lên) thì
+ * hai bên bị cắt càng nhiều và quãng này càng ngắn.
+ */
+export const roomRight = (x: number) =>
+  `calc(50vw - ${x - garden.stage.w / 2} * var(--iu) - 14px)`;
+
+/**
+ * Cỡ chữ `units` (đơn vị thiết kế) nhưng không để dòng chữ rộng `em` lần cỡ
+ * chữ tràn quá mép phải màn hình.
+ */
+export const fitText = (units: number, x: number, em: number) =>
+  `min(${du(units)}, calc(${roomRight(x)} / ${em}))`;

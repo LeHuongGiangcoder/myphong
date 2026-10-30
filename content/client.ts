@@ -484,7 +484,7 @@ export const dresscode = {
     { name: { vi: "Đen", en: "Black" }, hex: "#1a1a1a" },
   ],
   avoid: {
-    vi: "* bảng màu trên chỉ mang tính tham khảo",
+    vi: "* Bảng màu trên chỉ mang tính tham khảo",
     en: "* the palette above is for reference only",
   },
 };

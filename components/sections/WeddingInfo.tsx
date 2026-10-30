@@ -113,7 +113,7 @@ export function WeddingInfo() {
                 </div>
               </div>
 
-              <div className="mt-stack grid grid-cols-[auto_1px_auto] items-start justify-between gap-x-[1rem]">
+              <div className="mt-stack flex flex-col gap-stack">
                 <div className="flex flex-col">
                   <Eyebrow className="text-tone-muted">
                     {t(ceremony.weekday)}
@@ -122,7 +122,6 @@ export function WeddingInfo() {
                     {day}.{month}.{year}
                   </p>
                 </div>
-                <span aria-hidden className="h-[5.25rem] w-px bg-tone-line" />
                 <div className="flex flex-col">
                   <Eyebrow className="text-tone-muted">
                     {t(weddingInfo.receptionLabel)}

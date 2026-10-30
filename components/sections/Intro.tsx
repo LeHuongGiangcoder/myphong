@@ -7,7 +7,7 @@ import { useLocale } from "@/components/experience/LocaleProvider";
 import { Garden } from "@/components/ui/Garden";
 import { Seal } from "@/components/ui/Seal";
 import { design, intro } from "@/content/client";
-import { garden, du } from "@/content/intro";
+import { garden, du, fitText, roomRight } from "@/content/intro";
 
 const L = garden.layout;
 
@@ -121,17 +121,17 @@ export function Intro() {
         {/* Cột phải trên nền giấy: tên hai người + lời mời */}
         <div
           className="absolute flex flex-col items-start"
-          style={{ left: du(names.x), top: du(names.y), width: du(names.w) }}
+          style={{ left: du(names.x), top: du(names.y), width: `min(${du(names.w)}, ${roomRight(names.x)})` }}
         >
           <p
             className="m-0 font-display font-semibold uppercase text-tone-muted"
-            style={{ fontSize: du(names.label.size), letterSpacing: `${names.label.ls}em` }}
+            style={{ fontSize: fitText(names.label.size, names.x, 10.3), letterSpacing: `${names.label.ls}em` }}
           >
             {t(intro.eyebrow)}
           </p>
           <p
             className="m-0 font-display font-medium italic text-tone-fg"
-            style={{ marginTop: du(names.gap.label), fontSize: du(names.name.size), lineHeight: 1.02 }}
+            style={{ marginTop: du(names.gap.label), fontSize: fitText(names.name.size, names.x, 3.95), lineHeight: 1.02 }}
           >
             <span className="block">{t(intro.names.groom)}</span>
             <span className="block font-light" style={{ fontSize: du(names.name.amp) }}>
@@ -148,7 +148,7 @@ export function Intro() {
             className="m-0 font-display font-semibold uppercase text-tone-muted"
             style={{
               marginTop: du(names.invite.gap),
-              fontSize: du(names.label.size),
+              fontSize: fitText(names.label.size, names.x, 10.3),
               letterSpacing: `${names.label.ls}em`,
             }}
           >
@@ -158,7 +158,7 @@ export function Intro() {
             className="m-0 font-display font-medium italic text-tone-fg"
             style={{
               marginTop: du(names.gap.guest),
-              fontSize: du(names.invite.size),
+              fontSize: fitText(names.invite.size, names.x, 4),
               lineHeight: 1.15,
             }}
           >
