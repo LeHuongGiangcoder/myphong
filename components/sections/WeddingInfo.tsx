@@ -113,7 +113,7 @@ export function WeddingInfo() {
                 </div>
               </div>
 
-              <div className="mt-stack grid grid-cols-[minmax(0,1fr)_1px_minmax(0,1fr)] items-start gap-x-[1.375rem]">
+              <div className="mt-stack grid grid-cols-[auto_1px_auto] items-start justify-between gap-x-[1rem]">
                 <div className="flex flex-col">
                   <Eyebrow className="text-tone-muted">
                     {t(ceremony.weekday)}
