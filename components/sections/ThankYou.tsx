@@ -77,7 +77,6 @@ export function ThankYou() {
           className="absolute inset-x-0 bottom-0 flex flex-col items-center gap-stack px-gutter pb-section text-center text-tone-fg"
         >
           <SectionHead
-            eyebrow={t(thankYou.eyebrow)}
             title={t(thankYou.title)}
             titleId="thank-you-title"
             flush

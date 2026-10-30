@@ -50,7 +50,6 @@ export function Gallery() {
     <SectionWrapper section="gallery" width="bleed" labelledBy="gallery-title">
       <div className="container-site py-section pb-0">
         <SectionHead
-          eyebrow={t(gallery.eyebrow)}
           title={t(gallery.title)}
           titleId="gallery-title"
           intro={t(gallery.note)}

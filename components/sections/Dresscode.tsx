@@ -71,6 +71,7 @@ export function Dresscode() {
           <SectionHead
             title={t(dresscode.title)}
             titleId="dresscode-title"
+            flush
           />
 
           {dresscode.swatches.length > 0 ? (

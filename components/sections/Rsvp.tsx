@@ -259,7 +259,6 @@ export function Rsvp() {
             điểm giữa hai đèn lồng), 38% là vừa chạm chân nó. */}
         <div className="relative flex flex-col gap-block px-[15%] pt-[38%] pb-[55%]">
           <SectionHead
-            eyebrow={t(rsvp.eyebrow)}
             title={personalized && guest ? `${t(rsvp.greeting)} ${guest.name}` : t(rsvp.title)}
             titleId="rsvp-title"
             flush

@@ -301,7 +301,6 @@ export const intro = {
 
 export const hero = {
   /** Dòng nhỏ in hoa trên cùng, đứng trên tên thiệp */
-  eyebrow: { vi: "Trân trọng báo hỷ", en: "With joy we announce" },
   /**
    * Tên của tấm thiệp, chữ lớn nhất trang. Xuống dòng bằng `\n` — Hero in ra
    * với `whitespace-pre-line`, nên chỗ ngắt dòng do nội dung quyết định chứ
@@ -326,7 +325,6 @@ export const hero = {
 
 /** Không nằm trong `sections` của site này — giữ lại để bật nhanh nếu cần. */
 export const loveStory = {
-  eyebrow: { vi: "Chuyện của chúng mình", en: "Our story" },
   title: { vi: "Love Story", en: "Love Story" },
   intro: {
     vi: "Vuốt sang để xem những khoảnh khắc chúng mình giữ lại.",
@@ -394,7 +392,6 @@ export const loveStory = {
 
 /** Không nằm trong `sections` của site này — giữ lại để bật nhanh nếu cần. */
 export const gallery = {
-  eyebrow: { vi: "Album", en: "Album" },
   title: { vi: "Khoảnh khắc của chúng mình", en: "Our favourite moments" },
   note: { vi: "Những tấm hình chúng mình thương nhất.", en: "The photos we love most." },
   /** Chữ gợi ý cho người xem biết dải ảnh kéo ngang được. */
@@ -413,14 +410,12 @@ export const gallery = {
 
 /** Section "Time & Venue" — ngày giờ, địa điểm, gia đình hai bên. */
 export const weddingInfo = {
-  eyebrow: { vi: "Thời gian & Địa điểm", en: "Time & Venue" },
   title: { vi: "Ngày chúng mình về chung một nhà", en: "The day we become one family" },
   intro: {
     vi: "Kính mời quý khách tới dự tiệc mừng lễ thành hôn.",
     en: "We would be honoured to have you at our wedding reception.",
   },
   /** Dòng nhỏ trên tiêu đề "Save the Date" */
-  inviteLabel: { vi: "Trân trọng kính mời", en: "With their families" },
   /** `\n` xuống dòng: "Save" một dòng, "the Date" dòng dưới */
   saveTheDateLabel: { vi: "Tham dự\nHôn lễ", en: "Save\nthe Date" },
   timeLabel: { vi: "Thời gian", en: "Time" },
@@ -436,7 +431,6 @@ export const weddingInfo = {
 /* ----------------------------------------------------------------- AGENDA */
 
 export const agenda = {
-  eyebrow: { vi: "Chương trình", en: "Schedule" },
   title: { vi: "Trình tự buổi lễ", en: "Order of the day" },
   /** Ảnh ở đầu tấm khung, tỉ lệ ~1:1 (public/images/agenda.webp) */
   photo: "/images/agenda.webp",
@@ -515,7 +509,6 @@ export const rsvp = {
   /** Slug của khách, trùng subdomain: ten-khach.gloweb.site → "ten-khach" */
   client: "myphong",
 
-  eyebrow: { vi: "R.S.V.P", en: "R.S.V.P" },
   title: { vi: "Quý khách sẽ đến chứ?", en: "Will you join us?" },
   note: {
     vi: "Nhắn giúp chúng mình một tiếng để gia đình chuẩn bị chỗ ngồi chu đáo.",
@@ -606,7 +599,6 @@ export const rsvp = {
 /* --------------------------------------------------------------- THANK YOU */
 
 export const thankYou = {
-  eyebrow: { vi: "Thank you", en: "With gratitude" },
   title: { vi: "Cảm ơn quý khách", en: "Thank you" },
   lines: [
     {

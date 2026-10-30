@@ -87,9 +87,6 @@ export function WeddingInfo() {
                   {/* Con bướm nằm giữa "Save the Date" và "Thời gian", trong khoảng trống bên trái ảnh. */}
                   <Butterfly className="absolute right-[18%] top-[48%] w-[32%]" />
                   <div className="flex flex-col gap-3">
-                    <Eyebrow className="whitespace-nowrap text-tone-muted [--head-eyebrow-tracking:0.2em]">
-                      {t(weddingInfo.inviteLabel)}
-                    </Eyebrow>
                     <Heading
                       level="h2"
                       className="whitespace-pre-line text-tone-fg"
@@ -126,7 +123,7 @@ export function WeddingInfo() {
                   <Eyebrow className="text-tone-muted">
                     {t(weddingInfo.receptionLabel)}
                   </Eyebrow>
-                  <p className="mt-2 font-display text-h1 lining-nums leading-none text-tone-fg">
+                  <p className="mt-2 font-display text-h3 lining-nums leading-none text-tone-muted">
                     {ceremony.timeLabel}
                   </p>
                 </div>

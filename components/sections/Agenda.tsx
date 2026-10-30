@@ -219,9 +219,6 @@ export function Agenda() {
             </svg>
 
             <div className="absolute" style={{ left: du(22), top: du(328), width: du(250) }}>
-              <p className="head-eyebrow m-0 text-tone-muted">
-                {t(agenda.eyebrow)}
-              </p>
               <h2
                 id="agenda-title"
                 className="head-title m-0 text-tone-fg"

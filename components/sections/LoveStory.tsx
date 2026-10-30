@@ -63,7 +63,6 @@ export function LoveStory() {
   return (
     <SectionWrapper section="loveStory" labelledBy="love-story-title">
       <SectionHead
-        eyebrow={t(loveStory.eyebrow)}
         title={t(loveStory.title)}
         titleId="love-story-title"
         intro={t(loveStory.intro)}
