@@ -45,17 +45,17 @@ export function ScrollHint() {
       }`}
     >
       <div className="flex animate-bob flex-col items-center">
-        <span className="block h-5 w-px bg-current" />
+        <span className="block h-8 w-px bg-current" />
         <svg
-          width="14"
-          height="14"
+          width="24"
+          height="24"
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
           strokeWidth="1.5"
           strokeLinecap="round"
           strokeLinejoin="round"
-          className="-mt-1.5"
+          className="-mt-2.5"
         >
           <path d="M6 9l6 6 6-6" />
         </svg>
