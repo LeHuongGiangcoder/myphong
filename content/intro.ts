@@ -132,10 +132,10 @@ export const garden = {
     names: {
       x: 300.5,
       y: 470,
-      w: 134,
+      w: 150,
       label: { size: 13.5, ls: 0.2 },
-      /** `amp`: khoảng hở giữa họ tên chú rể và dấu "&" cuối dòng */
-      name: { size: 36, amp: 10 },
+      /** `amp`: khoảng hở trên và dưới dấu "&" nằm riêng một dòng giữa hai tên */
+      name: { size: 36, amp: 2 },
       rule: { w: 48, gap: 20 },
       invite: { gap: 18, size: 27, label: 17 },
       /** Khoảng cách: nhãn → tên, và nhãn "Thân mời" → người nhận */

@@ -116,28 +116,23 @@ export function Intro() {
           style={{ left: du(names.x), top: du(names.y), width: `min(${du(names.w)}, ${roomRight(names.x)})` }}
         >
           <p
-            className="m-0 font-display font-semibold uppercase text-tone-muted"
+            className="m-0 w-full text-center font-display font-semibold uppercase text-tone-muted"
             style={{ fontSize: fitText(names.label.size, names.x, 11.5), letterSpacing: `${names.label.ls}em` }}
           >
             {t(intro.eyebrow)}
           </p>
           <p
-            className="m-0 font-display font-medium italic text-tone-fg"
-            style={{ marginTop: du(names.gap.label), fontSize: fitText(names.name.size, names.x, 3.95), lineHeight: 1.02 }}
+            className="m-0 w-full text-center font-display font-medium italic text-tone-fg"
+            style={{ marginTop: du(names.gap.label), fontSize: fitText(names.name.size, names.x, 5), lineHeight: 1.02 }}
           >
-            {t(intro.names.groom).split(" ").map((w, i, all) => (
-              <span key={w} className="block whitespace-nowrap">
-                {w}
-                {i === all.length - 1 ? (
-                  <span className="font-light" style={{ marginLeft: du(names.name.amp) }}>
-                    &amp;
-                  </span>
-                ) : null}
-              </span>
-            ))}
-            {t(intro.names.bride).split(" ").map((w) => (
-              <span key={w} className="block whitespace-nowrap">{w}</span>
-            ))}
+            <span className="block whitespace-nowrap">{t(intro.names.groom)}</span>
+            <span
+              className="block text-center font-light"
+              style={{ margin: `${du(names.name.amp)} 0` }}
+            >
+              &amp;
+            </span>
+            <span className="block whitespace-nowrap">{t(intro.names.bride)}</span>
           </p>
           <span
             aria-hidden
