@@ -125,14 +125,26 @@ export function Intro() {
             className="m-0 font-display font-medium italic text-tone-fg"
             style={{ marginTop: du(names.gap.label), fontSize: fitText(names.name.size, names.x, 3.95), lineHeight: 1.02 }}
           >
-            {t(intro.names.groom).split(" ").map((w) => (
-              <span key={w} className="block whitespace-nowrap">{w}</span>
+            {t(intro.names.groom).split(" ").map((w, i) => (
+              <span
+                key={w}
+                className="block whitespace-nowrap"
+                style={i > 0 ? { marginLeft: du(names.name.indent) } : undefined}
+              >
+                {w}
+              </span>
             ))}
             <span className="block font-light" style={{ fontSize: du(names.name.amp) }}>
               &amp;
             </span>
-            {t(intro.names.bride).split(" ").map((w) => (
-              <span key={w} className="block whitespace-nowrap">{w}</span>
+            {t(intro.names.bride).split(" ").map((w, i) => (
+              <span
+                key={w}
+                className="block whitespace-nowrap"
+                style={i > 0 ? { marginLeft: du(names.name.indent) } : undefined}
+              >
+                {w}
+              </span>
             ))}
           </p>
           <span
