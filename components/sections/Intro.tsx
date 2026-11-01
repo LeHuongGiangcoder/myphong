@@ -134,15 +134,17 @@ export function Intro() {
                 {w}
               </span>
             ))}
-            <span className="block font-light" style={{ fontSize: du(names.name.amp) }}>
-              &amp;
-            </span>
             {t(intro.names.bride).split(" ").map((w, i) => (
               <span
                 key={w}
                 className="block whitespace-nowrap"
-                style={i > 0 ? { marginLeft: du(names.name.indent) } : undefined}
+                style={i > 0 ? { marginLeft: du(names.name.indent) } : { marginTop: du(names.name.amp) }}
               >
+                {i === 0 ? (
+                  <span className="font-light" style={{ marginRight: du(8) }}>
+                    &amp;
+                  </span>
+                ) : null}
                 {w}
               </span>
             ))}

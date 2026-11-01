@@ -135,7 +135,7 @@ export const garden = {
       w: 134,
       label: { size: 13.5, ls: 0.2 },
       /** `indent`: chữ thứ hai của mỗi tên lùi vào, tạo lớp so le */
-      name: { size: 36, amp: 26, indent: 22 },
+      name: { size: 36, amp: 8, indent: 22 },
       rule: { w: 48, gap: 20 },
       invite: { gap: 18, size: 27, label: 17 },
       /** Khoảng cách: nhãn → tên, và nhãn "Thân mời" → người nhận */
