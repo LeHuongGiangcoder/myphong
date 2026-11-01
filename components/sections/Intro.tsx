@@ -125,28 +125,18 @@ export function Intro() {
             className="m-0 font-display font-medium italic text-tone-fg"
             style={{ marginTop: du(names.gap.label), fontSize: fitText(names.name.size, names.x, 3.95), lineHeight: 1.02 }}
           >
-            {t(intro.names.groom).split(" ").map((w, i) => (
-              <span
-                key={w}
-                className="block whitespace-nowrap"
-                style={i > 0 ? { marginLeft: du(names.name.indent) } : undefined}
-              >
+            {t(intro.names.groom).split(" ").map((w, i, all) => (
+              <span key={w} className="block whitespace-nowrap">
                 {w}
-              </span>
-            ))}
-            {t(intro.names.bride).split(" ").map((w, i) => (
-              <span
-                key={w}
-                className="block whitespace-nowrap"
-                style={i > 0 ? { marginLeft: du(names.name.indent) } : { marginTop: du(names.name.amp) }}
-              >
-                {i === 0 ? (
-                  <span className="font-light" style={{ marginRight: du(8) }}>
+                {i === all.length - 1 ? (
+                  <span className="font-light" style={{ marginLeft: du(names.name.amp) }}>
                     &amp;
                   </span>
                 ) : null}
-                {w}
               </span>
+            ))}
+            {t(intro.names.bride).split(" ").map((w) => (
+              <span key={w} className="block whitespace-nowrap">{w}</span>
             ))}
           </p>
           <span
