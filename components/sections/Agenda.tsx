@@ -168,8 +168,8 @@ export function Agenda() {
             <Image
               src={agenda.photo}
               alt={t(agenda.photoAlt)}
-              width={588}
-              height={600}
+              width={1176}
+              height={1200}
               sizes="(max-width: 32rem) 80vw, 26rem"
               className="absolute left-0 object-cover"
               style={{ top: du(4), width: du(PANEL.w), height: du(300) }}

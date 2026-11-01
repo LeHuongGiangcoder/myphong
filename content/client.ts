@@ -589,7 +589,7 @@ export const rsvp = {
   },
   editAnswer: { vi: "Sửa lại câu trả lời", en: "Edit my reply" },
   /** Chào khách vào bằng link riêng — chỉ dùng khi mode "personalized". */
-  greeting: { vi: "Thân mời", en: "Dear" },
+  greeting: { vi: "Kính mời", en: "Dear" },
 };
 
 /* --------------------------------------------------------------- THANK YOU */
