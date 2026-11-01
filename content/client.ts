@@ -282,7 +282,7 @@ export const intro = {
   inviteLabel: { vi: "Thân mời", en: "Cordially inviting" },
   guest: { vi: "Quý khách", en: "Our guests" },
   /** Dòng chữ dọc ở dải nâu bên trái */
-  vertical: { vi: "Trân trọng kính mời", en: "With warm regards" },
+  vertical: { vi: "Trân trọng thông báo", en: "With warm regards" },
   /** Nút mở thiệp. Chính cú chạm này bật nhạc — xem ExperienceProvider. */
   cta: { vi: "Mở thiệp", en: "Open" },
   /**
