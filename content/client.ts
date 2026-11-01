@@ -279,7 +279,7 @@ export const intro = {
     bride: { vi: "Huyền My", en: "Mia HM Bui" } as L,
   },
   /** "Thân mời" + người nhận. Thiệp chung cho mọi khách nên người nhận là "Quý khách". */
-  inviteLabel: { vi: "Thân mời", en: "Cordially inviting" },
+  inviteLabel: { vi: "Kình mời", en: "Cordially inviting" },
   guest: { vi: "Quý khách", en: "Our guests" },
   /** Dòng chữ dọc ở dải nâu bên trái */
   vertical: { vi: "Trân trọng thông báo", en: "With warm regards" },
