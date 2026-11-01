@@ -285,8 +285,6 @@ export const intro = {
   vertical: { vi: "Trân trọng kính mời", en: "With warm regards" },
   /** Nút mở thiệp. Chính cú chạm này bật nhạc — xem ExperienceProvider. */
   cta: { vi: "Mở thiệp", en: "Open" },
-  /** Dòng chữ nghiêng dưới nút */
-  tap: { vi: "chạm để mở", en: "tap to open" },
   /**
    * Chỉ trình đọc màn hình nghe thấy: báo trước rằng bấm nút sẽ chạy một cảnh
    * vài giây (mặt trời lộ ra, bướm bay) chứ không vào thiệp ngay.
@@ -307,8 +305,6 @@ export const hero = {
    * không phải do component.
    */
   title: { vi: "Ngày\nChung Đôi", en: "The Day\nWe Marry" },
-  /** Nhãn nhỏ của gợi ý cuộn ở đáy hero */
-  scrollHint: { vi: "Cuộn xuống", en: "Scroll" },
   /** Câu mời, đứng ngay dưới tên thiệp */
   invitation: {
     vi: "Chúng tôi và gia đình kính mời quý khách tới chung vui.",
@@ -461,7 +457,7 @@ export const agenda = {
 /* -------------------------------------------------------------- DRESSCODE */
 
 export const dresscode = {
-  title: { vi: "Gợi ý màu\ntrang phục", en: "Suggested outfit palette" },
+  title: { vi: "Gợi ý màu trang phục", en: "Suggested outfit palette" },
   /**
    * Để mảng rỗng thì phần bảng màu tự ẩn. Mã màu không dịch.
    * Lấy từ bảng giấy màu khách gửi; xếp từ nhạt đến đậm theo hai hàng bốn ô.

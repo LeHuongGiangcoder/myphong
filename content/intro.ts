@@ -128,16 +128,15 @@ export const garden = {
     /** Ấn 囍 trên dải ren; `ring` là viền kem quanh ấn. */
     seal: { x: 187.5, y: 548, size: 58, glyph: 36, ring: 4 },
     cta: { x: 152.5, y: 722, w: 128, h: 56, size: 12.5, ls: 0.3 },
-    tap: { x: 147.5, y: 790, w: 138, size: 15 },
     /** Khối tên hai người + lời mời, cột phải trên nền giấy. */
     names: {
       x: 300.5,
-      y: 500,
+      y: 470,
       w: 134,
-      label: { size: 11, ls: 0.22 },
-      name: { size: 33, amp: 26 },
+      label: { size: 13.5, ls: 0.2 },
+      name: { size: 36, amp: 26 },
       rule: { w: 48, gap: 20 },
-      invite: { gap: 18, size: 27 },
+      invite: { gap: 18, size: 27, label: 17 },
       /** Khoảng cách: nhãn → tên, và nhãn "Thân mời" → người nhận */
       gap: { label: 10, guest: 6 },
     },

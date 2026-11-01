@@ -60,7 +60,7 @@ export function Hero() {
         </div>
       </div>
 
-      <ScrollHint label={t(hero.scrollHint)} />
+      <ScrollHint />
     </SectionWrapper>
   );
 }

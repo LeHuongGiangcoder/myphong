@@ -90,7 +90,7 @@ export function Intro() {
           <Seal size={du(L.seal.size)} glyph={du(L.seal.glyph)} ring={du(L.seal.ring)} />
         </div>
 
-        {/* Nút mở thiệp + dòng gợi ý */}
+        {/* Nút mở thiệp */}
         <button
           type="button"
           data-garden-cta
@@ -109,14 +109,6 @@ export function Intro() {
         >
           {t(intro.cta)}
         </button>
-        <p
-          data-garden-cta
-          aria-hidden
-          className="absolute m-0 text-center font-display italic text-tone-fg"
-          style={{ left: du(L.tap.x), top: du(L.tap.y), width: du(L.tap.w), fontSize: du(L.tap.size) }}
-        >
-          {t(intro.tap)}
-        </p>
 
         {/* Cột phải trên nền giấy: tên hai người + lời mời */}
         <div
@@ -125,7 +117,7 @@ export function Intro() {
         >
           <p
             className="m-0 font-display font-semibold uppercase text-tone-muted"
-            style={{ fontSize: fitText(names.label.size, names.x, 10.3), letterSpacing: `${names.label.ls}em` }}
+            style={{ fontSize: fitText(names.label.size, names.x, 11.5), letterSpacing: `${names.label.ls}em` }}
           >
             {t(intro.eyebrow)}
           </p>
@@ -133,11 +125,15 @@ export function Intro() {
             className="m-0 font-display font-medium italic text-tone-fg"
             style={{ marginTop: du(names.gap.label), fontSize: fitText(names.name.size, names.x, 3.95), lineHeight: 1.02 }}
           >
-            <span className="block">{t(intro.names.groom)}</span>
+            {t(intro.names.groom).split(" ").map((w) => (
+              <span key={w} className="block whitespace-nowrap">{w}</span>
+            ))}
             <span className="block font-light" style={{ fontSize: du(names.name.amp) }}>
               &amp;
             </span>
-            <span className="block whitespace-nowrap">{t(intro.names.bride)}</span>
+            {t(intro.names.bride).split(" ").map((w) => (
+              <span key={w} className="block whitespace-nowrap">{w}</span>
+            ))}
           </p>
           <span
             aria-hidden
@@ -145,12 +141,8 @@ export function Intro() {
             style={{ marginTop: du(names.rule.gap), width: du(names.rule.w), height: "1px" }}
           />
           <p
-            className="m-0 font-display font-semibold uppercase text-tone-muted"
-            style={{
-              marginTop: du(names.invite.gap),
-              fontSize: fitText(names.label.size, names.x, 10.3),
-              letterSpacing: `${names.label.ls}em`,
-            }}
+            className="m-0 font-display font-medium italic text-tone-fg"
+            style={{ marginTop: du(names.invite.gap), fontSize: fitText(names.invite.label, names.x, 4), lineHeight: 1.15 }}
           >
             {t(intro.inviteLabel)}
           </p>

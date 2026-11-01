@@ -71,6 +71,7 @@ export function Dresscode() {
           <SectionHead
             title={t(dresscode.title)}
             titleId="dresscode-title"
+            titleClassName="not-italic"
             flush
           />
 
@@ -103,7 +104,7 @@ export function Dresscode() {
                 ))}
               </ul>
               {dresscode.avoid ? (
-                <Caption className="text-center">{t(dresscode.avoid)}</Caption>
+                <Caption className="text-center italic">{t(dresscode.avoid)}</Caption>
               ) : null}
             </Reveal>
           ) : null}

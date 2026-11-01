@@ -1,65 +1,63 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 import { useExperience } from "@/components/experience/ExperienceProvider";
 
-/** Chờ bao lâu sau khi hero hiện ra thì mới nhắc cuộn. */
-const DELAY_MS = 4500;
-/** Cuộn quá ngưỡng này (px) là khách đã biết cuộn — gỡ gợi ý đi. */
-const DONE_AT = 40;
+/** Chờ bao lâu sau khi hero hiện ra thì mới nhích trang. */
+const DELAY_MS = 2200;
+/** Trang nhích lên bao nhiêu px rồi trở về. */
+const NUDGE_PX = 64;
+const UP_MS = 650;
+const DOWN_MS = 800;
+
+const easeInOut = (p: number) => (p < 0.5 ? 2 * p * p : 1 - (-2 * p + 2) ** 2 / 2);
 
 /**
- * Gợi ý "cuộn xuống" cho khách lớn tuổi, nằm cố định ở chân màn hình. Chỉ hiện
- * khi hero đã mở khoá cuộn, khách ở đầu trang và đã đứng yên vài giây; cuộn một
- * chút là biến mất, và không quay lại.
+ * Gợi ý "kéo xuống" cho khách lớn tuổi: không có chữ nào đè lên ảnh, chỉ là cả
+ * trang nhích lên một chút rồi hạ về, như thể bên dưới còn nội dung. Chạy đúng
+ * một lần, khi hero đã mở khoá cuộn và khách còn đứng ở đầu trang; khách chạm
+ * hay cuộn trước đó thì thôi. `prefers-reduced-motion` thì bỏ qua.
  */
-export function ScrollHint({ label }: { label: string }) {
+export function ScrollHint() {
   const { opened } = useExperience();
-  const [waited, setWaited] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
     if (!opened) return;
-    const timer = window.setTimeout(() => setWaited(true), DELAY_MS);
-    return () => window.clearTimeout(timer);
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    let frame = 0;
+    let cancelled = false;
+    const cancel = () => {
+      cancelled = true;
+      cancelAnimationFrame(frame);
+    };
+    const tween = (from: number, to: number, ms: number, done?: () => void) => {
+      const start = performance.now();
+      const step = (now: number) => {
+        if (cancelled) return;
+        const p = Math.min((now - start) / ms, 1);
+        window.scrollTo(0, from + (to - from) * easeInOut(p));
+        if (p < 1) frame = requestAnimationFrame(step);
+        else done?.();
+      };
+      frame = requestAnimationFrame(step);
+    };
+
+    const timer = window.setTimeout(() => {
+      if (window.scrollY > 1) return;
+      tween(0, NUDGE_PX, UP_MS, () => tween(NUDGE_PX, 0, DOWN_MS));
+    }, DELAY_MS);
+
+    // Khách tự chạm / cuộn thì nhường tay họ ngay.
+    const events = ["wheel", "touchstart", "keydown", "pointerdown"] as const;
+    events.forEach((e) => window.addEventListener(e, cancel, { passive: true }));
+    return () => {
+      window.clearTimeout(timer);
+      cancel();
+      events.forEach((e) => window.removeEventListener(e, cancel));
+    };
   }, [opened]);
 
-  useEffect(() => {
-    if (scrolled) return;
-    const onScroll = () => {
-      if (window.scrollY > DONE_AT) setScrolled(true);
-    };
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, [scrolled]);
-
-  const shown = opened && waited && !scrolled;
-
-  return (
-    <div
-      aria-hidden
-      className={`pointer-events-none fixed inset-x-0 bottom-0 z-30 flex justify-center pb-[max(0.75rem,env(safe-area-inset-bottom))] transition-opacity duration-700 ease-glow ${
-        shown ? "opacity-100" : "opacity-0"
-      }`}
-    >
-      <div className="flex items-center gap-tight rounded-full border border-brass bg-ivory px-stack py-tight text-bark shadow-paper">
-        <span className="font-body text-small font-medium">{label}</span>
-        <svg
-          width="18"
-          height="18"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          className="animate-bob"
-        >
-          <path d="M6 9l6 6 6-6" />
-        </svg>
-      </div>
-    </div>
-  );
+  return null;
 }

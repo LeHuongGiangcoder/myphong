@@ -304,8 +304,8 @@ export function Agenda() {
                         top: du(centre - MARK.textRise),
                         width: du(MARK.textW),
                         gap: du(5),
-                        textAlign: onRight ? "left" : "right",
-                        alignItems: onRight ? "flex-start" : "flex-end",
+                        textAlign: "center",
+                        alignItems: "center",
                       }}
                     >
                       <p

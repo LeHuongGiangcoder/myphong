@@ -108,6 +108,7 @@ export function SectionHead({
   eyebrow,
   title,
   titleId,
+  titleClassName = "",
   intro,
   align = "center",
   flush = false,
@@ -116,6 +117,7 @@ export function SectionHead({
   eyebrow?: string;
   title: string;
   titleId?: string;
+  titleClassName?: string;
   intro?: string;
   align?: "center" | "left";
   flush?: boolean;
@@ -133,7 +135,7 @@ export function SectionHead({
         .join(" ")}
     >
       {eyebrow ? <Eyebrow>{eyebrow}</Eyebrow> : null}
-      <Heading level="h2" id={titleId} className="whitespace-pre-line">
+      <Heading level="h2" id={titleId} className={`whitespace-pre-line ${titleClassName}`}>
         {title}
       </Heading>
       {intro ? <Lead className="max-w-prose">{intro}</Lead> : null}
