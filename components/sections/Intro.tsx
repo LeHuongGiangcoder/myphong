@@ -110,6 +110,43 @@ export function Intro() {
           {t(intro.cta)}
         </button>
 
+        {/* Mũi tên gợi ý bấm nút — nằm bên phải nút, chỉ vào nút */}
+        <div
+          aria-hidden
+          data-garden-cta
+          className="intro-hint-arrow absolute pointer-events-none"
+          style={{
+            left: du(L.cta.x + L.cta.w + 4),
+            top: du(L.cta.y - 6),
+          }}
+        >
+          <svg
+            width={du(24)}
+            height={du(48)}
+            viewBox="0 0 24 48"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            {/* Đường cong từ trên xuống dưới trái, chỉ về phía nút */}
+            <path
+              d="M18 4 C 20 14, 16 26, 6 36"
+              stroke="currentColor"
+              strokeWidth="1.4"
+              strokeLinecap="round"
+              fill="none"
+            />
+            {/* Đầu mũi tên */}
+            <path
+              d="M10 30 L6 36 L2 32"
+              stroke="currentColor"
+              strokeWidth="1.4"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              fill="none"
+            />
+          </svg>
+        </div>
+
         {/* Cột phải trên nền giấy: tên hai người + lời mời */}
         <div
           className="absolute flex flex-col items-start"

@@ -146,6 +146,23 @@
   }
 }
 
+/* Mũi tên gợi ý bấm nút mở thiệp */
+.intro-hint-arrow {
+  color: var(--color-tone-muted);
+  animation: intro-hint-nudge 1.8s ease-in-out infinite;
+}
+
+@keyframes intro-hint-nudge {
+  0%, 100% {
+    transform: translate(0, 0);
+    opacity: 0.65;
+  }
+  50% {
+    transform: translate(-3px, 4px);
+    opacity: 1;
+  }
+}
+
 /* ---------------------------------------------------------- BASE */
 
 html {
