@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import { useExperience } from "@/components/experience/ExperienceProvider";
 import { useLocale } from "@/components/experience/LocaleProvider";
@@ -36,6 +36,13 @@ export function Intro() {
   const [phase, setPhase] = useState<"idle" | "opening" | "gone">("idle");
   /* Tranh phải tải đủ ảnh mới cho bấm, nếu không mặt trời sẽ nhảy cóc. */
   const [ready, setReady] = useState(false);
+  /* Hiện mũi tên gợi ý sau 1.5s khi vào màn intro */
+  const [showArrow, setShowArrow] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setShowArrow(true), 1500);
+    return () => clearTimeout(timer);
+  }, []);
 
   const onReady = useCallback(() => setReady(true), []);
   const onFinished = useCallback(() => setPhase("gone"), []);
@@ -110,39 +117,39 @@ export function Intro() {
           {t(intro.cta)}
         </button>
 
-        {/* Mũi tên gợi ý bấm nút — nằm bên phải nút, chỉ vào nút */}
+        {/* Mũi tên gợi ý bấm nút — uốn cong từ góc trên phải trỏ xuống nút */}
         <div
           aria-hidden
           data-garden-cta
-          className="intro-hint-arrow absolute pointer-events-none"
+          className={`intro-hint-arrow absolute pointer-events-none transition-opacity duration-700 ease-out ${
+            showArrow && phase === "idle"
+              ? "opacity-100 intro-hint-nudge"
+              : "opacity-0"
+          }`}
           style={{
-            left: du(L.cta.x + L.cta.w + 2),
-            top: du(L.cta.y - 4),
+            left: du(L.cta.x + L.cta.w - 18),
+            top: du(L.cta.y - 34),
           }}
         >
           <svg
-            width={du(18)}
-            height={du(42)}
-            viewBox="0 0 20 44"
+            width={du(38)}
+            height={du(38)}
+            viewBox="0 0 40 40"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
           >
-            {/* Đường cong từ trên xuống dưới trái, chỉ về phía nút */}
+            {/* Thân mũi tên cong mềm mại */}
             <path
-              d="M14 4 C 16 14, 14 24, 5 34"
+              d="M35 4 C 36 16, 26 28, 12 30"
               stroke="currentColor"
-              strokeWidth="1.3"
+              strokeWidth="1.6"
               strokeLinecap="round"
               fill="none"
             />
-            {/* Đầu mũi tên */}
+            {/* Đầu mũi tên hình tam giác cánh én sắc nét */}
             <path
-              d="M9 28 L5 34 L1 30"
-              stroke="currentColor"
-              strokeWidth="1.3"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              fill="none"
+              d="M5 33 L14 25 C 12 28.5, 11.5 30.5, 11 35 Z"
+              fill="currentColor"
             />
           </svg>
         </div>
