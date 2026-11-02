@@ -157,10 +157,10 @@
 
 @keyframes intro-hint-nudge {
   0%, 100% {
-    transform: translate(0, 0);
+    transform: translateX(0);
   }
   50% {
-    transform: translate(-3px, 3px);
+    transform: translateX(-4px);
   }
 }
 

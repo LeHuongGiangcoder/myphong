@@ -117,7 +117,7 @@ export function Intro() {
           {t(intro.cta)}
         </button>
 
-        {/* Mũi tên gợi ý bấm nút — uốn cong từ góc trên phải trỏ xuống nút */}
+        {/* Mũi tên gợi ý bấm nút — nằm ngang bên phải nút, chỉ thẳng vào nút */}
         <div
           aria-hidden
           data-garden-cta
@@ -127,28 +127,28 @@ export function Intro() {
               : "opacity-0"
           }`}
           style={{
-            left: du(L.cta.x + L.cta.w - 6),
-            top: du(L.cta.y - 34),
+            left: du(L.cta.x + L.cta.w + 6),
+            top: du(L.cta.y + (L.cta.h - 18) / 2),
           }}
         >
           <svg
             width={du(38)}
-            height={du(38)}
-            viewBox="0 0 40 40"
+            height={du(18)}
+            viewBox="0 0 44 20"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
           >
-            {/* Thân mũi tên cong mềm mại */}
+            {/* Thân mũi tên nằm ngang lượn sóng nhẹ mềm mại */}
             <path
-              d="M35 4 C 36 16, 26 28, 12 30"
+              d="M 40 10 C 30 8.5, 20 11.5, 11 10"
               stroke="currentColor"
               strokeWidth="1.6"
               strokeLinecap="round"
               fill="none"
             />
-            {/* Đầu mũi tên hình tam giác cánh én sắc nét */}
+            {/* Đầu mũi tên hình cánh én sắc nét trỏ sang trái */}
             <path
-              d="M5 33 L14 25 C 12 28.5, 11.5 30.5, 11 35 Z"
+              d="M 3 10 L 12 5 C 10 8.5, 10 11.5, 12 15 Z"
               fill="currentColor"
             />
           </svg>
