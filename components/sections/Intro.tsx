@@ -127,7 +127,7 @@ export function Intro() {
               : "opacity-0"
           }`}
           style={{
-            left: du(L.cta.x + L.cta.w - 18),
+            left: du(L.cta.x + L.cta.w - 6),
             top: du(L.cta.y - 34),
           }}
         >
