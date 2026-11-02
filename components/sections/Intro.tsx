@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 
 import { useExperience } from "@/components/experience/ExperienceProvider";
 import { useLocale } from "@/components/experience/LocaleProvider";
@@ -36,13 +36,6 @@ export function Intro() {
   const [phase, setPhase] = useState<"idle" | "opening" | "gone">("idle");
   /* Tranh phải tải đủ ảnh mới cho bấm, nếu không mặt trời sẽ nhảy cóc. */
   const [ready, setReady] = useState(false);
-  /* Hiện mũi tên gợi ý sau 1.5s khi vào màn intro */
-  const [showArrow, setShowArrow] = useState(false);
-
-  useEffect(() => {
-    const timer = setTimeout(() => setShowArrow(true), 1500);
-    return () => clearTimeout(timer);
-  }, []);
 
   const onReady = useCallback(() => setReady(true), []);
   const onFinished = useCallback(() => setPhase("gone"), []);
@@ -121,34 +114,30 @@ export function Intro() {
         <div
           aria-hidden
           data-garden-cta
-          className={`intro-hint-arrow absolute pointer-events-none transition-opacity duration-700 ease-out ${
-            showArrow && phase === "idle"
-              ? "opacity-100 intro-hint-nudge"
-              : "opacity-0"
-          }`}
+          className="intro-hint-arrow intro-hint-nudge absolute pointer-events-none"
           style={{
             left: du(L.cta.x + L.cta.w + 6),
-            top: du(L.cta.y + (L.cta.h - 18) / 2),
+            top: du(L.cta.y + (L.cta.h - 22) / 2),
           }}
         >
           <svg
-            width={du(38)}
-            height={du(18)}
-            viewBox="0 0 44 20"
+            width={du(52)}
+            height={du(22)}
+            viewBox="0 0 54 22"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
           >
             {/* Thân mũi tên nằm ngang lượn sóng nhẹ mềm mại */}
             <path
-              d="M 40 10 C 30 8.5, 20 11.5, 11 10"
+              d="M 50 11 C 38 9, 25 13, 13 11"
               stroke="currentColor"
-              strokeWidth="1.6"
+              strokeWidth="1.8"
               strokeLinecap="round"
               fill="none"
             />
             {/* Đầu mũi tên hình cánh én sắc nét trỏ sang trái */}
             <path
-              d="M 3 10 L 12 5 C 10 8.5, 10 11.5, 12 15 Z"
+              d="M 3 11 L 14 5 C 11.5 9, 11.5 13, 14 17 Z"
               fill="currentColor"
             />
           </svg>
