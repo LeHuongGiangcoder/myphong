@@ -116,30 +116,30 @@ export function Intro() {
           data-garden-cta
           className="intro-hint-arrow absolute pointer-events-none"
           style={{
-            left: du(L.cta.x + L.cta.w + 4),
-            top: du(L.cta.y - 6),
+            left: du(L.cta.x + L.cta.w + 2),
+            top: du(L.cta.y - 4),
           }}
         >
           <svg
-            width={du(24)}
-            height={du(48)}
-            viewBox="0 0 24 48"
+            width={du(18)}
+            height={du(42)}
+            viewBox="0 0 20 44"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
           >
             {/* Đường cong từ trên xuống dưới trái, chỉ về phía nút */}
             <path
-              d="M18 4 C 20 14, 16 26, 6 36"
+              d="M14 4 C 16 14, 14 24, 5 34"
               stroke="currentColor"
-              strokeWidth="1.4"
+              strokeWidth="1.3"
               strokeLinecap="round"
               fill="none"
             />
             {/* Đầu mũi tên */}
             <path
-              d="M10 30 L6 36 L2 32"
+              d="M9 28 L5 34 L1 30"
               stroke="currentColor"
-              strokeWidth="1.4"
+              strokeWidth="1.3"
               strokeLinecap="round"
               strokeLinejoin="round"
               fill="none"
